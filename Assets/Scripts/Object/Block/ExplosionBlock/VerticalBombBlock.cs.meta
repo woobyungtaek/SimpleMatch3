@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5db02707b74077240970ef5e4685cee3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mBlockSprite: {instanceID: 0}
+  - createEffect: {fileID: 6370262987287983797, guid: c2565f43931ecf642a3c62cec9dfe152,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

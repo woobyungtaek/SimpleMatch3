@@ -1,0 +1,14 @@
+﻿{
+  "mapSize": {
+    "x": 8,
+    "y": 8
+  },
+  "moveCount": "20",
+  "gravity": {
+    "x": 0,
+    "y": -1
+  },
+
+  "tileStr": "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+  "blockStr": "3424324111412430043040231004104003420420040321434021320413044010"
+}

@@ -1,0 +1,8 @@
+﻿{
+"mapSize":{"x" : 8, "y" : 8},
+"moveCount":"20",
+"gravity":{"x":0,"y":-1},
+
+"tileStr":"oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+"blockStr":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}

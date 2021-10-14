@@ -1,0 +1,78 @@
+﻿{
+	"TutoIndex" : 4,
+	"HammerCount" : 0,
+	"RandBoxCount" : 0,
+	"missionList" : [
+		{"MissionName" : "HomingBombBlock", "MissionColor" : 1, "MissionCount" : 1},
+		{"MissionName" : "HomingBombBlock", "MissionColor" : 3, "MissionCount" : 1},
+		{"MissionName" : "NormalBlock", "MissionColor" :4, "MissionCount" : 3}
+	],
+	"tutoStepList" : [
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "이번에는 <사각 매치>에 대해 알아보도록 하겠습니다.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "<사각 매치>는 같은 색상의 재료가 2x2의 모양으로 매치되는 것을 말합니다.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", "IsPoint" : "True",
+		"InfoText" : "사각 매치를 통해서 <유도 재료>를 만들 수 있죠.", 
+		"MaskedObjectName" : "MissionCellUI_0", 
+		"MaskSize" : {"x" : 100, "y" : 150},
+		"SelectCoordi" :{"x" : 1, "y" : 0},
+		"SpeechBubblePos":{"x": 0,"y" : 0},		"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True", "IsPoint" : "True",
+		"InfoText" : "바로 만들어 볼까요?\n지정된 재료를 움직여 <사각 매치>를 해보세요.", 
+		"SelectCoordi" :{"x" : 5, "y" : 4},		"TargetCoordi" :{"x" : 5, "y" : 5},
+		"MaskStartPos" :{"x" : 5, "y" : 6},		"MaskEndPos" :{"x" : 6, "y" : 4},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True","IsPoint" : "True",
+		"InfoText" : "잘하셨습니다. 만들어 진 <유도 재료>를 획득해 볼까요?", 
+		"SelectCoordi" :{"x" : 5, "y" : 6},		"TargetCoordi" :{"x" : 6, "y" : 6},
+		"MaskStartPos" :{"x" : 5, "y" : 6},		"MaskEndPos" :{"x" : 6, "y" : 4},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "<유도 재료>는 가장 필요한 재료를 하나 획득할 수 있는 효과가 있습니다.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True","IsPoint" : "True",
+		"InfoText" : "한번 더 연습해 보도록 합시다. 지정된 재료를 움직여 ,<사각 매치>를 해보세요.", 
+		"SelectCoordi" :{"x" : 4, "y" : 5},		"TargetCoordi" :{"x" : 4, "y" : 6},
+		"MaskStartPos" :{"x" : 3, "y" : 7},		"MaskEndPos" :{"x" : 4, "y" : 5},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True","IsPoint" : "True",
+		"InfoText" : "유도 재료를 획득해 보세요.", 
+		"SelectCoordi" :{"x" : 4, "y" : 7},		"TargetCoordi" :{"x" : 5, "y" : 7},
+		"MaskStartPos" :{"x" : 4, "y" : 7},		"MaskEndPos" :{"x" : 7, "y" : 7},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "훌륭해요! <유도 재료>는 매치를 할 수 없는 상태의 필요 재료를 얻는데 효과적입니다.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "잘 사용한다면 더 쉽게 물약을 만들 수 있겠죠?", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "<유도 재료>를 활용해서 남은 재료들을 획득하고 물약을 완성하세요.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		}
+	]
+}

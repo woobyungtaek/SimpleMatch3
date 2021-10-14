@@ -1,0 +1,9 @@
+Key,English,Korean
+AttackDefender,,{0}의 공격력으로 공격
+AttackSupport,,다음 [공격]을 {0}만큼 강화합니다.
+GetShield,,{0}의 방어도 획득
+ShieldSupport,,다음 [방어]를 {0}만큼 강화합니다.
+RecoveryHP,,{0}만큼 체력 회복
+RecoverySupport,,다음 [회복]을 {0}만큼 강화합니다.
+ArrangeBlock,,{0}을(를) {1}개 보드에 설치
+ArrangeBlockSupport,,다음 [설치]의 설치 개수를 {0}개 추가

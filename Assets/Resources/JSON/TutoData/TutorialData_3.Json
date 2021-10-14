@@ -1,0 +1,86 @@
+﻿{
+	"TutoIndex" : 3,
+	"HammerCount" : 0,
+	"RandBoxCount" : 0,
+	"missionList" : [
+		{"MissionName" : "AroundBombBlock", "MissionColor" : 4, "MissionCount" : 1},
+		{"MissionName" : "AroundBombBlock", "MissionColor" : 0, "MissionCount" : 1},
+		{"MissionName" : "VerticalBombBlock", "MissionColor" : 1, "MissionCount" : 1},
+		{"MissionName" : "NormalBlock", "MissionColor" :-1, "MissionCount" : 100}
+	],
+	"tutoStepList" : [
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "이번에는 조금 특별한 재료가 필요하네요.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", "IsPoint" : "True",
+		"InfoText" : "<뚱뚱 재료>는 <T매치> 또는 <L매치>로 만들수 있는 고급 재료입니다.", 
+		"MaskedObjectName" : "MissionCellUI_0", 
+		"MaskSize" : {"x" : 100, "y" : 150},
+		"SelectCoordi" :{"x" : 1, "y" : 0},
+		"SpeechBubblePos":{"x": 0,"y" : 0},		"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True", "IsPoint" : "True",
+		"InfoText" : "바로 만들어 보도록 하죠! 지정된 재료를 움직여 <T매치>하세요.", 
+		"SelectCoordi" :{"x" : 4, "y" : 3},		"TargetCoordi" :{"x" : 4, "y" : 4},
+		"MaskStartPos" :{"x" : 3, "y" : 6},		"MaskEndPos" :{"x" : 5, "y" : 3},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True","IsPoint" : "True",
+		"InfoText" : "잘하셨습니다. 바로 <획득>해 보세요.", 
+		"SelectCoordi" :{"x" : 4, "y" : 6},		"TargetCoordi" :{"x" : 4, "y" : 7},
+		"MaskStartPos" :{"x" : 4, "y" : 7},		"MaskEndPos" :{"x" : 6, "y" : 6},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "뚱뚱 재료는 주변의 재료들을 획득하는 효과가 있습니다.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "뚱뚱 재료를 더 활용해 보도록 하죠.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True","IsPoint" : "True",
+		"InfoText" : "새 뚱뚱 재료를 만들어 주세요.", 
+		"SelectCoordi" :{"x" : 5, "y" : 4},		"TargetCoordi" :{"x" : 5, "y" : 3},
+		"MaskStartPos" :{"x" : 3, "y" : 4},		"MaskEndPos" :{"x" : 5, "y" : 1},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True","IsPoint" : "True",
+		"InfoText" : "세로 재료도 만들어 주세요.", 
+		"SelectCoordi" :{"x" : 5, "y" : 1},		"TargetCoordi" :{"x" : 5, "y" : 2},
+		"MaskStartPos" :{"x" : 4, "y" : 2},		"MaskEndPos" :{"x" : 7, "y" : 1},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Swap", "IsDimmed" : "True","IsPoint" : "True",
+		"InfoText" : "<뚱뚱 재료>와 <세로 재료>를 움직여 <합성>해 보세요.", 
+		"SelectCoordi" :{"x" : 5, "y" : 2},		"TargetCoordi" :{"x" : 5, "y" : 3},
+		"MaskStartPos" :{"x" : 5, "y" : 2},		"MaskEndPos" :{"x" : 5, "y" : 3},
+		"SpeechBubblePos":{"x": 0,"y" : 0.3},	"SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "와! 고급 재료의 효과가 강화되었군요.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "<고급 재료>들은 색상, 종류와 관계없이 <합성>을 통해 사용가능합니다.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		},
+		{
+		"StepType" :"Click", "IsDimmed" : "True", 
+		"InfoText" : "고급 재료와 합성을 활용해 남은 재료들을 모아 포션을 완성해 보세요.", 
+		"SpeechBubblePos":{"x": 0,"y" : 0}, "SpeechBubbleScale":{"x": 0.9,"y" : 0.2}
+		}
+	]
+}

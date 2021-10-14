@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Edge
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 1
+      crunchedCompression: 0
+      sRGB: 0
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 1
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 4f98215a9c710db468e3651449539251, type: 3}
+    totalSpriteSurfaceArea: 480000
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300010, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300016, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300020, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300012, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300022, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300040, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300058, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300034, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300048, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300080, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300070, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300090, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300072, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300006, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300000, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300088, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300064, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300086, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300066, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300062, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300068, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300026, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 2838681010091129302, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300038, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300028, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300054, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300008, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300004, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300032, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300056, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300014, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300092, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300076, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300082, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300084, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300074, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300078, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300052, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300036, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300024, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300060, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300044, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300050, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300042, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300046, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300002, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300018, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  - {fileID: 21300030, guid: 4f98215a9c710db468e3651449539251, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Edge_1100_xx0x
+  - Edge_1001_x0xx
+  - Edge_1100_xx1x
+  - Edge_0110_xxx0
+  - Edge_0110_xxx1
+  - Edge_0001_11xx
+  - Edge_0010_0xx1
+  - Edge_0010_0xx0
+  - Edge_0001_01xx
+  - Edge_0000_0110
+  - Edge_0000_0111
+  - Edge_0000_0101
+  - Edge_0000_0100
+  - Edge_0111_xxxx
+  - Edge_1111_xxxx
+  - Edge_0000_1010
+  - Edge_0000_1011
+  - Edge_0000_1100
+  - Edge_0000_1101
+  - Edge_0000_1111
+  - Edge_0000_1110
+  - Edge_1001_x1xx
+  - Square
+  - Edge_1000_x11x
+  - Edge_0101_xxxx
+  - Edge_1000_x10x
+  - Edge_1011_xxxx
+  - Edge_1110_xxxx
+  - Edge_0001_00xx
+  - Edge_0001_10xx
+  - Edge_0011_0xxx
+  - Edge_0000_0000
+  - Edge_0000_0001
+  - Edge_0000_0011
+  - Edge_0000_1001
+  - Edge_0000_0010
+  - Edge_0000_1000
+  - Edge_0100_xx01
+  - Edge_0100_xx00
+  - Edge_0011_1xxx
+  - Edge_0100_xx10
+  - Edge_0100_xx11
+  - Edge_0010_1xx0
+  - Edge_0010_1xx1
+  - Edge_1000_x01x
+  - Edge_1101_xxxx
+  - Edge_1010_xxxx
+  - Edge_1000_x00x
+  m_Tag: Edge
+  m_IsVariant: 0

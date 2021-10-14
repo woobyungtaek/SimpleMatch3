@@ -1,0 +1,78 @@
+﻿{
+	"mapSize":{"x" : 8, "y" : 8},
+	"moveCount":"20",
+	"gravity":{"x":0,"y":-1},
+	"tutoName" : "TutorialData_3",	
+	"blockMakerList":[
+		{	
+		"Coordi" : {"x" : 3, "y" : 0}, 	"IsLoop" : "False", 
+		"CreateBlockList"  : [
+			{"BlockName" : "NormalBlock", "BlockColor" : 2, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 2, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1}
+		]},
+		{	
+		"Coordi" : {"x" : 4, "y" : 0}, 	"IsLoop" : "False", 
+		"CreateBlockList"  : [
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1}
+		]},
+		{	
+		"Coordi" : {"x" : 5, "y" : 0}, 	"IsLoop" : "False", 
+		"CreateBlockList"  : [
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 2, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},			
+
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 2, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1}
+		]},
+		{	
+		"Coordi" : {"x" : 6, "y" : 0}, 	"IsLoop" : "False", 
+		"CreateBlockList"  : [
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1},			
+
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 2, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 2, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 4, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 2, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 3, "BlockHP" : 1},
+			{"BlockName" : "NormalBlock", "BlockColor" : 0, "BlockHP" : 1}
+		]},
+		{	
+		"Coordi" : {"x" : 7, "y" : 0}, 	"IsLoop" : "False", 
+		"CreateBlockList"  : [
+			{"BlockName" : "NormalBlock", "BlockColor" : 1, "BlockHP" : 1}
+		]}
+		],
+	"tileStr":"oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+	"blockStr":"3103112014102314013412304140432130341143121422040233440324220020"
+}

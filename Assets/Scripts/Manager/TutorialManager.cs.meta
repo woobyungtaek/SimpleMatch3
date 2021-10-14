@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 69513a6c0bb3b33428060e7c2b130147
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mTutoButtonPrefab: {fileID: 938138909886599820, guid: 22e8707d6b940f542b64bdded22f6e5f,
+      type: 3}
+  - mTutoHighlightPrefab: {fileID: 7535625656555387276, guid: 31db3efc2cc240b4d81a2e378145d3ea,
+      type: 3}
+  - mTutoCanvas: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 44bc4424f586ceb45aa2f14059cfb31d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mPopupTransform: {instanceID: 0}
+  - mBattleWinPopupPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
