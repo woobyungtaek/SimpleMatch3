@@ -80,7 +80,7 @@ public class MissionCollectEffect : MonoBehaviour
         transform.position = mTargetPos;
 
         ObserverCenter.Instance.SendNotification(this, Message.RefreshMissionCellUI);
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
 
     #region 포물선 움직임
@@ -103,7 +103,7 @@ public class MissionCollectEffect : MonoBehaviour
     //        yield return null;
     //    }
     //    transform.position = mTargetPos;
-    //    GameObjectPool.Destroy(gameObject);
+    //    GameObjectPool.ReturnObject(gameObject);
     //}
     //private void CreatePointByAngle(ref Vector3 angleVector, float dirAngle, float pointAngle, bool bFlip, bool bUseZ)
     //{

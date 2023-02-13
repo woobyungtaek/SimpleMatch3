@@ -7,10 +7,10 @@ public class PopupObject : MonoBehaviour
     public virtual void InitPopup() { }
     public virtual void OnCancelButtonClicked()
     {
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
     public virtual void OnOkButtonClicked()
     {
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
 }

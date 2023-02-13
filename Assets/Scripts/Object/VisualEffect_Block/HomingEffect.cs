@@ -67,7 +67,7 @@ public class HomingEffect : BlockEffect
             yield return null;
         }
         transform.position = mTargetPos;
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
 
     private void CreatePointByAngle(ref Vector3 angleVector, float dirAngle, float pointAngle, bool bFlip, bool bUseZ)

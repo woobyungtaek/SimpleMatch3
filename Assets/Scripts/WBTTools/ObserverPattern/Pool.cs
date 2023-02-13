@@ -8,7 +8,6 @@ using System.Collections.Generic;
 /// <typeparam name="T">Disposable, new() 가능한 객체만 Pooling됩니다.</typeparam>
 public class Pool<T> : IDisposable where T : IDisposable, new()
 {
-    public static int PoolCount { get => TPool.Count; }
     static Queue<T> tPool;
     static Queue<T> TPool
     {
@@ -45,13 +44,11 @@ public class Pool<T> : IDisposable where T : IDisposable, new()
     /// </summary>
     /// <param name="target"></param>
     public static void Destroy(T target)
-    {        
+    {
         if (TPool.Contains(target)) { return; }
         target.Dispose();
-        if(TPool.Count < 30)
-        {
-            TPool.Enqueue(target);
-        }
+        TPool.Enqueue(target);
     }
+
     public virtual void Dispose() { }
 }

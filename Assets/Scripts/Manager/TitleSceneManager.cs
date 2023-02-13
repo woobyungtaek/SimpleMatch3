@@ -76,7 +76,7 @@ public class TitleSceneManager : SceneSingleton<TitleSceneManager>
         int loopCount = mTutoStageButtonList.Count;
         for(int index =0; index< loopCount; index++)
         {
-            GameObjectPool.Destroy(mTutoStageButtonList[index].gameObject);
+            GameObjectPool.ReturnObject(mTutoStageButtonList[index].gameObject);
         }
         mTutoStageButtonList.Clear();
 

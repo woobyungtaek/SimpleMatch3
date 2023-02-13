@@ -381,7 +381,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         int loopCount = mAllCollectEffectList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            GameObjectPool.Destroy(mAllCollectEffectList[index]);
+            GameObjectPool.ReturnObject(mAllCollectEffectList[index]);
         }
     }
 
@@ -426,7 +426,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         
         if (PuzzleManager.Instance.CurrentState == EGameState.StageSuccess)
         {
-            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Drop);
+            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.TileReadyCheck);
         }
     }
 

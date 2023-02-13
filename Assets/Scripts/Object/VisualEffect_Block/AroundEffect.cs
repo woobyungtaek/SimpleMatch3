@@ -48,6 +48,6 @@ public class AroundEffect : BlockEffect
             }
             yield return null;
         }
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
 }

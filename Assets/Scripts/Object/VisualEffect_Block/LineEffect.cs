@@ -37,6 +37,6 @@ public class LineEffect : BlockEffect
             mLine.startWidth = 0.3f * mAniCurve.Evaluate(mTime);
             yield return null;
         }
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
 }

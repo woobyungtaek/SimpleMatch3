@@ -37,7 +37,7 @@ public class StageSuccessPopup : PopupObject
         int loopCount = mMissionCellList.Count;
         for (int index = 0; index < mMissionCellList.Count; index++)
         {
-            GameObjectPool.Destroy(mMissionCellList[index].gameObject);
+            GameObjectPool.ReturnObject(mMissionCellList[index].gameObject);
         }
         mMissionCellList.Clear();
     }    
@@ -57,7 +57,7 @@ public class StageSuccessPopup : PopupObject
         int loopCount = mRewardCellList.Count;
         for (int index = 0; index < mRewardCellList.Count; index++)
         {
-            GameObjectPool.Destroy(mRewardCellList[index].gameObject);
+            GameObjectPool.ReturnObject(mRewardCellList[index].gameObject);
         }
         mRewardCellList.Clear();
     }    
@@ -81,7 +81,7 @@ public class StageSuccessPopup : PopupObject
         int loopCount = mSelectRewardCellList.Count;
         for (int index = 0; index < mSelectRewardCellList.Count; index++)
         {
-            GameObjectPool.Destroy(mSelectRewardCellList[index].gameObject);
+            GameObjectPool.ReturnObject(mSelectRewardCellList[index].gameObject);
         }
         mSelectRewardCellList.Clear();
     }

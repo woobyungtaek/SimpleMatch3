@@ -43,6 +43,6 @@ public class StraightEffect : BlockEffect
             }
             yield return null;
         }
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
 }

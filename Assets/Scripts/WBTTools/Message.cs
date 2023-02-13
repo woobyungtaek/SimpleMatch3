@@ -21,4 +21,6 @@ public static class Message
     public static string ChangeMapInfo              = "ChangeMapInfo";
     public static string PauseGame                  = "PauseGame";
     public static string ResumeGame                 = "ResumeGame";
+
+    public static string DropEndCheck               = "DropEndCheck";
 }

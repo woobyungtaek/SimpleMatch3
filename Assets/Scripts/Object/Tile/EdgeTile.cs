@@ -8,14 +8,27 @@ public class EdgeTile : Tile
     {
         IsCreateTile = false;
         if (SendTileList[0] == null) { return; }
-        if ( !(SendTileList[0] is NormalTile) ) { return; }
+        if (!(SendTileList[0] is NormalTile)) { return; }
         IsCreateTile = true;
+        BlockMakerOrNull = null;
     }
 
-    public override void CheckAvailableSendTile()
+    public override void RequestReserveData(Tile requestTile)
     {
         if (IsCreateTile == false) { return; }
-        if (SendTileList[0].BlockContainerOrNull != null) { return; }
-        SendTileOrNull = SendTileList[0];
+
+        IsNotReady = true;
+
+        var data = ObjectPool.GetInst<ReserveData>();
+        data.ClearQueue();
+        data.Enqueue(this);
+        requestTile.ReserveData = data;
+        mCreateReserveDataQueue.Enqueue(data);
+    }
+
+    public override void StartDrop()
+    {
+        if (IsCreateTile == false) { return; }
+        mCreateCoroutine = StartCoroutine(CreateBlockCoroutine());
     }
 }

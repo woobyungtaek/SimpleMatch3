@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class EmptyTile : Tile
 {
-    public override void CheckAvailableSendTile()
-    {
-        if (IsCreateTile == false) { return; }
-        if (SendTileList[0].BlockContainerOrNull != null) { return; }
-        SendTileOrNull = SendTileList[0];
-    }
+    public override bool IsCanFlow_Up { get => true; }
+    public override bool IsCanFlow_UpAtEmpty { get => true; }
 }

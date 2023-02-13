@@ -33,6 +33,7 @@ public class GameSceneManager : MonoBehaviour
         }
 
         #region Restart시 선행 되어야 하는것들
+
         TileMapManager.Instance.AllStopCoroutine();
         MissionManager.Instance.ClearAllMissionCollectEffect();
         BlockManager.Instance.ClearAllBlockContainers();

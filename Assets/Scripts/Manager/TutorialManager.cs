@@ -91,7 +91,9 @@ public class TutorialManager : SceneSingleton<TutorialManager>
 
         PuzzleManager.Instance.RemoveGameEndObseverByTutoManager();
 
-        ObserverCenter.Instance.RemoveObserver(ExcuteTutorialEndByNoti);
+        ObserverCenter.Instance.RemoveObserver(EGameState.StageSuccess.ToString(), ExcuteTutorialEndByNoti);
+        ObserverCenter.Instance.RemoveObserver(EGameState.StageFail.ToString(), ExcuteTutorialEndByNoti);
+
         ObserverCenter.Instance.AddObserver(ExcuteTutorialEndByNoti, EGameState.StageSuccess.ToString());
         ObserverCenter.Instance.AddObserver(ExcuteTutorialEndByNoti, EGameState.StageFail.ToString());
 

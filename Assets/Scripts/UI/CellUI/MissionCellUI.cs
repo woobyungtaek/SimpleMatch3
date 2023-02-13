@@ -26,7 +26,7 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
     }
     public void Dispose()
     {
-        ObserverCenter.Instance.RemoveObserver(CellRefreshByFakeCount);
+        ObserverCenter.Instance.RemoveObserver(Message.RefreshMissionCellUI, CellRefreshByFakeCount);
     }
 
     public void CollectMissionTarget()

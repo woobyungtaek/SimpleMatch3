@@ -54,6 +54,7 @@ public class BlockManager : SceneSingleton<BlockManager>
         createBlock.SetBlockData(blockNumber, blockHP);
 
         tile.BlockContainerOrNull.AddBlockToBlockList(createBlock);
+        tile.BlockContainerOrNull.ClearQueue();
     }
     public Block GetCreateBlockByBlockDataInTile(Tile tile, Type blockType, int blockNumber, int blockHP, Transform parentOrNull = null)
     {
@@ -68,6 +69,7 @@ public class BlockManager : SceneSingleton<BlockManager>
         createBlock.SetBlockData(blockNumber, blockHP);
 
         tile.BlockContainerOrNull.AddBlockToBlockList(createBlock);
+        tile.BlockContainerOrNull.ClearQueue();
         return createBlock;
     }
 
@@ -98,7 +100,7 @@ public class BlockManager : SceneSingleton<BlockManager>
         for(int index =0; index < loopCount; index++)
         {
             mAllBlockContainer[index].RemoveAllBlock();
-            GameObjectPool.Destroy(mAllBlockContainer[index].gameObject);
+            GameObjectPool.ReturnObject(mAllBlockContainer[index].gameObject);
         }
     }
 

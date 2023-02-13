@@ -4,23 +4,23 @@ using UnityEngine;
 
 public enum EGameState
 {
-    None = 0,
-    Loading = 1,
-    GameReady = 2,
-    GameStart = 3,
-    TileReadyCheck = 4,
-    Drop = 5,
-    DropEnd = 6,
-    MatchCheck = 7,
-    Match = 8,
-    ResultCheck = 9,
-    Input = 10,
-    MatchSwap = 11,
-    ReturnSwap = 12,
-    StageSuccess = 13,
-    StageFail = 14,
-    Hammer = 15,
-    Pause = 16
+    None,
+    Loading,
+    GameReady,
+    GameStart,
+    TileReadyCheck,
+    Drop,
+    MatchCheck,
+    Match,
+    ResultCheck,
+    Input,
+    MatchSwap,
+    ReturnSwap,
+    StageSuccess,
+    StageFail,
+    Hammer,
+    Pause,
+    Max
 }
 
 public class PuzzleManager : SceneSingleton<PuzzleManager>
@@ -65,10 +65,10 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         //{
         //    ChangeCurrentGameStateWithNoti(EGameState.Drop);
         //}
-        //if (Input.GetKeyDown(KeyCode.N))
-        //{
-        //    TileMapManager.Instance.IsNextStep = true;
-        //}
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            TileMapManager.Instance.IsNextStep = true;
+        }
         if (Input.GetKeyDown(KeyCode.S))
         {
             TileMapManager.Instance.ShuffleAllBlockContianer();
@@ -96,10 +96,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         AddGameStateInConditionDictListInternal(EGameState.TileReadyCheck, EGameState.Drop);
         AddGameStateInConditionDictListInternal(EGameState.TileReadyCheck, EGameState.MatchCheck);
 
-        AddGameStateInConditionDictListInternal(EGameState.Drop, EGameState.DropEnd);
-
-        AddGameStateInConditionDictListInternal(EGameState.DropEnd, EGameState.TileReadyCheck);
-
+        AddGameStateInConditionDictListInternal(EGameState.Drop, EGameState.MatchCheck);
         AddGameStateInConditionDictListInternal(EGameState.MatchCheck, EGameState.Match);
         AddGameStateInConditionDictListInternal(EGameState.MatchCheck, EGameState.ResultCheck);
 
@@ -118,7 +115,8 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
 
         AddGameStateInConditionDictListInternal(EGameState.MatchSwap, EGameState.MatchCheck);
 
-        AddGameStateInConditionDictListInternal(EGameState.StageSuccess, EGameState.Drop);
+        AddGameStateInConditionDictListInternal(EGameState.StageSuccess, EGameState.TileReadyCheck);
+        //AddGameStateInConditionDictListInternal(EGameState.StageSuccess, EGameState.Drop);
         AddGameStateInConditionDictListInternal(EGameState.StageSuccess, EGameState.Loading);
         AddGameStateInConditionDictListInternal(EGameState.StageFail, EGameState.Loading);
 
@@ -223,7 +221,11 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
     {
         mCurrentStateString = GetGameStateString(CurrentState);
         if (!gameStateConditionDict.ContainsKey(mCurrentStateString)) { Debug.LogWarningFormat("상태 변경 조건이 없는 게임 상태입니다.{0}", CurrentState); return false; }
-        if (!gameStateConditionDict[mCurrentStateString].Contains(nextState)) { Debug.LogWarningFormat("허용되지 않는 상태 변화입니다.{0} > {1}", CurrentState, nextState); return false; }
+        if (!gameStateConditionDict[mCurrentStateString].Contains(nextState)) 
+        {
+            Debug.LogWarningFormat("허용되지 않는 상태 변화입니다.{0} > {1}", CurrentState, nextState);
+            return false; 
+        }
         CurrentState = nextState;
         return true;
     }
@@ -240,7 +242,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
 
     public void RemoveGameEndObseverByTutoManager()
     {
-        ObserverCenter.Instance.RemoveObserver(ExcuteStageSuccessByNoti);
-        ObserverCenter.Instance.RemoveObserver(ExcuteStageFailByNoti);
+        ObserverCenter.Instance.RemoveObserver(EGameState.StageSuccess.ToString(), ExcuteStageSuccessByNoti);
+        ObserverCenter.Instance.RemoveObserver(EGameState.StageFail.ToString(), ExcuteStageFailByNoti);
     }
 }

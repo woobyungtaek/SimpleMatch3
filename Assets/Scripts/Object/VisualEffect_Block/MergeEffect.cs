@@ -39,6 +39,6 @@ public class MergeEffect : BlockEffect
         }
 
         transform.position = mTargetPos;
-        GameObjectPool.Destroy(gameObject);
+        GameObjectPool.ReturnObject(gameObject);
     }
 }

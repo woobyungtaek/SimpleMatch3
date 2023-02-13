@@ -9,23 +9,23 @@ using UnityEngine;
 /// </summary>
 public class Notification : Pool<Notification>
 {
-    public string               Message;
-    public Component            Sender;
-    public NotificationArgs     Data;
+    public string Message;
+    public Component Sender;
+    public NotificationArgs Data;
 
     public override void Dispose()
     {
-        Message     = null;
-        Sender      = null;
-        if(Data != null) { Data.Dispose(); }
+        Message = null;
+        Sender = null;
+        if (Data != null) { Data.Dispose(); }
         Data = null;
     }
     public static Notification Instantiate(string message, Component sender, NotificationArgs dataOrNull = null)
     {
-        Notification inst   = Instantiate();
-        inst.Message        = message;
-        inst.Sender         = sender;
-        inst.Data           = dataOrNull;
+        Notification inst = Instantiate();
+        inst.Message = message;
+        inst.Sender = sender;
+        inst.Data = dataOrNull;
 
         return inst;
     }

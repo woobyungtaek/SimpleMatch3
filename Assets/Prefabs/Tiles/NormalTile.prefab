@@ -74,13 +74,16 @@ MonoBehaviour:
   mGravity: {x: 0, y: 0}
   mbCreateTile: 0
   mbReservationTile: 0
-  mbDroping: 0
   mbHit: 0
   mbSplahHit: 0
-  mSendTile: {fileID: 0}
-  mBlockContainer: {fileID: 0}
+  mbArrive: 0
+  mbFlowCheckTile: 0
+  BlockContainerOrNull: {fileID: 0}
+  mStartBlockContainer: {fileID: 0}
   mSendTileList: []
   mRecieveTileList: []
-  upLinkTileList: []
-  downLinkTileList: []
-  aroundTileList: []
+  BlockMakerOrNull:
+    Coordi: {x: 0, y: 0}
+    IsLoop: 0
+    CreateBlockList: []
+  mAroundTileList: []

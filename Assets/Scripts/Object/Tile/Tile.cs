@@ -4,49 +4,100 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour, System.IDisposable
 {
-    [Header("BasicData")]
+    protected static Dictionary<Vector2, bool> mFlowStateDict = new Dictionary<Vector2, bool>();
+
+    public static bool IsNotReady;
+    public static bool IsMoveStart;
+
+    [Header("Private")]
     [SerializeField] private Vector2 mCoordi;
     [SerializeField] private Vector2 mGravity;
     [SerializeField] private bool mbCreateTile;
     [SerializeField] private bool mbReservationTile;
-    [SerializeField] private bool mbDroping;
     [SerializeField] private bool mbHit;
     [SerializeField] private bool mbSplahHit;
+    [SerializeField] private bool mbArrive;
 
-    [SerializeField] private Tile mSendTile;
-    [SerializeField] protected BlockContainer mBlockContainer;
+    [Header("Protected")]
+    [SerializeField] protected bool mbFlowCheckTile;
+    [SerializeField] protected IReserveData mReserveData;
 
-    [Header("List")]
-    [SerializeField] private List<Tile> mSendTileList = new List<Tile>();
-    [SerializeField] private List<Tile> mRecieveTileList = new List<Tile>();
+    [Header("BlockContainer")]
+    public BlockContainer BlockContainerOrNull;
+    private BlockContainer mStartBlockContainer;
+
+    [Header("Send And Recieve")]
+    [SerializeField] protected List<Tile> mSendTileList = new List<Tile>();
+    [SerializeField] protected List<Tile> mRecieveTileList = new List<Tile>();
 
     [Header("BlockMaker")]
-    private BlockMaker mMakerData;
+    public BlockMaker BlockMakerOrNull;
+    protected Coroutine mCreateCoroutine;
+    protected Queue<ReserveData> mCreateReserveDataQueue = new Queue<ReserveData>();
 
-    public Vector2 Coordi           { get => mCoordi;           set => mCoordi = value; }
-    public Vector2 Gravity          { get => mGravity;          set => mGravity = value; }
-    public bool IsCreateTile        { get => mbCreateTile;      set => mbCreateTile = value; }
-    public bool IsReservationTile   { get=> mbReservationTile;  set=> mbReservationTile = value; }
-    public bool IsDroping           { get => mbDroping;         set => mbDroping = value; }
-    public bool IsHit               { get => mbHit;             set => mbHit = value; }
-    public bool IsSplashHit         { get => mbSplahHit;        set => mbSplahHit = value; }
+    public Vector2 Coordi { get => mCoordi; set => mCoordi = value; }
+    public Vector2 Gravity { get => mGravity; set => mGravity = value; }
+    public bool IsCreateTile { get => mbCreateTile; set => mbCreateTile = value; }
 
-    public BlockContainer BlockContainerOrNull
+    public bool IsPossibleFlowDrop
     {
-        get => mBlockContainer;
-        set
+        get
         {
-            mBlockContainer = value;
+            if (BlockContainerOrNull != null)
+            {
+                return false;
+            }
+            if (mSendTileList[0] == null)
+            {
+                return true;
+            }
+            if (!IsCanFlow_UpEmpty)
+            {
+                return false;
+            }
+            return mSendTileList[0].IsArrive;
         }
     }
 
-    public Tile SendTileOrNull {
-        get => mSendTile;
-        set => SetSendTile(value);
+    public virtual bool IsCanFlow_Up { get => false; }
+    public virtual bool IsCanFlow_Down { get => true; }
+
+    public virtual bool IsCanFlow_UpAtEmpty { get => false; }
+    public virtual void IsCanFlow_Empty(ref bool result)
+    {
+        result &= true;
     }
+
+    public virtual bool IsCanFlow_UpEmpty { get => true; }
+
+
+    public virtual bool IsChecked { get => true; set { } }
+    public virtual bool IsReady { get => true; }
+
+    public bool IsArrive { get => mbArrive; set => mbArrive = value; }
+    public bool IsHit { get => mbHit; set => mbHit = value; }
+    public bool IsSplashHit { get => mbSplahHit; set => mbSplahHit = value; }
+
+    public IReserveData ReserveData
+    {
+        get
+        {
+            IReserveData rData = BlockContainerOrNull;
+            if (rData == null) { rData = mReserveData; }
+
+            return rData;
+        }
+        set
+        {
+            BlockContainerOrNull = value as BlockContainer;
+            if (BlockContainerOrNull != null) { return; }
+
+            mReserveData = value;
+        }
+    }
+
     public List<Tile> SendTileList { get => mSendTileList; set => mSendTileList = value; }
     public List<Tile> RecieveTileList { get => mRecieveTileList; set => mRecieveTileList = value; }
-    public BlockMaker BlockMaker { get => mMakerData; set => mMakerData = value; }
 
     public void CreateSendTileListByMapSize(Vector2 mapSize)
     {
@@ -90,13 +141,13 @@ public class Tile : MonoBehaviour, System.IDisposable
     }
     public void SetRecieveTileListOfSendTileList()
     {
-        int loopCount = SendTileList.Count;
+        int loopCount = mSendTileList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (SendTileList[index] == null) { continue; }
+            if (mSendTileList[index] == null) { continue; }
 
-            if (index == 0) { SendTileList[index].RecieveTileList.Insert(0, this); }
-            else { SendTileList[index].RecieveTileList.Add(this); }
+            if (index == 0) { mSendTileList[index].RecieveTileList.Insert(0, this); }
+            else { mSendTileList[index].RecieveTileList.Add(this); }
 
         }
     }
@@ -119,7 +170,7 @@ public class Tile : MonoBehaviour, System.IDisposable
         }
 
         checkCoordi += (mGravity * -1);
-        if (RecieveTileList[1].mCoordi == checkCoordi)
+        if (RecieveTileList[1].Coordi == checkCoordi)
         {
             tempTile = RecieveTileList[1];
             RecieveTileList[1] = RecieveTileList[2];
@@ -130,91 +181,124 @@ public class Tile : MonoBehaviour, System.IDisposable
     public void CreateBlockByCreateTileData()
     {
         //블록 생성기
-        if(BlockMaker != null)
+        if (BlockMakerOrNull != null)
         {
-            if (!BlockMaker.IsEnd)
+            if (!BlockMakerOrNull.IsEnd)
             {
-                BlockData blockData = BlockMaker.CreateBlockList[BlockMaker.CurrentIndex];
+                BlockData blockData = BlockMakerOrNull.CreateBlockList[BlockMakerOrNull.CurrentIndex];
                 BlockManager.Instance.CreateBlockByBlockDataInTile(this, blockData.BlockType, blockData.BlockColor, blockData.BlockHP, TileMapManager.Instance.TileParentTransform);
-                BlockMaker.CurrentIndex += 1;
-                if (BlockMaker.IsEnd)
+                BlockMakerOrNull.CurrentIndex += 1;
+                if (BlockMakerOrNull.IsEnd)
                 {
-                    BlockMaker = null;
+                    BlockMakerOrNull = null;
                 }
                 return;
             }
         }
-        BlockManager.Instance.CreateBlockByBlockDataInTile(this, typeof(NormalBlock), Random.Range(0, 5),1, TileMapManager.Instance.TileParentTransform);       
+        BlockManager.Instance.CreateBlockByBlockDataInTile(this, typeof(NormalBlock), Random.Range(0, 5), 1, TileMapManager.Instance.TileParentTransform);
     }
     public void ResetTileState()
     {
-        SendTileOrNull = null;
-        IsReservationTile = false;
         IsHit = false;
     }
+
     public void CheckBlockContainer()
     {
-        if(BlockContainerOrNull == null) { return; }
-        if(BlockContainerOrNull.BlockCount == 0)
+        if (BlockContainerOrNull == null) { return; }
+        if (BlockContainerOrNull.BlockCount == 0)
         {
             BlockContainerOrNull = null;
         }
     }
 
-    public void TestChangeBlockColor(Color color)
-    {
-        if(BlockContainerOrNull == null) { return; }
-        BlockContainerOrNull.MainBlock.TestBlockColorChange(color);
-    }
     public void RemoveBlockContainer()
     {
-        if(BlockContainerOrNull == null) { return; }
+        if (BlockContainerOrNull == null) { return; }
         BlockContainerOrNull.RemoveAllBlock();
-        GameObjectPool.Destroy(BlockContainerOrNull.gameObject);
+        GameObjectPool.ReturnObject(BlockContainerOrNull.gameObject);
         BlockContainerOrNull = null;
-    }    
+    }
 
-    public virtual void CheckAvailableSendTile() { }
+    public virtual void AddFlowStateDict(bool checkResult) { }
     public virtual void HitTile(bool bExplosionHit) { }
     public virtual void Dispose()
     {
         BlockContainerOrNull = null;
 
-        mbCreateTile = false;
-        mbReservationTile = false;
-        mbDroping = false;
+        IsCreateTile = false;
         mbHit = false;
         mbSplahHit = false;
 
-        mSendTile = null;
         mSendTileList.Clear();
         mRecieveTileList.Clear();
     }
 
-    protected virtual void SetSendTile(Tile checkTileOrNull)
+    public void SaveStartBlockContainer()
     {
-        if (checkTileOrNull == null) { mSendTile = null; return; }
-        if (checkTileOrNull.IsReservationTile) { return; }
-        if (!IsCreateTile)
-        {
-            if (BlockContainerOrNull == null) { return; }
-            if (BlockContainerOrNull.IsMove == false) { return; }
-        }
+        mStartBlockContainer = BlockContainerOrNull;
+    }
 
-        if (SendTileOrNull == null)
-        {
-            mSendTile = checkTileOrNull;
-        }
-        else
-        {
-            int currentOrder = mSendTileList.IndexOf(mSendTile);
-            int checkOrder = mSendTileList.IndexOf(checkTileOrNull);
 
-            if (currentOrder > checkOrder)
+    public virtual void CheckDrop() { }
+    public virtual void RequestReserveData(Tile requestTile) { }
+    protected IEnumerator CreateBlockCoroutine()
+    {
+        if (mCreateReserveDataQueue.Count != 0)
+        {
+            IsMoveStart = true;
+        }
+        yield return GameConfig.yieldDropDuraion;
+        while (true)
+        {
+            if (mCreateReserveDataQueue.Count == 0) { break; }
+
+            // 데이터 획득
+            var data = mCreateReserveDataQueue.Dequeue();
+
+            // 실제 보내야할 Tile 획득
+            var targetTile = data.RouteTileQueue.Dequeue();
+            while (targetTile.BlockContainerOrNull != null)
             {
-                mSendTile = checkTileOrNull;
+                yield return null;
+            }
+
+            // 행동
+            CreateBlockByCreateTileData();          // 생성기 위치에 블록컨테이너 생성
+
+            BlockContainerOrNull.ClearQueue();
+            BlockContainerOrNull.Enqueue(targetTile);     // 체크를 위해 뺏으므로 복사전 추가
+            BlockContainerOrNull.CopyQueue(data);   // 예약 데이터를 실제 블록컨테이너에 복사
+
+            BlockContainerOrNull.StartMovePositionByRoute(); // 이동 시작
+            BlockContainerOrNull = null;            // 생성기 위치의 블록컨테이너는 해제
+            ObjectPool.ReturnInst(data);
+
+            yield return GameConfig.yieldDropDuraion;
+        }
+
+        // 생성이 끝나면 코루틴 해제
+        mCreateCoroutine = null;
+    }
+
+    public void AddDestTile()
+    {
+        if (ReserveData != null && ReserveData.RouteTileQueue.Count > 0)
+        {
+            IsMoveStart = true;
+            IsArrive = false;
+            ReserveData.RouteTileQueue.Dequeue(); // 시작지점 빼기
+            ReserveData.Enqueue(this);            // 도착지점 넣기
+            if (ReserveData is BlockContainer)
+            {
+                (ReserveData as BlockContainer).DestTile = this;
             }
         }
-        mSendTile.IsReservationTile = true;
+
+        BlockContainerOrNull = mStartBlockContainer;
+        mStartBlockContainer = null;
+        mReserveData = null;
     }
+
+    public virtual void StartDrop() { }
+
 }

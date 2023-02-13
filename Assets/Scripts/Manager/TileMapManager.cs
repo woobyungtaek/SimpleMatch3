@@ -111,10 +111,12 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
         ObserverCenter observerCenter = ObserverCenter.Instance;
         observerCenter.AddObserver(ExecuteTileReadyCheckByNoti, EGameState.TileReadyCheck.ToString());
-        observerCenter.AddObserver(ExecuteDropBlockByNoti, EGameState.Drop.ToString());
-        observerCenter.AddObserver(ExecuteMatchCheckByNoti, EGameState.MatchCheck.ToString());
-        observerCenter.AddObserver(ExcuteMatchByNoti, EGameState.Match.ToString());
-        observerCenter.AddObserver(ExcuteResultCheckByNoti, EGameState.ResultCheck.ToString());
+        observerCenter.AddObserver(ExecuteDropBlockByNoti,      EGameState.Drop.ToString());
+        observerCenter.AddObserver(ExecuteMatchCheckByNoti,     EGameState.MatchCheck.ToString());
+        observerCenter.AddObserver(ExcuteMatchByNoti,           EGameState.Match.ToString());
+        observerCenter.AddObserver(ExcuteResultCheckByNoti,     EGameState.ResultCheck.ToString());
+
+        observerCenter.AddObserver(ExcuteDropEndCheck, Message.DropEndCheck);
     }
     private void CreateExplosionMergeConditionInternal()
     {
@@ -172,39 +174,84 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     /*상태변화시 실행*/
     private void ExecuteTileReadyCheckByNoti(Notification noti)
     {
-        bool bAllReady = true;
+        int loopCount = mTileList.Count;
 
+        // 초기화
         PuzzleInputManager.SelectTileOrNull = null;
         PuzzleInputManager.TargetTileOrNull = null;
-
-        int loopCount = mTileList.Count;
         for (int index = 0; index < loopCount; index++)
         {
             mTileList[index].ResetTileState();
         }
+
+        // 조건 검사
         for (int index = 0; index < loopCount; index++)
         {
-            mTileList[index].CheckAvailableSendTile();
+            if (!mTileList[index].IsReady)
+            {
+                PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Drop);
+                return;
+            }
         }
+        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
+    }
+
+    private void ExecuteDropBlockByNoti(Notification noti)
+    {
+        Tile.IsNotReady = false;
+        int loopCount = mTileList.Count;
+
         for (int index = 0; index < loopCount; index++)
         {
-            if (mTileList[index].SendTileOrNull == null) { continue; }
-            bAllReady = false;
-            break;
+            mTileList[index].SaveStartBlockContainer();
+            mTileList[index].IsArrive = true;
         }
 
-        if (bAllReady == false)
+        for (int cnt = 0; cnt < loopCount; ++cnt) // 이만큼 루프할 일은 없다.
         {
-            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Drop);
+            Tile.IsNotReady = false;
+            for (int index = 0; index < loopCount; ++index)
+            {
+                mTileList[index].CheckDrop();
+            }
+
+            //bool bReady = true;
+            //for (int index = 0; index < loopCount; ++index)
+            //{
+            //    if (mTileList[index].IsReady) { continue; }
+            //    bReady = false;
+            //    break;
+            //}
+            if (!Tile.IsNotReady) { break; }
         }
-        else
+
+        for (int index = 0; index < loopCount; index++)
         {
+            mTileList[index].AddDestTile();
+        }
+
+        Tile.IsMoveStart = false;
+        for (int index = 0; index < loopCount; index++)
+        {
+            mTileList[index].StartDrop();
+        }
+
+        if(!Tile.IsMoveStart)
+        {
+            // 아무것도 출발한게 없다면
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
         }
     }
-    private void ExecuteDropBlockByNoti(Notification noti)
+
+    private void ExcuteDropEndCheck(Notification noti)
     {
-        StartCoroutine(DropBlockContainerCoroutine());
+        int loopCount = mTileList.Count;
+        for (int index = 0; index < loopCount; index++)
+        {
+            if (!mTileList[index].IsArrive) { return; }
+        }
+
+        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
     }
     private void ExecuteMatchCheckByNoti(Notification noti)
     {
@@ -219,7 +266,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         StartCoroutine(ResultCheckCoroutine());
     }
 
-    private void CheckLineMatchInternal(List<MatchInfo> matchInfoList, List<ReuseTileList> lineListList, EMatchType matchType , int matchID)
+    private void CheckLineMatchInternal(List<MatchInfo> matchInfoList, List<ReuseTileList> lineListList, EMatchType matchType, int matchID)
     {
         int blockNumber = -1;
         int loopCount;
@@ -360,36 +407,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             }
         }
         mSquareMatchInfoList.Clear();
-    }
-
-    private IEnumerator DropBlockContainerCoroutine()
-    {
-        int loopCount = mTileList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            if (mTileList[index].SendTileOrNull == null) { continue; }
-            if (mTileList[index].SendTileOrNull.IsDroping) { continue; }
-            mTileList[index].SendTileOrNull.IsDroping = true;
-
-            if (mTileList[index].BlockContainerOrNull == null)
-            {
-                if (mTileList[index].IsCreateTile)
-                {
-                    mTileList[index].CreateBlockByCreateTileData();
-                }
-            }
-            mTileList[index].BlockContainerOrNull.StartMovePositionByTile(mTileList[index].SendTileOrNull, GameConfig.DROP_DURATION);
-            mTileList[index].BlockContainerOrNull = null;
-        }
-        yield return GameConfig.yieldDropDuraion;
-
-        //대기 시간 보다 1프레임 더 기다린다.
-#if UNITY_EDITOR || UNITY_STANDRAD
-        yield return null;
-#endif
-
-        PuzzleManager.Instance.ChangeCurrentGameState(EGameState.DropEnd);
-        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.TileReadyCheck);
     }
     private IEnumerator MatchCheckCoroutine()
     {
@@ -558,7 +575,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                 }
             }
 
-            CheckLineMatchInternal(mMatchInfoList ,mAllHorizontalListList, EMatchType.HLine, -1);
+            CheckLineMatchInternal(mMatchInfoList, mAllHorizontalListList, EMatchType.HLine, -1);
             CheckLineMatchInternal(mMatchInfoList, mAllVerticalListList, EMatchType.VLine, -1);
             CheckSquareMatchInternal();
 
@@ -598,6 +615,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     }
     private IEnumerator MatchCoroutine()
     {
+        yield return null;
+
         int loopCount;
         int secLoopCount;
         bool bMerge;
@@ -650,8 +669,11 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                     hitTileList[matchTileIndex].HitTile(false);
                 }
             }
+
             yield return GameConfig.yieldMergeDuration;
-            yield return null;
+            //yield return null;
+            // 합성이 된다음 타일에 설정이 되기때문에 위의 대기 시간때 겹치는 가능성이 생겨버림..
+            // 일단 없애 
 
             loopCount = mMatchInfoList.Count;
             for (int index = 0; index < loopCount; index++)
@@ -753,11 +775,11 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                 if (instTile.BlockContainerOrNull == null) { continue; }
                 if (!instTile.BlockContainerOrNull.IsMove) { continue; }
 
-                if(mNormalTileList[index].BlockContainerOrNull.MainBlock is BombBlock && instTile.BlockContainerOrNull.MainBlock is BombBlock)
+                if (mNormalTileList[index].BlockContainerOrNull.MainBlock is BombBlock && instTile.BlockContainerOrNull.MainBlock is BombBlock)
                 {
                     //추가, 폭탄 합성의 경우(합성표에서 확인 까지 해야함)
                     continue;
-                } 
+                }
 
                 //블록 스왑 : 체크용 교체
                 BlockContainer temp = instTile.BlockContainerOrNull;
@@ -774,7 +796,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                 mNormalTileList[index].BlockContainerOrNull = temp;
             }
         }
-        
+
     }
     private void MatchCheckByTile(NormalTile checkTile, ref int matchID)
     {
@@ -791,7 +813,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         ReuseTileList remainList = ReuseTileList.Instantiate();
 
         int loopCount = chainList.tileList.Count;
-        for(int index =0; index < loopCount; index++)
+        for (int index = 0; index < loopCount; index++)
         {
             remainList.tileList.Add(chainList.tileList[index]);
         }
@@ -820,11 +842,11 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                 {
                     if (dir % 2 == 0)
                     {
-                        verticalList.tileList.Add(instTile); 
+                        verticalList.tileList.Add(instTile);
                     }
-                    else if (dir % 2 == 1) 
-                    { 
-                        horizontalList.tileList.Add(instTile); 
+                    else if (dir % 2 == 1)
+                    {
+                        horizontalList.tileList.Add(instTile);
                     }
 
                     remainList.tileList.Remove(instTile);
@@ -1074,7 +1096,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             for (int xIndex = 0; xIndex < xCount; xIndex++)
             {
                 mAllTileList[yIndex][xIndex].Dispose();
-                GameObjectPool.Destroy(mAllTileList[yIndex][xIndex].gameObject);
+                GameObjectPool.ReturnObject(mAllTileList[yIndex][xIndex].gameObject);
             }
             mAllTileList[yIndex].Clear();
         }
@@ -1237,7 +1259,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             normalTileOrNull = mTileList[index] as NormalTile;
             if (normalTileOrNull == null) { continue; }
 
-            normalTileOrNull.CreateUpDownLinkAndAroundSquareList();
+            normalTileOrNull.CreateAroundSquareList();
         }
 
         EdgeTile edgeTileOrNull;
@@ -1252,18 +1274,21 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
 
         int makerCount = mapData.blockMakerList.Count;
-        Vector2 makerCoordi;
-        for (int index = 0; index < loopCount; index++)
+        if(makerCount != 0)
         {
-            for (int makerIdx = 0; makerIdx < makerCount; makerIdx++)
+            Vector2 makerCoordi;
+            for (int index = 0; index < loopCount; index++)
             {
-                makerCoordi = mapData.blockMakerList[makerIdx].Coordi;
-                if (mTileList[index].Coordi != makerCoordi) { continue; }
-                mTileList[index].IsCreateTile = true;
-
-                if (mapData.blockMakerList[makerIdx].CreateBlockList.Count > 0)
+                for (int makerIdx = 0; makerIdx < makerCount; makerIdx++)
                 {
-                    mTileList[index].BlockMaker = mapData.blockMakerList[makerIdx];
+                    makerCoordi = mapData.blockMakerList[makerIdx].Coordi;
+                    if (mTileList[index].Coordi != makerCoordi) { continue; }
+                    mTileList[index].IsCreateTile = true;
+
+                    if (mapData.blockMakerList[makerIdx].CreateBlockList.Count > 0)
+                    {
+                        mTileList[index].BlockMakerOrNull = mapData.blockMakerList[makerIdx];
+                    }
                 }
             }
         }
