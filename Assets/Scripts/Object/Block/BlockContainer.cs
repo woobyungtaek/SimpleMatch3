@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockContainer : MonoBehaviour, IReserveData
 {
-    public bool IsMove { get => true; }
+    public bool IsFixed { get => mMainBlock.IsFixed; }
     public bool IsOnlyNormalBlock
     {
         get
@@ -62,6 +62,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
     private Coroutine mMoveRouteCoroutine;
     public void StartMovePositionByRoute(Tile startTile = null)
     {
+        if (IsFixed) { return; }
         if (mRouteTileQueue.Count == 0) { return; }
         if (mMoveRouteCoroutine != null) { return; }
         speed = mRouteTileQueue.Count;
@@ -149,6 +150,22 @@ public class BlockContainer : MonoBehaviour, IReserveData
             GameObjectPool.ReturnObject(gameObject);
         }
     }
+
+    // SplashHitBlockContainer > 이미 Hit거나 SpalshHit면 반려 한다.
+    public void SplashHitBlockContainer(Tile tile)
+    {
+        int loopCount = mBlockList.Count - 1;
+        for (int index = loopCount; index >= 0; index--)
+        {
+            mBlockList[index].SplashHitBlock(tile, this);
+        }
+        if (mBlockList.Count == 0)
+        {
+            tile.BlockContainerOrNull = null;
+            GameObjectPool.ReturnObject(gameObject);
+        }
+    }
+
     public void AddBlockToBlockList(Block block)
     {
         block.transform.SetParent(transform);

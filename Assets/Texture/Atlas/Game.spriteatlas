@@ -40,6 +40,7 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 0
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: dc43d8f018807654a965e095934f1587, type: 3}
@@ -54,6 +55,8 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 7cd12a7673fe36d46a4b5c681e4e3b67, type: 3}
     totalSpriteSurfaceArea: 92768
     bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: -6828489687320784505, guid: dc43d8f018807654a965e095934f1587, type: 3}
@@ -127,5 +130,6 @@ SpriteAtlas:
   - VerticalBombBlock_2
   - VerticalBombBlock_5
   - VerticalBombBlock_4
+  m_RenderDataMap: {}
   m_Tag: Game
   m_IsVariant: 0

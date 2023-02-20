@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.SceneManagement;
 
-public class TutorialEndPopup : PopupObject
+public class TutorialEndPopup : Popup
 {
     private const string TUTO_FOLDER_NAME = "Tutorial";
     private const string TUTO_MAP_FILE_FORMAT = "TutorialMap_{0}";
@@ -11,8 +11,10 @@ public class TutorialEndPopup : PopupObject
     private int mCurrentIndex;
     private int mNextIndex;
 
-    public override void InitPopup()
+    public override void Init()
     {
+        base.Init();
+
         //현재 튜토리얼 번호에 따라서 마지막 튜토리얼인 경우 Next버튼은 안보여야 한다.
         mCurrentIndex = TutorialManager.Instance.TutoIndex;
         mNextIndex = mCurrentIndex + 1;
@@ -22,7 +24,7 @@ public class TutorialEndPopup : PopupObject
         }
     }
 
-    public override void OnCancelButtonClicked()
+    public void OnCancelButtonClicked()
     {
         OnTitleSceneButtonClicked();
     }
@@ -40,7 +42,7 @@ public class TutorialEndPopup : PopupObject
         ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
 
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        base.OnOkButtonClicked();
+        ClosePopup(false);
     }
     public void OnRestartButtonClicked()
     {
@@ -50,7 +52,7 @@ public class TutorialEndPopup : PopupObject
         ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
 
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        base.OnOkButtonClicked();
+        ClosePopup(false);
     }
     public void OnTitleSceneButtonClicked()
     {

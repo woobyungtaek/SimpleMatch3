@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageFailPopup : PopupObject
+public class StageFailPopup : Popup
 {
-    public override void InitPopup()
-    {
-        base.InitPopup();
-    }
-    public override void OnCancelButtonClicked()
+    public void OnCancelButtonClicked()
     {
         OnOkButtonClicked();
     }
-    public override void OnOkButtonClicked()
+    public void OnOkButtonClicked()
     {
         StartCoroutine(DelayFadeInEffect());
         //PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
@@ -31,7 +27,7 @@ public class StageFailPopup : PopupObject
             yield return SceneLoader.Instance.FadeSecond;
         }
         yield return null;
-        base.OnOkButtonClicked();
+        ClosePopup(false);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
     }
 }

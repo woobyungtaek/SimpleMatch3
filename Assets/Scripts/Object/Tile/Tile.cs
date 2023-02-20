@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour, System.IDisposable
 {
-    protected static Dictionary<Vector2, bool> mFlowStateDict = new Dictionary<Vector2, bool>();
+    protected static Dictionary<Vector2, bool> mFlowStateDict = new Dictionary<Vector2, bool>(new Vector2Comparer());
 
     public static bool IsNotReady;
     public static bool IsMoveStart;
@@ -15,7 +15,7 @@ public class Tile : MonoBehaviour, System.IDisposable
     [SerializeField] private bool mbCreateTile;
     [SerializeField] private bool mbReservationTile;
     [SerializeField] private bool mbHit;
-    [SerializeField] private bool mbSplahHit;
+    [SerializeField] private bool mbHit_Spalsh;
     [SerializeField] private bool mbArrive;
 
     [Header("Protected")]
@@ -76,7 +76,7 @@ public class Tile : MonoBehaviour, System.IDisposable
 
     public bool IsArrive { get => mbArrive; set => mbArrive = value; }
     public bool IsHit { get => mbHit; set => mbHit = value; }
-    public bool IsSplashHit { get => mbSplahHit; set => mbSplahHit = value; }
+    public bool IsSplashHit { get => mbHit_Spalsh; set => mbHit_Spalsh = value; }
 
     public IReserveData ReserveData
     {
@@ -200,6 +200,7 @@ public class Tile : MonoBehaviour, System.IDisposable
     public void ResetTileState()
     {
         IsHit = false;
+        IsSplashHit = false;
     }
 
     public void CheckBlockContainer()
@@ -221,13 +222,14 @@ public class Tile : MonoBehaviour, System.IDisposable
 
     public virtual void AddFlowStateDict(bool checkResult) { }
     public virtual void HitTile(bool bExplosionHit) { }
+    public virtual void HitTile_Splash() { }
     public virtual void Dispose()
     {
         BlockContainerOrNull = null;
 
         IsCreateTile = false;
         mbHit = false;
-        mbSplahHit = false;
+        mbHit_Spalsh = false;
 
         mSendTileList.Clear();
         mRecieveTileList.Clear();

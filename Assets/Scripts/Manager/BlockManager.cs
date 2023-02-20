@@ -12,6 +12,12 @@ public class BlockManager : SceneSingleton<BlockManager>
     [SerializeField] private GameObject blockContainerPrefab;
     [SerializeField] private NormalBlock normalBlockPrefab;
 
+    [Header("Gimmick")]
+    [SerializeField] private RockBlock rockBlockPrefab;
+    [SerializeField] private BoxBlock boxBlockPrefab;
+    [SerializeField] private BarrelBlock barrelBlockPrefab;
+    [SerializeField] private VineBlock vineBlockPrefab;
+
     [Header("Explosion")]
     [SerializeField] private VerticalBombBlock verticalBombBlockPrefab;
     [SerializeField] private HorizontalBombBlock horizontalBombBlockPrefab;

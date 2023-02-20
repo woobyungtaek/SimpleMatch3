@@ -20,7 +20,10 @@ public class NormalTile : Tile
             if (upTile == null) { return true; }
 
             if (upTile.IsCreateTile) { return false; }
-            if (upTile.ReserveData != null) { return false; }
+            if (upTile.ReserveData != null)
+            {
+                return upTile.ReserveData.IsFixed; // false
+            }
 
             // 위 타일로는 판단이 불가능하므로 그 위를 체크한다.
             return upTile.IsCanFlow_Up;
@@ -39,6 +42,10 @@ public class NormalTile : Tile
             Tile underTile = mSendTileList[0];
             if (underTile == null) { return true; }
             if (underTile.ReserveData == null) { return false; }
+            if (underTile.ReserveData.IsFixed)
+            {
+                return true;
+            }
 
             // 아래 타일로는 판단이 불가능하므로 그 아래를 체크한다.
             return underTile.IsCanFlow_Down;
@@ -59,6 +66,13 @@ public class NormalTile : Tile
             Tile upTile = mRecieveTileList[0];
             if (upTile == null) { return true; }
             if (upTile.IsCreateTile) { return false; }
+            if (upTile.ReserveData != null)
+            {
+                if (upTile.ReserveData.IsFixed)
+                {
+                    return true;
+                }
+            }
 
             // 위 타일로는 판단이 불가능하므로 그 위를 체크한다.
             return upTile.IsCanFlow_UpAtEmpty;
@@ -82,19 +96,19 @@ public class NormalTile : Tile
             AddFlowStateDict(bUseResult);
         }
 
-        if (!bUseResult) 
+        if (!bUseResult)
         {
             //Debug.Log($"{Coordi} : 흐르기 가능 타일이 아님");
-            return; 
+            return;
         }
 
         result &= bUseResult;
         // 있어야할 곳에 블럭이 없으므로 false
-        if (ReserveData == null) 
+        if (ReserveData == null)
         {
-            result = false; 
+            result = false;
             //Debug.Log($"{Coordi} : 데이터가 없음");
-            return; 
+            return;
         }
 
         foreach (var sendTile in mSendTileList)
@@ -110,8 +124,11 @@ public class NormalTile : Tile
     {
         get
         {
-            if(mRecieveTileList[0] == null) { return true; }
-            if(mRecieveTileList[0].BlockContainerOrNull != null) { return false; }
+            if (mRecieveTileList[0] == null) { return true; }
+            if (mRecieveTileList[0].BlockContainerOrNull != null)
+            {
+                return mRecieveTileList[0].BlockContainerOrNull.IsFixed;
+            }
             return mRecieveTileList[0].IsCanFlow_UpEmpty;
         }
     }
@@ -139,6 +156,7 @@ public class NormalTile : Tile
         loopCount = mAroundTileList.Count;
         for (int index = 0; index < loopCount; index++)
         {
+            // 같은 번호 체인 체크
             if (mAroundTileList[index] == null) { continue; }
             if (!(mAroundTileList[index] is NormalTile)) { continue; }
             if (mAroundTileList[index].BlockContainerOrNull == null) { continue; }
@@ -154,7 +172,7 @@ public class NormalTile : Tile
         if (BlockContainerOrNull.BlockContainerNumber != mAroundTileList[dir].BlockContainerOrNull.BlockContainerNumber) { return null; }
         return mAroundTileList[dir];
     }
-    public Tile GetAroundTileByDir(int dir)
+    public Tile GetAroundNormalTileByDir(int dir)
     {
         if (mAroundTileList[dir] is NormalTile)
         {
@@ -177,9 +195,24 @@ public class NormalTile : Tile
     {
         if (IsHit == true) { return; }
         if (BlockContainerOrNull == null) { return; }
-
         IsHit = true;
+
+        if(!bExplosionHit)
+        {
+            foreach(var tile in mAroundTileList)
+            {
+                tile.HitTile_Splash();
+            }
+        }
         BlockContainerOrNull.HitBlockContainer(this, bExplosionHit);
+    }
+    public override void HitTile_Splash()
+    {
+        if (IsHit == true)       { return; }
+        if (IsSplashHit == true) { return; }
+        IsSplashHit = true;
+        if (BlockContainerOrNull == null) { return; }
+        BlockContainerOrNull.SplashHitBlockContainer(this);
     }
     public override void Dispose()
     {
@@ -190,15 +223,26 @@ public class NormalTile : Tile
     public override void CheckDrop()
     {
         //데이터가 있다면 행동하지 않는다.
-        if (ReserveData != null) { return; }
+        if (ReserveData != null)
+        {
+            return;
+        }
         if (RecieveTileList[0] == null) { return; }
 
         // 바로 위 타일로부터 받아올 수 있는지 확인한다.
         // 생성자 타일이거나 또는 데이터가 있거나
-        if (RecieveTileList[0].IsCreateTile || RecieveTileList[0].ReserveData != null)
+        if (RecieveTileList[0].IsCreateTile)
         {
             RecieveTileList[0].RequestReserveData(this); // 가져오기 실행
             return;
+        }
+        if (RecieveTileList[0].ReserveData != null)
+        {
+            if (!RecieveTileList[0].ReserveData.IsFixed)
+            {
+                RecieveTileList[0].RequestReserveData(this); // 가져오기 실행
+                return;
+            }
         }
 
         // 위로 확인해서 떨어질 블록이 있는지 확인한다.
@@ -229,6 +273,7 @@ public class NormalTile : Tile
             var tile = RecieveTileList[idx];
             if (tile == null) { continue; }
             if (tile.ReserveData == null) { continue; }
+            if (tile.ReserveData.IsFixed) { continue; }
             if (!tile.IsCanFlow_Down) { continue; }
             flowTargetTile = tile;
         }
@@ -255,7 +300,7 @@ public class NormalTile : Tile
     public override void StartDrop()
     {
         if (BlockContainerOrNull == null) { return; }
-        if (BlockContainerOrNull.RouteTileQueue.Count == 0){ return; }
+        if (BlockContainerOrNull.RouteTileQueue.Count == 0) { return; }
 
         BlockContainerOrNull.StartMovePositionByRoute(this);
     }

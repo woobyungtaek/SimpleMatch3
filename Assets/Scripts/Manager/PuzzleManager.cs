@@ -168,9 +168,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
             yield return null;
 
             MissionManager.Instance.ResetGameInfoByGameOver();
-            AllClearPopup instAllClearPopup =
-                 GameObjectPool.Instantiate<AllClearPopup>(PopupManager.Instance.AllClearPopup, PopupManager.Instance.PopupTransform);
-            instAllClearPopup.InitPopup();
+            PopupManager.Instance.CreatePopupByName("AllClearPopup");
            yield break;
         }
         MissionManager.Instance.SetNextStageInfo();
@@ -182,18 +180,14 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         if (bLastStage == false)
         {
             MissionManager.Instance.CreateCurrentStageInfo();
-            StageSuccessPopup instStagePopup =
-                GameObjectPool.Instantiate<StageSuccessPopup>(PopupManager.Instance.StageSuccessPopup, PopupManager.Instance.PopupTransform);
-            instStagePopup.InitPopup();
+            PopupManager.Instance.CreatePopupByName("StageSuccessPopup");
         }
         #endregion
 
         #region DayClear
         else
         {
-            DayClearPopup instDayPopup =
-                 GameObjectPool.Instantiate<DayClearPopup>(PopupManager.Instance.DayClearPopup, PopupManager.Instance.PopupTransform);
-            instDayPopup.InitPopup();
+            PopupManager.Instance.CreatePopupByName("DayClearPopup");
         }
         #endregion
     }
@@ -212,9 +206,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         yield return GameConfig.yieldGameEndDuration;
         yield return null;
 
-        StageFailPopup instPopup =
-            GameObjectPool.Instantiate<StageFailPopup>(PopupManager.Instance.StageFailPopup , PopupManager.Instance.PopupTransform);
-        instPopup.InitPopup();
+        PopupManager.Instance.CreatePopupByName("StageFailPopup");
     }
 
     public bool ChangeCurrentGameState(EGameState nextState)

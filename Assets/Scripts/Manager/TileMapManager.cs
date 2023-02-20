@@ -18,6 +18,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
     }
 
+    public bool IsMatched { get; set; }
     public bool IsNextStep { get; set; }
     public int MoveCount
     {
@@ -111,10 +112,10 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
         ObserverCenter observerCenter = ObserverCenter.Instance;
         observerCenter.AddObserver(ExecuteTileReadyCheckByNoti, EGameState.TileReadyCheck.ToString());
-        observerCenter.AddObserver(ExecuteDropBlockByNoti,      EGameState.Drop.ToString());
-        observerCenter.AddObserver(ExecuteMatchCheckByNoti,     EGameState.MatchCheck.ToString());
-        observerCenter.AddObserver(ExcuteMatchByNoti,           EGameState.Match.ToString());
-        observerCenter.AddObserver(ExcuteResultCheckByNoti,     EGameState.ResultCheck.ToString());
+        observerCenter.AddObserver(ExecuteDropBlockByNoti, EGameState.Drop.ToString());
+        observerCenter.AddObserver(ExecuteMatchCheckByNoti, EGameState.MatchCheck.ToString());
+        observerCenter.AddObserver(ExcuteMatchByNoti, EGameState.Match.ToString());
+        observerCenter.AddObserver(ExcuteResultCheckByNoti, EGameState.ResultCheck.ToString());
 
         observerCenter.AddObserver(ExcuteDropEndCheck, Message.DropEndCheck);
     }
@@ -236,7 +237,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             mTileList[index].StartDrop();
         }
 
-        if(!Tile.IsMoveStart)
+        if (!Tile.IsMoveStart)
         {
             // 아무것도 출발한게 없다면
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
@@ -255,7 +256,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     }
     private void ExecuteMatchCheckByNoti(Notification noti)
     {
-        StartCoroutine(MatchCheckCoroutine());
+        MatchCheck();
+        //StartCoroutine(MatchCheckCoroutine());
     }
     private void ExcuteMatchByNoti(Notification noti)
     {
@@ -408,7 +410,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
         mSquareMatchInfoList.Clear();
     }
-    private IEnumerator MatchCheckCoroutine()
+    private void MatchCheck()
     {
         mbBombMerge = false;
 
@@ -603,19 +605,68 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         if (!mbBombMerge && mMatchInfoList.Count == 0)
         {
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.ResultCheck);
-            yield break;
+            return;
         }
 
         if (PuzzleInputManager.SelectTileOrNull != null && PuzzleInputManager.TargetTileOrNull != null)
         {
             MoveCount -= 1;
         }
-
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
+
+    private void GimmickCheck()
+    {
+        #region VineBlock 기믹 실행
+        if (VineBlock.VineBlockCount > 0)
+        {
+            if (VineBlock.IsVineHited == false)
+            {
+                List<Tile> targetTileList = new List<Tile>();
+
+                // Vine블록 찾아서
+                // 랜덤 블록 하나 찾아서
+                // 새 VineBlock을 생성
+                foreach (var tile in mNormalTileList)
+                {
+                    if (tile.BlockContainerOrNull == null) { continue; }
+                    if (!(tile.BlockContainerOrNull.MainBlock is VineBlock)) { continue; }
+
+                    // 블럭 컨테이너의 블럭이 덩굴인 경우
+                    // 인접 타일을 대상 타일에 넣어야한다.
+                    for (int idx = 0; idx < 4; ++idx)
+                    {
+                        var vTile = tile.GetAroundNormalTileByDir(idx);
+                        if (vTile == null) { continue; }
+
+                        // 인접 타일이 Normal이고 BC가 있으며 Main이 Vine이 아니어야한다.
+                        if (vTile.BlockContainerOrNull == null) { continue; }
+                        if (vTile.BlockContainerOrNull.MainBlock is VineBlock) { continue; }
+                        if (targetTileList.Contains(vTile)) { continue; }
+
+                        targetTileList.Add(vTile);
+                    }
+                }
+
+                if (targetTileList.Count > 0)
+                {
+                    int randIdx = Random.Range(0, targetTileList.Count);
+                    targetTileList[randIdx].RemoveBlockContainer();
+                    BlockManager.Instance.CreateBlockByBlockDataInTile(targetTileList[randIdx], typeof(VineBlock), -1, 1);
+                }
+            }
+        }
+        VineBlock.IsVineHited = false;
+        #endregion
+
+        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.ReturnSwap);
+    }
+
     private IEnumerator MatchCoroutine()
     {
         yield return null;
+
+        IsMatched = true;
 
         int loopCount;
         int secLoopCount;
@@ -742,7 +793,17 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             yield break;
         }
 
-        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.ReturnSwap);
+        if(IsMatched)
+        {
+            // 드랍이 모두 끝나고 매치가 더 없는 시점
+            // 각종 기믹이 실행 되고 리턴스왑 호출
+            GimmickCheck();            
+        }
+        else
+        {
+            // 매치가 안일어났기 때문에 리턴 스왑
+            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.ReturnSwap);
+        }
     }
 
     public void MatchPossibleCheck()
@@ -763,17 +824,17 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         for (int index = 0; index < loopCount; index++)
         {
             if (mNormalTileList[index].BlockContainerOrNull == null) { continue; }
-            if (!mNormalTileList[index].BlockContainerOrNull.IsMove) { continue; }
+            if (mNormalTileList[index].BlockContainerOrNull.IsFixed) { continue; }
             if (checkTileList.tileList.Contains(mNormalTileList[index])) { continue; }
             checkTileList.tileList.Add(mNormalTileList[index]);
 
             int aroundCount = 4;
             for (int dir = 0; dir < aroundCount; dir++)
             {
-                instTile = mNormalTileList[index].GetAroundTileByDir(dir) as NormalTile;
+                instTile = mNormalTileList[index].GetAroundNormalTileByDir(dir) as NormalTile;
                 if (instTile == null) { continue; }
                 if (instTile.BlockContainerOrNull == null) { continue; }
-                if (!instTile.BlockContainerOrNull.IsMove) { continue; }
+                if (instTile.BlockContainerOrNull.IsFixed) { continue; }
 
                 if (mNormalTileList[index].BlockContainerOrNull.MainBlock is BombBlock && instTile.BlockContainerOrNull.MainBlock is BombBlock)
                 {
@@ -1111,8 +1172,13 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         float minY = mBoardTransform.anchorMin.y;
         float maxX = mBoardTransform.anchorMax.x;
         float maxY = mBoardTransform.anchorMax.y;
-        float width = 720f; //Screen.width;
-        float height = (Screen.height * (720f / Screen.width)); //Screen.height;
+        //float width = 720f; //Screen.width;
+        //float height = (Screen.height * (720f / Screen.width)); //Screen.height;
+        float width = Screen.width;
+        float height = Screen.height;
+        // 다시 계산하도록하자...
+        // 특정 값 이상이면 고정하고
+        // 아니면 사이즈에 맞게 고쳐야함
 
         float sizeX = (maxX - minX) * width / mapSize.x;
         float sizeY = (maxY - minY) * height / mapSize.y;
@@ -1274,7 +1340,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
 
         int makerCount = mapData.blockMakerList.Count;
-        if(makerCount != 0)
+        if (makerCount != 0)
         {
             Vector2 makerCoordi;
             for (int index = 0; index < loopCount; index++)
@@ -1496,7 +1562,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         for (int index = 0; index < loopCount; index++)
         {
             if (mNormalTileList[index].BlockContainerOrNull == null) { continue; }
-            if (!mNormalTileList[index].BlockContainerOrNull.IsMove) { continue; }
+            if (mNormalTileList[index].BlockContainerOrNull.IsFixed) { continue; }
             targetTileList.Add(mNormalTileList[index]);
         }
 
@@ -1530,7 +1596,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         for (int index = 0; index < loopCount; index++)
         {
             if (mNormalTileList[index].BlockContainerOrNull == null) { continue; }
-            if (!mNormalTileList[index].BlockContainerOrNull.IsMove) { continue; }
+            if (mNormalTileList[index].BlockContainerOrNull.IsFixed) { continue; }
 
             mNormalTileList[index].BlockContainerOrNull.StartMovePositionByTile(mNormalTileList[index], GameConfig.DROP_DURATION);
         }

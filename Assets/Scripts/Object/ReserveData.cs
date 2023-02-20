@@ -37,6 +37,8 @@ public static class ExtensionReserData
 
 public interface IReserveData
 {
+    bool IsFixed { get; }
+
     Queue<Tile> RouteTileQueue { get; }
 }
 
@@ -45,6 +47,8 @@ public class ReserveData : IReserveData, IReUseObject
     private Queue<Tile> mRouteTileQueue = new Queue<Tile>();
 
     public Queue<Tile> RouteTileQueue { get => mRouteTileQueue; }
+
+    public bool IsFixed { get => false; }
 
     public void ResetObject() { }
 }

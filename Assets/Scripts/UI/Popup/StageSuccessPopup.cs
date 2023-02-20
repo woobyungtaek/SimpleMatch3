@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageSuccessPopup : PopupObject
+public class StageSuccessPopup : Popup
 {
     [Header("Mission")]
     [SerializeField]    private GameObject  mMissionCellUIPrefab;
@@ -98,8 +98,10 @@ public class StageSuccessPopup : PopupObject
         }
     }
 
-    public override void InitPopup()
+    public override void Init()
     {
+        base.Init();
+
         mSelectedReward = null;
         mSelectRewardInfoText.SetActive(false);
 
@@ -107,7 +109,7 @@ public class StageSuccessPopup : PopupObject
         CreateRewardMissionCellUI(MissionManager.Instance.BasicRewardDataList);
         CreateSelectRewardMissionCellUI(MissionManager.Instance.SelectRewardDataList);
     }
-    public override void OnCancelButtonClicked()
+    public void OnCancelButtonClicked()
     {
         if (mSelectRewardCellList.Count > 0)
         {
@@ -132,9 +134,9 @@ public class StageSuccessPopup : PopupObject
         ClearSelectRewardCellList();
 
         MissionManager.Instance.StartStage();
-        base.OnCancelButtonClicked();
+        ClosePopup(false);
     }
-    public override void OnOkButtonClicked()
+    public void OnOkButtonClicked()
     {
         OnCancelButtonClicked();
     }

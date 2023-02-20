@@ -133,7 +133,7 @@ public class PuzzleInputManager : MonoBehaviour
         GetMousePositionNormalTile(out mInputTile);
         if (mInputTile == null) { return; }
         if (mInputTile.BlockContainerOrNull == null) { return; }
-        if (!mInputTile.BlockContainerOrNull.IsMove) { return; }
+        if (mInputTile.BlockContainerOrNull.IsFixed) { return; }
 #if UNITY_EDITOR
         #region Test용 블록 체인지
         if (Input.GetKey(KeyCode.BackQuote) == true)
@@ -168,6 +168,34 @@ public class PuzzleInputManager : MonoBehaviour
         {
             mInputTile.RemoveBlockContainer();
             BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(NormalBlock), 4, 1);
+            mInputTile = null;
+            return;
+        }
+        if (Input.GetKey(KeyCode.Alpha9) == true)
+        {
+            mInputTile.RemoveBlockContainer();
+            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(RockBlock), -1, 3);
+            mInputTile = null;
+            return;
+        }
+        if (Input.GetKey(KeyCode.Alpha8) == true)
+        {
+            mInputTile.RemoveBlockContainer();
+            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(BoxBlock), -1, 1);
+            mInputTile = null;
+            return;
+        }
+        if (Input.GetKey(KeyCode.Alpha7) == true)
+        {
+            mInputTile.RemoveBlockContainer();
+            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(BarrelBlock), -1, 1);
+            mInputTile = null;
+            return;
+        }
+        if (Input.GetKey(KeyCode.Alpha6) == true)
+        {
+            mInputTile.RemoveBlockContainer();
+            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(VineBlock), -1, 1);
             mInputTile = null;
             return;
         }
@@ -224,10 +252,10 @@ public class PuzzleInputManager : MonoBehaviour
                 }
             }
 
-            TargetTileOrNull = SelectTileOrNull.GetAroundTileByDir(mDragSwapDir) as NormalTile;
+            TargetTileOrNull = SelectTileOrNull.GetAroundNormalTileByDir(mDragSwapDir) as NormalTile;
             if (TargetTileOrNull == null) { return; }
             if (TargetTileOrNull.BlockContainerOrNull == null) { return; }
-            if (!TargetTileOrNull.BlockContainerOrNull.IsMove) { return; }
+            if (TargetTileOrNull.BlockContainerOrNull.IsFixed) { return; }
 
             mbOnDrag = false;
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchSwap);
@@ -241,7 +269,7 @@ public class PuzzleInputManager : MonoBehaviour
         GetMousePositionNormalTile(out mInputTile);
         if (mInputTile == null) { return; }
         if (mInputTile.BlockContainerOrNull == null) { return; }
-        if (!mInputTile.BlockContainerOrNull.IsMove) { return; }
+        if (mInputTile.BlockContainerOrNull.IsFixed) { return; }
 #if UNITY_EDITOR
         #region Test용 블록 체인지
         if (Input.GetKey(KeyCode.BackQuote) == true)
@@ -364,10 +392,10 @@ public class PuzzleInputManager : MonoBehaviour
                 }
             }
 
-            TargetTileOrNull = SelectTileOrNull.GetAroundTileByDir(mDragSwapDir) as NormalTile;
+            TargetTileOrNull = SelectTileOrNull.GetAroundNormalTileByDir(mDragSwapDir) as NormalTile;
             if (TargetTileOrNull == null) { return; }
             if (TargetTileOrNull.BlockContainerOrNull == null) { return; }
-            if (!TargetTileOrNull.BlockContainerOrNull.IsMove) { return; }
+            if (TargetTileOrNull.BlockContainerOrNull.IsFixed) { return; }
 
             if (TutorialManager.Instance.IsSwapMode)
             {
@@ -468,8 +496,8 @@ public class PuzzleInputManager : MonoBehaviour
             //Input 변경 전에 MatchPossible 상태 체크해야함
             //>> 매치가 불가능 한 경우 > 섞는다.
             //>> 매치가 가능 한 경우 > Input
+            TileMapManager.Instance.IsMatched = false;
             TileMapManager.Instance.MatchPossibleCheck();
-
 
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Input);
             return;

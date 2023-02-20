@@ -47,9 +47,7 @@ public class TutorialManager : SceneSingleton<TutorialManager>
     }
     private void ExcuteTutorialEndByNoti(Notification noti)
     {
-        TutorialEndPopup instTutoEndPopup =
-            GameObjectPool.Instantiate<TutorialEndPopup>(PopupManager.Instance.TutoEndPopup, PopupManager.Instance.PopupTransform);
-        instTutoEndPopup.InitPopup();
+        PopupManager.Instance.CreatePopupByName("TutorialEndPopup");
     }
 
     private IEnumerator DelayStartTuto()

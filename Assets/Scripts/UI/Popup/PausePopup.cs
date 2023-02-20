@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PausePopup : PopupObject
+public class PausePopup : Popup
 {
-    public override void InitPopup()
+    public override void Init()
     {
+        base.Init();
         ObserverCenter.Instance.SendNotification(Message.PauseGame);
         Time.timeScale = 0;
-        base.InitPopup();
     }
-    public override void OnCancelButtonClicked()
+    public void OnCancelButtonClicked()
     {
         ObserverCenter.Instance.SendNotification(Message.ResumeGame);
         Time.timeScale = 1;
-        base.OnCancelButtonClicked();
+        ClosePopup(false);
     }
 
     public void OnDayRestartButtonClicked()
@@ -29,7 +29,7 @@ public class PausePopup : PopupObject
     }
     public void OnTitleButtonClicked()
     {
-        base.OnOkButtonClicked();
+        ClosePopup(false);
 
         if (!SceneLoader.IsExist)
         {
@@ -50,7 +50,7 @@ public class PausePopup : PopupObject
             yield return SceneLoader.Instance.FadeSecond;
         }
         yield return null;
-        base.OnOkButtonClicked();
+        ClosePopup(false);
         PuzzleManager.Instance.ChangeCurrenGameStateForce(EGameState.Pause);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
     }

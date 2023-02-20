@@ -115,9 +115,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void OnPauseButtonClicked()
     {
-        PausePopup instPausePopup =
-            GameObjectPool.Instantiate<PausePopup>(PopupManager.Instance.PausePopup, PopupManager.Instance.PopupTransform);
-        instPausePopup.InitPopup();
+        PopupManager.Instance.CreatePopupByName("PausePopup");
     }
 }
 public class MapDataInfoNotiArg : NotificationArgs

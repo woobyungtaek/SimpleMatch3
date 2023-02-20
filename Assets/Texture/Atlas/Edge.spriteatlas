@@ -40,11 +40,14 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 0
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: 4f98215a9c710db468e3651449539251, type: 3}
     totalSpriteSurfaceArea: 480000
     bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300010, guid: 4f98215a9c710db468e3651449539251, type: 3}
@@ -144,5 +147,6 @@ SpriteAtlas:
   - Edge_1101_xxxx
   - Edge_1010_xxxx
   - Edge_1000_x00x
+  m_RenderDataMap: {}
   m_Tag: Edge
   m_IsVariant: 0

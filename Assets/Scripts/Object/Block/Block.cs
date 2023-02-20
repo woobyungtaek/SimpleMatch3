@@ -15,15 +15,18 @@ public class Block : MonoBehaviour, System.IDisposable
             return mHomingOrder + mExtraOrder;
         }
     }
+
+    public virtual bool IsFixed { get => mbFixed; }
     public Sprite BlockSprite { get => mBlockSprite.sprite; }
     public virtual string SpriteString { get => null; }
 
-    [SerializeField] private int mBlockNumber;
-    [SerializeField] private int mBlockHP;
-    [SerializeField] private int mOrder;
-    [SerializeField] private int mHomingOrder;
-    [SerializeField] private int mExtraOrder;
-    [SerializeField] private SpriteRenderer mBlockSprite;
+    [SerializeField] protected int mBlockNumber;
+    [SerializeField] protected int mBlockHP;
+    [SerializeField] protected int mOrder;
+    [SerializeField] protected int mHomingOrder;
+    [SerializeField] protected int mExtraOrder;
+    [SerializeField] protected bool mbFixed;
+    [SerializeField] protected SpriteRenderer mBlockSprite;
 
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class Block : MonoBehaviour, System.IDisposable
         mBlockSprite.sprite = SpriteManager.Instance.GetBlockSpriteByBlockName(GetSpriteNameByBlockNumber());
     }
     public virtual void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion) { }
+    public virtual void SplashHitBlock(Tile tile, BlockContainer blockContainer) { }
     public void CheckMissionBlock()
     {
         MissionManager.Instance.CheckMissionTargetByInfo(transform.position, GetType(), BlockNumber, BlockSprite);

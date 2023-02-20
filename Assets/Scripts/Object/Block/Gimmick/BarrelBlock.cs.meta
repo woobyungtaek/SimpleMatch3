@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: 44bc4424f586ceb45aa2f14059cfb31d
+guid: ccda58cf315fb1746a44366d9ee31ca0
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - mPopupTransform: {instanceID: 0}
-  - mBattleWinPopupPrefab: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

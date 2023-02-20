@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AllClearPopup : PopupObject
+public class AllClearPopup : Popup
 {
-    public override void InitPopup()
-    {
-        base.InitPopup();
-    }
-    public override void OnCancelButtonClicked()
+    public void OnCancelButtonClicked()
     {
         OnOkButtonClicked();
     }
-    public override void OnOkButtonClicked()
+    public void OnOkButtonClicked()
     {
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        base.OnOkButtonClicked();
+        ClosePopup(false);
     }
     public void OnQuitGameButtonClicked()
     {
