@@ -1,49 +1,38 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EInputMode
-{
-    PuzzleLock,
-    Input,
-    Hammer,
-    CountZero,
-}
 public class PuzzleInputManager : MonoBehaviour
 {
-    public static NormalTile SelectTileOrNull 
+    public static NormalTile SelectTileOrNull
     {
         get => mSelectTile;
         set
         {
             mSelectTile = value;
-            
-            if(mSelectTile ==null)
+
+            if (mSelectTile == null)
             {
                 mSelectBlockEffect.SetActive(false);
                 return;
             }
-            if(mSelectBlockEffect == null) { return; }
+            if (mSelectBlockEffect == null) { return; }
             mSelectBlockEffect.transform.position = mSelectTile.gameObject.transform.position;
             mSelectBlockEffect.SetActive(true);
         }
     }
-    public static NormalTile TargetTileOrNull 
+    public static NormalTile TargetTileOrNull
     {
         get => mTargetTile;
-        set 
+        set
         {
             mTargetTile = value;
             if (mSelectBlockEffect == null) { return; }
             mSelectBlockEffect.SetActive(false);
-        } 
+        }
     }
 
-    [SerializeField] private EInputMode mCurrentInputMode;
     [SerializeField] private bool mbOnDrag = false;
-
-    [SerializeField] private EInputMode mPreviousInputMode;
 
     private const float SWAP_SEC = 0.25f;
     private Vector3 mRayPos;
@@ -67,26 +56,34 @@ public class PuzzleInputManager : MonoBehaviour
     PlayerInput TouchInput;
     PlayerInput DragInput;
 
+    private System.Action mCurrentInputFunc = null;
+    private System.Action mPreviouseInputFunc = null;
+
+    private PlayerSkill mCurrentSelectSkill;
+
+
     private void Start()
     {
         mMainCamera = Camera.main;
 
         ObserverCenter observerCenter = ObserverCenter.Instance;
-        observerCenter.AddObserver(ExcuteInputStateOnByNoti,    EGameState.Input.ToString());
-        observerCenter.AddObserver(ExcuteHammerStateOnByNoti,   EGameState.Hammer.ToString());
-        observerCenter.AddObserver(ExcuteMatchSwapByNoti,       EGameState.MatchSwap.ToString());
-        observerCenter.AddObserver(ExcuteReturnSwapByNoti,      EGameState.ReturnSwap.ToString());
+        observerCenter.AddObserver(ExcuteInputStateOnByNoti, EGameState.Input.ToString());
+        observerCenter.AddObserver(ExcuteMatchSwapByNoti, EGameState.MatchSwap.ToString());
+        observerCenter.AddObserver(ExcuteReturnSwapByNoti, EGameState.ReturnSwap.ToString());
         observerCenter.AddObserver(ExcuteChangeMoveCountByNoti, Message.RefreshMoveCount);
-        observerCenter.AddObserver(ExcutePauseByNoti,           Message.PauseGame);
-        observerCenter.AddObserver(ExcuteResumeByNoti,          Message.ResumeGame);
+        observerCenter.AddObserver(ExcutePauseByNoti, Message.PauseGame);
+        observerCenter.AddObserver(ExcuteResumeByNoti, Message.ResumeGame);
 
         observerCenter.AddObserver(ExcuteNormalModeByNoti, Message.OnNormalMode);
         observerCenter.AddObserver(ExcuteTutorialModeByNoti, Message.OnTutoMode);
 
+        // 해머가 아니라 스킬, 플레이어스킬을 받아서 설정해야한다.
+        observerCenter.AddObserver(ExcuteSkillStateOnByNoti, EGameState.PlayerSkill.ToString());
+
         TouchInput = CheckTouchInput;
         DragInput = CheckDrag;
 
-        if(mSelectBlockEffect == null)
+        if (mSelectBlockEffect == null)
         {
             mSelectBlockEffect = GameObjectPool.Instantiate(mSelectEffectPrefab);
             mSelectBlockEffect.SetActive(false);
@@ -95,37 +92,47 @@ public class PuzzleInputManager : MonoBehaviour
 
     private void Update()
     {
-        if (mCurrentInputMode == EInputMode.PuzzleLock) { return; }
-        if (mCurrentInputMode == EInputMode.Input)
+        mCurrentInputFunc?.Invoke();
+    }
+
+    private void InputModeFunc()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                TouchInput();
-                //CheckTouchInput();
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                mbOnDrag = false;
-            }
-            if (mbOnDrag)
-            {
-                DragInput();
-                //CheckDrag();
-            }
+            TouchInput();
         }
-        else if (mCurrentInputMode == EInputMode.Hammer)
+        if (Input.GetMouseButtonUp(0))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                CheckHammerInput_Down();
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                CheckHammerInput_Up();
-            }
+            mbOnDrag = false;
+        }
+        if (mbOnDrag)
+        {
+            DragInput();
         }
     }
-    
+    private void OneTileSkillModeFunc()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            OneTileSkill_Down();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            OneTileSkill_Up();
+        }
+    }
+    private void TwoTileSkillModeFunc()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            TwoTileSkill_Down();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            TwoTileSkill_Up();
+        }
+    }
+
     private void CheckTouchInput()
     {
         Vector2 differenceVector;
@@ -416,7 +423,7 @@ public class PuzzleInputManager : MonoBehaviour
 
     private void SwapSelectTargetTileBlockContainer()
     {
-        mCurrentInputMode = EInputMode.PuzzleLock;
+        mCurrentInputFunc = null;
 
         BlockContainer blockContainer = TargetTileOrNull.BlockContainerOrNull;
         TargetTileOrNull.BlockContainerOrNull = SelectTileOrNull.BlockContainerOrNull;
@@ -442,15 +449,16 @@ public class PuzzleInputManager : MonoBehaviour
         tile = mHit.collider.GetComponent<NormalTile>();
     }
 
-    private void CheckHammerInput_Down()
+
+    #region One Tile Mode
+    private void OneTileSkill_Down()
     {
         GetMousePositionNormalTile(out mInputTile);
-
         if (mInputTile == null) { return; }
         if (mInputTile.BlockContainerOrNull == null) { return; }
         SelectTileOrNull = mInputTile;
     }
-    private void CheckHammerInput_Up()
+    private void OneTileSkill_Up()
     {
         if (SelectTileOrNull == null) { return; }
 
@@ -465,24 +473,92 @@ public class PuzzleInputManager : MonoBehaviour
             TargetTileOrNull = null;
             return;
         }
-        SelectTileOrNull.HitTile(false);
+        mCurrentInputFunc = null;
 
-        ItemManager.Instance.HammerCount -= 1;
-        mCurrentInputMode = EInputMode.PuzzleLock;
-        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
+        // 등록된 스킬을 실행시킨다.
+        mCurrentSelectSkill?.DoSkill(SelectTileOrNull);
     }
+    #endregion
+
+    #region Two Tile Mode
+    private void TwoTileSkill_Down()
+    {
+        GetMousePositionNormalTile(out mInputTile);
+        if (mInputTile == null) { return; }
+        if (mInputTile.BlockContainerOrNull == null) { mInputTile = null; return; }
+    }
+    private void TwoTileSkill_Up()
+    {
+        if (mInputTile == null) { return; }
+        var downTileCoordi = mInputTile.Coordi;
+
+        // 입력 타일 확인도 스킬별로 다르기 때문에 따로 하는게 좋을듯 하다.
+
+        // 업 했을때 타일을 가져오고 확인
+        GetMousePositionNormalTile(out mInputTile);
+        if (mInputTile == null) { return; }
+        if (mInputTile.BlockContainerOrNull == null) { mInputTile = null; return; }
+
+        // 업 했을때 다른 좌표라면 취소한다.
+        if (downTileCoordi != mInputTile.Coordi) { mInputTile = null; return; }
+
+        // 제대로 타일이 입력된 경우
+        // > selectTile이 없는 경우 바로 설정
+        if (SelectTileOrNull == null)
+        {
+            SelectTileOrNull = mInputTile;
+            mInputTile = null;
+            return;
+        }
+
+        // 처음 선택한 타일과 같은 경우 취소
+        if (SelectTileOrNull.Coordi == mInputTile.Coordi)
+        {
+            SelectTileOrNull = null;
+            mInputTile = null;
+            return;
+        }
+
+        // 두번째 타일로 설정 후 스킬 발동
+        TargetTileOrNull = mInputTile;
+        mInputTile = null;
+
+        mCurrentInputFunc = null;
+        mCurrentSelectSkill?.DoSkill(SelectTileOrNull, TargetTileOrNull);
+
+        SelectTileOrNull = null;
+        TargetTileOrNull = null;
+    }
+    #endregion
+
 
     private void ExcuteInputStateOnByNoti(Notification noti)
     {
         SelectTileOrNull = null;
         TargetTileOrNull = null;
         mInputTile = null;
-        if (TileMapManager.Instance.MoveCount <= 0) { mCurrentInputMode = EInputMode.CountZero; }
-        else { mCurrentInputMode = EInputMode.Input; }
+        if (TileMapManager.Instance.MoveCount <= 0)
+        {
+            mCurrentInputFunc = null;
+        }
+        else
+        {
+            mCurrentInputFunc = InputModeFunc;
+        }
     }
-    private void ExcuteHammerStateOnByNoti(Notification noti)
+    private void ExcuteSkillStateOnByNoti(Notification noti)
     {
-        mCurrentInputMode = EInputMode.Hammer;
+        mCurrentSelectSkill = (noti.Data as SkillNotiArgs).CurrentPlayerSkill;
+        switch (mCurrentSelectSkill.SkillType)
+        {
+            case ESkillType.OneTile:
+                mCurrentInputFunc = OneTileSkillModeFunc;
+                break;
+            case ESkillType.TwoTile:
+                mCurrentInputFunc = TwoTileSkillModeFunc;
+                break;
+        }
+
     }
     private void ExcuteMatchSwapByNoti(Notification noti)
     {
@@ -509,9 +585,9 @@ public class PuzzleInputManager : MonoBehaviour
         int movecount = TileMapManager.Instance.MoveCount;
         if (movecount <= 0) { return; }
         if (PuzzleManager.Instance.CurrentState != EGameState.Input) { return; }
-        mCurrentInputMode = EInputMode.Input;
+        mCurrentInputFunc = InputModeFunc;
     }
-    
+
     private void ExcuteTutorialModeByNoti(Notification noti)
     {
         TouchInput = null;
@@ -529,11 +605,11 @@ public class PuzzleInputManager : MonoBehaviour
 
     private void ExcutePauseByNoti(Notification noti)
     {
-        mPreviousInputMode = mCurrentInputMode;
-        mCurrentInputMode = EInputMode.PuzzleLock;
+        mPreviouseInputFunc = mCurrentInputFunc;
+        mCurrentInputFunc = null;
     }
     private void ExcuteResumeByNoti(Notification noti)
     {
-        mCurrentInputMode = mPreviousInputMode;
+        mCurrentInputFunc = mPreviouseInputFunc;
     }
 }

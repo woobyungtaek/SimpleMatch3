@@ -18,7 +18,7 @@ public enum EGameState
     ReturnSwap,
     StageSuccess,
     StageFail,
-    Hammer,
+    PlayerSkill,
     Pause,
     Max
 }
@@ -55,6 +55,8 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
 
         ChangeCurrentGameStateWithNoti(EGameState.Loading);
     }
+
+#if UNITY_EDITOR
     private void Update()
     {
         //if (Input.GetKeyDown(KeyCode.S))
@@ -74,6 +76,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
             TileMapManager.Instance.ShuffleAllBlockContianer();
         }
     }
+#endif
 
     private void CreateGameStateConditionAndStringDictInternal()
     {
@@ -108,10 +111,10 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
 
         AddGameStateInConditionDictListInternal(EGameState.Input, EGameState.MatchSwap);
         AddGameStateInConditionDictListInternal(EGameState.Input, EGameState.MatchCheck);
-        AddGameStateInConditionDictListInternal(EGameState.Input, EGameState.Hammer);
+        AddGameStateInConditionDictListInternal(EGameState.Input, EGameState.PlayerSkill);
 
-        AddGameStateInConditionDictListInternal(EGameState.Hammer, EGameState.Input);
-        AddGameStateInConditionDictListInternal(EGameState.Hammer, EGameState.Match);
+        AddGameStateInConditionDictListInternal(EGameState.PlayerSkill, EGameState.Input);
+        AddGameStateInConditionDictListInternal(EGameState.PlayerSkill, EGameState.Match);
 
         AddGameStateInConditionDictListInternal(EGameState.MatchSwap, EGameState.MatchCheck);
 
@@ -173,21 +176,18 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         }
         MissionManager.Instance.SetNextStageInfo();
 
-        yield return GameConfig.yieldGameEndDuration;
-        yield return null;
-
-        #region StageClear
-        if (bLastStage == false)
-        {
-            MissionManager.Instance.CreateCurrentStageInfo();
-            PopupManager.Instance.CreatePopupByName("StageSuccessPopup");
-        }
-        #endregion
 
         #region DayClear
+        if (bLastStage)
+        {
+            yield return GameConfig.yieldGameEndDuration;
+            yield return null;
+            PopupManager.Instance.CreatePopupByName("DayClearPopup");            
+        }
         else
         {
-            PopupManager.Instance.CreatePopupByName("DayClearPopup");
+            yield return null;
+            ObserverCenter.Instance.SendNotification(Message.CharacterEnter);
         }
         #endregion
     }
@@ -199,7 +199,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         //사용한 아이템 수, 획득한 블록 개수 등등
         StartCoroutine(StageFailCoroutine());
 
-        MissionManager.Instance.ResetGameInfoByGameOver();
+        //MissionManager.Instance.ResetGameInfoByGameOver();
     }
     private IEnumerator StageFailCoroutine()
     {
@@ -221,10 +221,15 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         CurrentState = nextState;
         return true;
     }
-    public void ChangeCurrentGameStateWithNoti(EGameState nextState, Component senderOrNull = null)
+    //public void ChangeCurrentGameStateWithNoti(EGameState nextState, Component senderOrNull = null)
+    //{
+    //    if (!ChangeCurrentGameState(nextState)) { return; }
+    //    ObserverCenter.Instance.SendNotification(senderOrNull, mCurrentStateString);
+    //}
+    public void ChangeCurrentGameStateWithNoti(EGameState nextState, Component senderOrNull = null, NotificationArgs args = null)
     {
         if (!ChangeCurrentGameState(nextState)) { return; }
-        ObserverCenter.Instance.SendNotification(senderOrNull, mCurrentStateString);
+        ObserverCenter.Instance.SendNotification(senderOrNull, mCurrentStateString, args);
     }
 
     public void ChangeCurrenGameStateForce(EGameState nextState)

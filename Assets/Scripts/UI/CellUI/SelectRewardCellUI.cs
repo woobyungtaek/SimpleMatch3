@@ -26,12 +26,12 @@ public class SelectRewardCellUI : MonoBehaviour
     }
     public void UnSelectCell()
     {
-        mSelectBackImage.color = Color.black;
+        //mSelectBackImage.color = Color.black;
     }
 
     public void OnSelectButtonClicked()
     {
-        mSelectBackImage.color = Color.red;
+       // mSelectBackImage.color = Color.red;
         EventSelectReward(this);
     }
 }

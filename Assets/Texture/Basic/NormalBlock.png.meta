@@ -1,24 +1,24 @@
 fileFormatVersion: 2
-guid: 03bf7c082591a7c4f8d641fde6bf74bd
+guid: 6128d08b489f66b4487a749448b38c17
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4421078952417226852
-    second: CrossExplosionBlock_0
+      213: -7478566727754633405
+    second: NormalBlock_0
   - first:
-      213: 7278263080969466294
-    second: CrossExplosionBlock_1
+      213: 5960039505266964966
+    second: NormalBlock_2
   - first:
-      213: 7520224658970339246
-    second: CrossExplosionBlock_2
+      213: 1408171290989579489
+    second: NormalBlock_2
   - first:
-      213: -1400531288765235945
-    second: CrossExplosionBlock_3
+      213: -8564435148422777211
+    second: NormalBlock_3
   - first:
-      213: 3830070525071810339
-    second: CrossExplosionBlock_4
+      213: -5545402777811339698
+    second: NormalBlock_2
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -38,6 +38,7 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -47,8 +48,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -57,10 +58,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,9 +70,13 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -98,6 +103,18 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -113,106 +130,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CrossExplosionBlock_0
+      name: NormalBlock_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 100
-        height: 100
+        x: 4
+        y: 4
+        width: 23
+        height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3aef6b86dfd2064f84e9c320570a61d
-      internalID: 4421078952417226852
+      spriteID: 34f212b2f2bc63890800000000000000
+      internalID: -7478566727754633405
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CrossExplosionBlock_1
+      name: NormalBlock_1
       rect:
         serializedVersion: 2
-        x: 102
-        y: 0
-        width: 100
-        height: 100
+        x: 36
+        y: 4
+        width: 23
+        height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a33f2af30f0e414b9b3a3e470b0f20c
-      internalID: 7278263080969466294
+      spriteID: 6e97bb63a5056b250800000000000000
+      internalID: 5960039505266964966
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CrossExplosionBlock_2
+      name: NormalBlock_2
       rect:
         serializedVersion: 2
-        x: 204
-        y: 0
-        width: 100
-        height: 100
+        x: 68
+        y: 4
+        width: 23
+        height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fbae49006863b9440a0b55d50242975e
-      internalID: 7520224658970339246
+      spriteID: 1ec465e0454da8310800000000000000
+      internalID: 1408171290989579489
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CrossExplosionBlock_3
+      name: NormalBlock_3
       rect:
         serializedVersion: 2
-        x: 306
-        y: 0
-        width: 100
-        height: 100
+        x: 100
+        y: 4
+        width: 23
+        height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a2c6b8103fd491f49b860c3eca240486
-      internalID: -1400531288765235945
+      spriteID: 586f36cdb93052980800000000000000
+      internalID: -8564435148422777211
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CrossExplosionBlock_4
+      name: NormalBlock_4
       rect:
         serializedVersion: 2
-        x: 408
-        y: 0
-        width: 100
-        height: 100
+        x: 132
+        y: 4
+        width: 23
+        height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da9941e740d3b9449a2586a9fd997e8e
-      internalID: 3830070525071810339
+      spriteID: e46371ced85ca03b0800000000000000
+      internalID: -5545402777811339698
       vertices: []
       indices: 
       edges: []

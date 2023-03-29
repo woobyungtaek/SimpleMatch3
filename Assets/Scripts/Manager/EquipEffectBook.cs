@@ -10,9 +10,6 @@ public class RewardMethodBook
         return typeof(RewardMethodBook).GetMethod(methodName);
     }
 
-    public static void TestEffect(int count)
-    {
-    }
     public static void MoveIncrease(RewardData data)
     {
         //Debug.Log("move increase");
@@ -21,12 +18,22 @@ public class RewardMethodBook
     public static void HammerIncrease(RewardData data)
     {
         //Debug.Log("Hammer Increase");
-        ItemManager.Instance.HammerCount += data.RewardCount;
+        ItemManager.Instance.AddSkillCount(typeof(HammerSkill), data.RewardCount);
 
     }
     public static void RandBombBox(RewardData data)
     {
         //SDebug.Log("RandBombBox");
-        ItemManager.Instance.RandomBombBoxCount += data.RewardCount;
+        ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), data.RewardCount);
+    }
+    public static void BlockSwapIncrease(RewardData data)
+    {
+        //SDebug.Log("RandBombBox");
+        ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), data.RewardCount);
+    }
+    public static void ColorChangeIncrease(RewardData data)
+    {
+        //SDebug.Log("RandBombBox");
+        ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), data.RewardCount);
     }
 }

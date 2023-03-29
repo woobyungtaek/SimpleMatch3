@@ -3,67 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 선택 보상 팝업으로 바뀌어야하고
+// 일반 보상은 캐릭터가 퇴장하기 전에 줘야함
+
 public class StageSuccessPopup : Popup
 {
-    [Header("Mission")]
-    [SerializeField]    private GameObject  mMissionCellUIPrefab;
-    [SerializeField]    private Transform   mMissionCellTransform;
-    private List<MissionCellUI> mMissionCellList = new List<MissionCellUI>();
-
-    [Header("Reward")]
-    [SerializeField]    private GameObject      mRewardCellUIPrefab;
-    [SerializeField]    private GridLayoutGroup mRewardCellGrid;
-    private List<RewardCellUI> mRewardCellList = new List<RewardCellUI>();
-
     [Header("SelectReward")]
     [SerializeField] private RewardData         mSelectedReward;
     [SerializeField] private GameObject         mSelectCellUIPrefab;
     [SerializeField] private GridLayoutGroup    mSelectRewardCellGrid;
     [SerializeField] private GameObject         mSelectRewardInfoText;
+    [SerializeField] private List<GameObject> mSelectUiObjectList = new List<GameObject>();
     private List<SelectRewardCellUI> mSelectRewardCellList = new List<SelectRewardCellUI>();
     private object[] mRewardParam = new object[1];
     
-    private void CreateNextMissionCellUI(List<MissionInfo> missionList)
-    {
-        int loopCount = missionList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            mMissionCellList.Add(GameObjectPool.Instantiate<MissionCellUI>(mMissionCellUIPrefab,mMissionCellTransform));
-            mMissionCellList[index].InitCellUI(missionList[index]);
-        }
-    }
-    private void ClearMissionCellList()
-    {
-        int loopCount = mMissionCellList.Count;
-        for (int index = 0; index < mMissionCellList.Count; index++)
-        {
-            GameObjectPool.ReturnObject(mMissionCellList[index].gameObject);
-        }
-        mMissionCellList.Clear();
-    }    
-    private void CreateRewardMissionCellUI(List<RewardData> basicRewardList)
-    {
-        int loopCount = basicRewardList.Count;
-        for(int index =0; index < loopCount; index++)
-        {
-            RewardCellUI inst =
-                GameObjectPool.Instantiate<RewardCellUI>(mRewardCellUIPrefab, mRewardCellGrid.transform);
-            inst.InitCellUI(basicRewardList[index]);
-            mRewardCellList.Add(inst);
-        }
-    }
-    private void ClearRewardCellList()
-    {
-        int loopCount = mRewardCellList.Count;
-        for (int index = 0; index < mRewardCellList.Count; index++)
-        {
-            GameObjectPool.ReturnObject(mRewardCellList[index].gameObject);
-        }
-        mRewardCellList.Clear();
-    }    
     private void CreateSelectRewardMissionCellUI(List<RewardData> selectRewardList)
     {
         int loopCount = selectRewardList.Count;
+        if(loopCount == 0) { return; }
+
         for(int index =0; index< loopCount; index++)
         {
             SelectRewardCellUI inst =
@@ -75,6 +33,7 @@ public class StageSuccessPopup : Popup
 
             mSelectRewardCellList.Add(inst);
         }
+
     }
     private void ClearSelectRewardCellList()
     {
@@ -104,9 +63,6 @@ public class StageSuccessPopup : Popup
 
         mSelectedReward = null;
         mSelectRewardInfoText.SetActive(false);
-
-        CreateNextMissionCellUI(MissionManager.Instance.MissionInfoList);
-        CreateRewardMissionCellUI(MissionManager.Instance.BasicRewardDataList);
         CreateSelectRewardMissionCellUI(MissionManager.Instance.SelectRewardDataList);
     }
     public void OnCancelButtonClicked()
@@ -122,18 +78,8 @@ public class StageSuccessPopup : Popup
             mSelectedReward.RewardMethodInfo.Invoke(null, mRewardParam);
         }
 
-        int loopCount = mRewardCellList.Count;
-        for(int index =0; index< loopCount; index++)
-        {
-            mRewardParam[0] = mRewardCellList[index].CurrenRewardData;
-            mRewardCellList[index].CurrenRewardData.RewardMethodInfo.Invoke(null, mRewardParam);
-        }
-
-        ClearMissionCellList();
-        ClearRewardCellList();
         ClearSelectRewardCellList();
-
-        MissionManager.Instance.StartStage();
+        MissionManager.Instance.TakeBasicReward();
         ClosePopup(false);
     }
     public void OnOkButtonClicked()

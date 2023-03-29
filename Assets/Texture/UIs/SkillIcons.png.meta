@@ -1,22 +1,19 @@
 fileFormatVersion: 2
-guid: 0ffd9bcb4cf42d14f93bdfc46ad497e7
+guid: 73c0056a6a78b544eb5cba0205417d61
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2046018648443574196
-    second: LineExplosionBlock_0
+      213: 2084251073510830269
+    second: SkillIcons_0
   - first:
-      213: -5402440698855780560
-    second: LineExplosionBlock_1
+      213: 3276300416788595456
+    second: SkillIcons_1
   - first:
-      213: -3397035445168137093
-    second: LineExplosionBlock_2
+      213: -4484031599090707101
+    second: SkillIcons_2
   - first:
-      213: -4085705794950538484
-    second: LineExplosionBlock_3
-  - first:
-      213: 7011528794138120069
-    second: LineExplosionBlock_4
+      213: -8609973278846354255
+    second: SkillIcons_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -38,6 +35,7 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -47,8 +45,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -57,10 +55,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,10 +67,13 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
-  applyGammaDecoding: 1
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -99,7 +100,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Android
+    buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -111,7 +112,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: iPhone
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -126,13 +127,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LineExplosionBlock_0
+      name: SkillIcons_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 100
-        height: 100
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,20 +141,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6a66d6641565dcd4ea527724d5f17342
-      internalID: -2046018648443574196
+      spriteID: db0f65bfe4fbcec10800000000000000
+      internalID: 2084251073510830269
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LineExplosionBlock_1
+      name: SkillIcons_1
       rect:
         serializedVersion: 2
-        x: 102
+        x: 64
         y: 0
-        width: 100
-        height: 100
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,20 +162,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10a68c2107abbab4fb1880f3e417fbc9
-      internalID: -5402440698855780560
+      spriteID: 0030628ded1c77d20800000000000000
+      internalID: 3276300416788595456
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LineExplosionBlock_2
+      name: SkillIcons_2
       rect:
         serializedVersion: 2
-        x: 204
+        x: 128
         y: 0
-        width: 100
-        height: 100
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,20 +183,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a0c1a889fbf3e464f9c89f922234e857
-      internalID: -3397035445168137093
+      spriteID: 365529e940585c1c0800000000000000
+      internalID: -4484031599090707101
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LineExplosionBlock_3
+      name: SkillIcons_3
       rect:
         serializedVersion: 2
-        x: 306
+        x: 192
         y: 0
-        width: 100
-        height: 100
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,29 +204,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 060d7d995f0a64248a95ce10aa6ebe65
-      internalID: -4085705794950538484
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LineExplosionBlock_4
-      rect:
-        serializedVersion: 2
-        x: 408
-        y: 0
-        width: 100
-        height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 87d93c7d47ec6af4ebdf2f312929b2f1
-      internalID: 7011528794138120069
+      spriteID: 1bcf1c4abea338880800000000000000
+      internalID: -8609973278846354255
       vertices: []
       indices: 
       edges: []

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MissionCellUI : MonoBehaviour, System.IDisposable
 {
@@ -10,7 +11,7 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
 
     private int mFakeCount;
     [SerializeField] private Image mMissionImage;
-    [SerializeField] private Text mMissionCountText;
+    [SerializeField] private TextMeshProUGUI mMissionCountText;
 
     private MissionInfo mMissionInfo;
   
@@ -22,6 +23,7 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
 
         mFakeCount = mMissionInfo.MissionCount;
         mMissionImage.sprite = SpriteManager.Instance.GetBlockSpriteByBlockName(mMissionInfo.MissionSpriteName);
+        mMissionImage.SetNativeSize();
         mMissionCountText.text = string.Format("{0}", mFakeCount);
     }
     public void Dispose()
@@ -41,8 +43,8 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
         if (mMissionInfo.MissionCount < mFakeCount)
         {
             mFakeCount -= 1;
-            
-            mMissionCountText.text = string.Format("{0}", mFakeCount);
+
+            mMissionCountText.text = $"{mFakeCount}";
         }
     }
 

@@ -10,9 +10,13 @@ public class StageFailPopup : Popup
     }
     public void OnOkButtonClicked()
     {
-        StartCoroutine(DelayFadeInEffect());
-        //PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        //base.OnOkButtonClicked();
+        ClosePopup(false);
+
+        if (!SceneLoader.IsExist)
+        {
+            Instantiate(Resources.Load("Prefabs/SceneLoader"));
+        }
+        SceneLoader.Instance.LoadSceneByName("TitleScene");
     }
     public void OnQuitGameButtonClicked()
     {

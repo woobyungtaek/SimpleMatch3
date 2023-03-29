@@ -18,7 +18,8 @@ public class MoveCountUI : MonoBehaviour
         ObserverCenter.Instance.AddObserver(ExcuteRefreshMoveCountByNoti, Message.RefreshMoveCount);
         ObserverCenter.Instance.AddObserver(ExcuteInputStateOnByNoti, EGameState.Input.ToString());
         ObserverCenter.Instance.AddObserver(ExcuteInputStateOnByNoti, EGameState.Match.ToString());
-        ObserverCenter.Instance.AddObserver(ExcuteHammerStateOnByNoti, EGameState.Hammer.ToString());
+
+        ObserverCenter.Instance.AddObserver(ExcuteHammerStateOnByNoti, EGameState.PlayerSkill.ToString());
 
         ExcuteRefreshMoveCountByNoti(null);
     }
@@ -34,7 +35,9 @@ public class MoveCountUI : MonoBehaviour
     }
     private void ExcuteHammerStateOnByNoti(Notification noti)
     {
-        MoveCountImage.sprite = SpriteManager.Instance.GetUISpriteByName("Icon_Hammer");
-        MoveCountText.text = string.Format("{0}", ItemManager.Instance.HammerCount);
+        int num = PlayerSkillButton.CurrentActiveSkill.SkillNumber;
+        int count = PlayerSkillButton.CurrentActiveSkill.SkillCount;
+        MoveCountImage.sprite = SpriteManager.Instance.GetUISpriteByName($"SkillIcons_{num}");
+        MoveCountText.text = string.Format("{0}", count);
     }
 }

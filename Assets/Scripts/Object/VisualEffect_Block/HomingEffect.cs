@@ -12,7 +12,7 @@ public class HomingEffect : BlockEffect
     private Vector3 point1Pos = Vector3.zero;
     private Vector3 point2Pos = Vector3.zero;
     private float mTime = 0f;
-    private static float mDuration = 1f;
+    private static float mDuration = 0.5f;
     private Matrix4x4 mCGMatrix = new Matrix4x4();
 
     [SerializeField] private SpriteRenderer mEffectSprite;

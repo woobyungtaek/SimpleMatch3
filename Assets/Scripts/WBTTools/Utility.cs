@@ -192,6 +192,8 @@ public static class Utility
 
             for (int cnt = 0; cnt < header.Length; cnt++)
             {
+                if (string.IsNullOrEmpty(split_data[cnt])) { continue; }
+
                 // 필드값일때
                 FieldInfo fld = tp.GetField(header[cnt], BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                 if (fld != null)

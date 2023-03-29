@@ -44,14 +44,14 @@ public class Block : MonoBehaviour, System.IDisposable
     public virtual void SplashHitBlock(Tile tile, BlockContainer blockContainer) { }
     public void CheckMissionBlock()
     {
-        MissionManager.Instance.CheckMissionTargetByInfo(transform.position, GetType(), BlockNumber, BlockSprite);
+        bool bResult = MissionManager.Instance.CheckMissionTargetByInfo(transform.position, GetType(), BlockNumber, BlockSprite);
+        if(!bResult)
+        {
+            // 미션 블럭이 아니면 게이지로 전환 되어야 한다.
+            ObserverCenter.Instance.SendNotification(Message.MainSkillIncrease);
+        }
     }
     
-    public void TestBlockColorChange(Color color)
-    {
-        mBlockSprite.color = color;
-    }
-
     protected void ExcuteCalculateHomiingOrder(Notification noti)
     {
         mExtraOrder = 0;

@@ -2,123 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Reflection;
 
 public class ItemManager : SceneSingleton<ItemManager>
-{
-    private static string countStrFormat = "{0}";
+{    
+    [SerializeField] private PlayerSkillButton mButtonPrefab;
+    [SerializeField] private Transform mButtonUITransform;
+    private Dictionary<System.Type, PlayerSkillButton> mSkillButtonDict
+        = new Dictionary<System.Type, PlayerSkillButton>();
 
-    public int HammerCount
-    {
-        get
-        {
-            return mHammerCount;
-        }
-        set
-        {
-            mHammerCount = value;
-            if(mHammerCountText != null)
-            {
-                mHammerCountText.text = string.Format(countStrFormat, mHammerCount);
-            }
-        }
-    }
-    public int RandomBombBoxCount
-    {
-        get
-        {
-            return mRandomBombBoxCount;
-        }
-        set
-        {
-            mRandomBombBoxCount = value;
-            if (mRandombombBoxCountText != null)
-            {
-                mRandombombBoxCountText.text = string.Format(countStrFormat, mRandomBombBoxCount);
-            }
-        }
-    }
-
-    [SerializeField] private int mHammerCount;
-    [SerializeField] private int mRandomBombBoxCount;
-
-    [SerializeField] private Text mHammerCountText;
-    [SerializeField] private Text mRandombombBoxCountText;
+    [Header("Main Skill")]
+    [SerializeField] private PlayerSkillButton mMainSkillButton;
+    [SerializeField] private float mMainSkillValue = 0;
+    [SerializeField] private int mMainSkillCount = 0;
 
     private void Start()
     {
-        HammerCount = 0;
-        RandomBombBoxCount = 0;
+        Init();
     }
 
-    public void OnHammerButtonClicked()
+    public void Init()
     {
-        if(mHammerCount <= 0)
+        mMainSkillValue = 0;
+        ObserverCenter.Instance.AddObserver(ExcuteMainSkillIncrease, Message.MainSkillIncrease);
+
+        // 초기화
+        foreach (var button in mSkillButtonDict.Values)
         {
-            Debug.Log("해머 아이템 개수가 없습니다.");
+            button.ClearSkill();
+            GameObjectPool.ReturnObject(button.gameObject);
+        }
+
+        // 메인 스킬 설정 및 초기화
+        var obj = ObjectPool.GetInstByStr(typeof(HammerSkill).Name);
+        mMainSkillButton.SetPlayerSkill(obj as PlayerSkill);
+        mMainSkillButton.SkillCount = 0;
+    }
+
+
+    public void AddSkillCount(System.Type type, int count)
+    {
+        //객체를 만들고 리턴이 싫은데...
+        if(mSkillButtonDict.ContainsKey(type))
+        {
+            mSkillButtonDict[type].AddSkillCount(count);
             return;
         }
-        if(PuzzleManager.Instance.CurrentState == EGameState.Input)
-        {
-            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Hammer, this);
-        }
-        else if (PuzzleManager.Instance.CurrentState == EGameState.Hammer)
-        {
-            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Input);
-        }
+        var obj = ObjectPool.GetInstByStr(type.Name);
+
+        if( !(obj is PlayerSkill) ) { return; }
+        var button = GameObjectPool.Instantiate<PlayerSkillButton>(mButtonPrefab.gameObject, mButtonUITransform);
+        button.SetPlayerSkill(obj as PlayerSkill);
+        button.AddSkillCount(count);
+
+        mSkillButtonDict.Add(type, button);
     }
-    public void OnRandomBoxButtonClicked()
+
+    public void ExcuteMainSkillIncrease(Notification noti)
     {
-        if (mRandomBombBoxCount <= 0)
+        if(mMainSkillButton.SkillCount > 0) { return; }
+
+        mMainSkillValue += 5f;
+        if(mMainSkillValue >= 100f)
         {
-            //Debug.Log("랜덤 박스 아이템 개수가 없습니다.");
-            return;
+            mMainSkillValue = 0f;
+            mMainSkillButton.AddSkillCount(1);
         }
-        if (PuzzleManager.Instance.CurrentState != EGameState.Input) { return; }
-
-        UseRandomBoxItem();
-    }
-    private void UseRandomBoxItem()
-    {
-        //타일 매니저로 부터 설치 할 타일을 가져온다.
-        Tile selectTile = TileMapManager.Instance.GetRandomNormalTileByOrderOrNull();
-        if(selectTile == null) { Debug.Log("빈 또는 일반 블록만 있는 타일이 없습니다.");  return; }
-
-        System.Type blockType = null;
-        int blockColor = Random.Range(0, 5);
-        int blockHp = 1;
-
-        int randNum = Random.Range(0, 5);
-        switch(randNum)
-        {
-            case 0:
-                blockType = typeof(VerticalBombBlock);
-                break;
-            case 1:
-                blockType = typeof(HorizontalBombBlock);
-                break;
-            case 2:
-                blockType = typeof(HomingBombBlock);
-                break;
-            case 3:
-                blockType = typeof(AroundBombBlock);
-                break;
-            case 4:
-                blockType = typeof(ColorBombBlock);
-                break;
-            default:
-                blockType = typeof(HomingBombBlock);
-                break;
-        }
-
-        MissionInfo mission = MissionManager.Instance.GetMissionInfoByType(blockType);
-        if(mission != null)
-        {
-            blockColor = mission.MissionColor;
-        }
-
-        RandomBombBoxCount -= 1;
-        selectTile.RemoveBlockContainer();
-        BlockManager.Instance.CreateBlockByBlockDataInTile(selectTile, blockType, blockColor, blockHp);
-        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
     }
 }

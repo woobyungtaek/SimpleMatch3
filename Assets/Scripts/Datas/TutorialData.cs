@@ -9,7 +9,7 @@ public class TutorialData : System.IDisposable
     public int HammerCount;
     public int RandBoxCount;
     public List<TutoStepData> tutoStepList;
-    public List<MissionData>  missionList;
+    public List<MissionData_Element>  missionList;
 
     public void Dispose()
     {

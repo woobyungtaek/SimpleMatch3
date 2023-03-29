@@ -10,7 +10,7 @@ public class MapData
     public int moveCount;
     public Vector2Int gravity;
 
-    public List<MissionData> missionList;
+    public List<MissionData_Element> missionList;
     public List<BlockMaker> blockMakerList;
 
     public string tutoName;

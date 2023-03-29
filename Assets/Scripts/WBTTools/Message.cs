@@ -23,4 +23,10 @@ public static class Message
     public static string ResumeGame                 = "ResumeGame";
 
     public static string DropEndCheck               = "DropEndCheck";
+
+    public static string MainSkillIncrease          = "MainSkillIncrease";
+
+    public static string CameraUp                   = "CameraUp";
+    public static string CharacterEnter             = "CharacterEnter";
+    public static string CharacterOut               = "CharacterOut";
 }

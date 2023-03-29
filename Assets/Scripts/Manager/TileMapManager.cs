@@ -63,6 +63,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private Vector2 mCellSize;
     [SerializeField] private float mUiCellSize;
     [SerializeField] private float mRatioGap;
+    [SerializeField] private float mPuzzleSize;
     [SerializeField] private SpriteAtlas mEdgeAtlas;
     [SerializeField] private SpriteRenderer mBackgroundRenderer;
     [SerializeField] private Color mEdgeColor;
@@ -216,13 +217,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                 mTileList[index].CheckDrop();
             }
 
-            //bool bReady = true;
-            //for (int index = 0; index < loopCount; ++index)
-            //{
-            //    if (mTileList[index].IsReady) { continue; }
-            //    bReady = false;
-            //    break;
-            //}
             if (!Tile.IsNotReady) { break; }
         }
 
@@ -677,7 +671,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         Vector3 targetPos;
         Sprite blockSprite;
         BombBlock bombBlock;
-        WaitForSeconds yieldExplosionEffectDuration;
 
         if (!mbBombMerge)
         {
@@ -758,11 +751,12 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             bombBlock.ExplosionBombBlock();
             if (bombBlock.ExplosionEffect != null)
             {
-                yieldExplosionEffectDuration = bombBlock.ExplosionEffect.YieldEffectDuration;
-                yield return yieldExplosionEffectDuration;
+                yield return bombBlock.ExplosionEffect.YieldEffectDuration;
             }
             yield return null;
         }
+
+        yield return 5f;
 
         #region StepCode
         //while (!IsNextStep)
@@ -773,7 +767,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         #endregion
 
         TestComboCount++;
-
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.TileReadyCheck);
     }
     private IEnumerator ResultCheckCoroutine()
@@ -783,13 +776,13 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         {
             //콜레팅 이펙트가 끝날때 까지 대기해야함, 간단하게 Max시간만큼 대기
             yield return MissionCollectEffect.MaxDuration;
-            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.StageSuccess);
+            ObserverCenter.Instance.SendNotification(Message.CameraUp);
             yield break;
         }
         if (MoveCount <= 0)
         {
             yield return GameConfig.yieldGameOverDuration;//임의의로 
-            PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.StageFail);
+            ObserverCenter.Instance.SendNotification(Message.CameraUp);
             yield break;
         }
 
@@ -1172,32 +1165,31 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         float minY = mBoardTransform.anchorMin.y;
         float maxX = mBoardTransform.anchorMax.x;
         float maxY = mBoardTransform.anchorMax.y;
-        //float width = 720f; //Screen.width;
-        //float height = (Screen.height * (720f / Screen.width)); //Screen.height;
+
+        // 현재 해상도에 맞게 1칸의 크기 설정
         float width = Screen.width;
         float height = Screen.height;
-        // 다시 계산하도록하자...
-        // 특정 값 이상이면 고정하고
-        // 아니면 사이즈에 맞게 고쳐야함
 
-        float sizeX = (maxX - minX) * width / mapSize.x;
-        float sizeY = (maxY - minY) * height / mapSize.y;
+        float sizeX =  width / mapSize.x;
+        float sizeY =  height / mapSize.y;
 
-        mUiCellSize = sizeX * (720f / width);
-        if (mUiCellSize > sizeY * (720f / width))
+        mUiCellSize = sizeX;
+        if (mUiCellSize > sizeY )
         {
-            mUiCellSize = sizeY * (720f / width);
+            mUiCellSize = sizeY;
         }
-        mRatioGap = (width / height) - (720f / 1280f);
-        if (mRatioGap >= 0)
+
+        // 기준 해상도에 맞게 전체 크기를 조절
+        var standardAspect = 720f / 1280f;
+        var currentAspect = sizeX / sizeY;
+        mPuzzleSize = currentAspect / standardAspect;
+        if(mPuzzleSize > 1f)
         {
-            mUiCellSize += 15f;
-            mUiCellSize += (mRatioGap / 0.03f) * 5f;
+            mPuzzleSize = 1f;
         }
-        if (mUiCellSize > 100f)
-        {
-            mUiCellSize = 100f;
-        }
+
+        Debug.Log($"{sizeX}, {sizeY}, {sizeX / sizeY}, {720f / 1280f}");
+
         mCellSize = Vector2.one * mUiCellSize;
 
         mapSize += new Vector2(2, 2);
@@ -1361,9 +1353,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     }
     private void DrawBackGroundInternal(Vector2Int mapSize)
     {
-        mAllPuzzleTransform.position = mBoardTransform.position;
-
-        mAllPuzzleTransform.localScale = mCellSize / 100;
+        //mAllPuzzleTransform.position = mBoardTransform.position;
+        mAllPuzzleTransform.localScale = Vector2.one * mPuzzleSize;//mCellSize / 100;
 
         mapSize += new Vector2Int(2, 2);
         Texture2D drawTexture = new Texture2D(100 * mapSize.x, 100 * mapSize.y);
