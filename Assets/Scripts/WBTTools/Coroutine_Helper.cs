@@ -12,8 +12,15 @@ public class Coroutine_Helper : MonoBehaviour
         if(Instance == null)
         {
             Instance = new GameObject($"CoroutineHelper").AddComponent<Coroutine_Helper>();
+
+            UnityEngine.SceneManagement.SceneManager.sceneUnloaded += OnSceneUnload;
             DontDestroyOnLoad(Instance);
         }
+    }
+
+    private static void OnSceneUnload(UnityEngine.SceneManagement.Scene scene)
+    {
+        Instance.StopAllCoroutines();
     }
 
     public new static Coroutine StartCoroutine(IEnumerator coroutine)

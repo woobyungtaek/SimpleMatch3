@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MissionManager : SceneSingleton<MissionManager>
 {
@@ -9,7 +10,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     private readonly string TUTO_MAP_FILE_FORMAT = "TutorialMap_{0}";
     private readonly string MISSION_DATA_FILE_NAME = "MissionDataList";
     private readonly string REWARD_DATA_FILE_NAME = "RewardDataList";
-            
+
     public bool IsMissionClear
     {
         get
@@ -36,7 +37,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     {
         get
         {
-            return (mDayCount+1) >= mTestStageList.Count;
+            return (mDayCount + 1) >= mTestStageList.Count;
         }
     }
 
@@ -77,8 +78,8 @@ public class MissionManager : SceneSingleton<MissionManager>
         };
 
     [Header("Mission")]
-    [SerializeField] private Text mDayCountText;
-    [SerializeField] private Text mOrderCountText;
+    [SerializeField] private TextMeshProUGUI mDayCountText;
+    [SerializeField] private TextMeshProUGUI mOrderCountText;
 
     [SerializeField]
     private Transform mMissionCellGridTransform;
@@ -97,6 +98,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     private Queue<MissionData> mDayMissionDataQueue = new Queue<MissionData>();
     private MissionData mCurrentMissionData;
 
+    private int[] mColorArr = { 0, 1, 2, 3, 4 };
 
     [Header("Reward")]
     [SerializeField]
@@ -113,7 +115,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     {
         //얘는 1번만 하면 되는디....
         var missionDataList = Utility.LoadCSVFile<MissionData>(MISSION_DATA_FILE_NAME);
-        foreach(var data in missionDataList)
+        foreach (var data in missionDataList)
         {
             // Area Check
 
@@ -150,13 +152,44 @@ public class MissionManager : SceneSingleton<MissionManager>
     {
         ClearMissionInfoList();
 
-        foreach(var element in data.MissionList)
+        // Template일때
+        if (data.IsTemplate)
         {
+            // ColorArr 섞기
+            ShuffleColorArr();
+        }
+
+        for (int idx = 0; idx < data.MissionList.Count; ++idx)
+        {
+            var element = data.MissionList[idx];
+            if (data.IsTemplate)
+            {
+                // MissionColor가 인덱스로 사용된다.
+                element.MissionColor = mColorArr[element.MissionColor];
+            }
             var info = MissionInfo.Instantiate();
             info.InitMissionInfo(element);
+
+
             mMissionInfoList.Add(info);
         }
     }
+    private void ShuffleColorArr()
+    {
+        int shuffleCount = Random.Range(3, 10);
+        for (int count = 0; count < shuffleCount; ++count)
+        {
+            int aIdx = Random.Range(0, 5);
+            int bIdx = Random.Range(0, 5);
+
+            int temp = mColorArr[aIdx];
+            mColorArr[aIdx] = mColorArr[bIdx];
+            mColorArr[bIdx] = temp;
+        }
+
+        Debug.Log($"{mColorArr[0]} /{mColorArr[1]} /{mColorArr[2]} /{mColorArr[3]} /{mColorArr[4]}");
+    }
+
     private void ClearMissionInfoList()
     {
         int loopCount = mMissionInfoList.Count;
@@ -175,20 +208,20 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
     }
 
-    private void CreateMissionCollectEffect(Vector3 start, Vector3 end, System.Type missionType, int color ,Sprite targetSprite)
+    private void CreateMissionCollectEffect(Vector3 start, Vector3 end, System.Type missionType, int color, Sprite targetSprite)
     {
         MissionCollectEffect instCollectEffect = GameObjectPool.Instantiate<MissionCollectEffect>(mCollectEffectPrefab);
         start.z = 0;
         end.z = 0;
 
-        if(!mAllCollectEffectList.Contains(instCollectEffect.gameObject))
+        if (!mAllCollectEffectList.Contains(instCollectEffect.gameObject))
         {
             mAllCollectEffectList.Add(instCollectEffect.gameObject);
         }
-        instCollectEffect.SetEffectDataByData(start, end,  targetSprite);
+        instCollectEffect.SetEffectDataByData(start, end, targetSprite);
         instCollectEffect.PlayEffect();
     }
-   
+
     private RewardData GetRewardDataByNameGrade(string name, int grade)
     {
         int loopCount = mRewardDataList.Count;
@@ -209,57 +242,40 @@ public class MissionManager : SceneSingleton<MissionManager>
         mBasicRewardList.Add(GetRewardDataByNameGrade("MoveCount", 0));
         mBasicRewardList[0].RewardCount = 5;
 
-        EMissionLevel level = mCurrentMissionData.Level;
-
-
-        //최하, 하 : 무브 카운트
-        //중 : 무브카운트 + 아이템 1개
-        //상 : 무브 카운트 + 아이템 1개+ 선택 아이템 1개
-        //최상 : 무브 카운트 + 아이템 2개 + 선택 아이템 1개
         int grade;
-        int provisionCount = 0;  // 선택 아이템 보기 갯수 
         int selectItemCount = 0; // 선택 아이템
 
-        switch (level)
+        switch (mCurrentMissionData.Level)
         {
-            case EMissionLevel.VeryEasy:
-                grade = 0;
-                selectItemCount = 0;
-                break;
-            case EMissionLevel.Easy:
-                grade = 1;
-                selectItemCount = 0;
-                provisionCount = 2;
-                break;
             case EMissionLevel.Normal:
                 grade = 2;
-                mBasicRewardList[0].RewardCount += 1;
                 selectItemCount = 1;
-                provisionCount = 2;
                 break;
             case EMissionLevel.Hard:
                 grade = 3;
-                mBasicRewardList[0].RewardCount += 2;
                 selectItemCount = 1;
-                provisionCount = 2;
                 break;
             case EMissionLevel.VeryHard:
                 grade = 4;
-                mBasicRewardList[0].RewardCount += 3;
                 selectItemCount = 1;
-                provisionCount = 3;
                 break;
             default:
-                grade = -1;
+                grade = 0;
                 selectItemCount = 0;
                 break;
         }
-        CreateSelectRewardList(grade, selectItemCount, provisionCount);
+
+        if (IsLastStageInDay && IsLastDay)
+        {
+            selectItemCount = 0;
+        }
+
+        CreateSelectRewardList(grade, selectItemCount, 2);
     }
     private void CreateSelectRewardList(int grade, int selectCount, int provisionCount)
     {
         mSelectRewardList.Clear();
-        if(selectCount <= 0) { return; }
+        if (selectCount <= 0) { return; }
 
         mInstRandomRewardList.Clear();
         int loopCount = mRewardDataList.Count;
@@ -293,7 +309,7 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public void ResetGameInfoByGameOver()
     {
-        mDayCount   = 0;
+        mDayCount = 0;
         mStageCount = 0;
         //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
         ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
@@ -301,12 +317,12 @@ public class MissionManager : SceneSingleton<MissionManager>
         ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
 
         MapDataInfoNotiArg data = new MapDataInfoNotiArg();
-        if(PlayDataManager.IsExist)
+        if (PlayDataManager.IsExist)
         {
             data.ConceptName = PlayDataManager.Instance.ConceptName;
         }
         data.MapName = string.Format(MAP_DATA_FILE_FORMAT, mDayCount);
-        if(data.ConceptName == "Tutorial")
+        if (data.ConceptName == "Tutorial")
         {
             data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mDayCount);
         }
@@ -318,7 +334,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         TileMapManager.Instance.MoveCount = mapdata.moveCount;
 
         //게임 시작을 체크하는 부분을 따로 정확하게 만들어야한다.
-        if(mDayCount == 0)
+        if (mDayCount == 0)
         {
             //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
             ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
@@ -337,8 +353,8 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public void SetTutoMissionList(List<MissionData_Element> tutoMissionList)
     {
-        if(tutoMissionList == null) { return; }
-        if(tutoMissionList.Count <= 0) { return; }
+        if (tutoMissionList == null) { return; }
+        if (tutoMissionList.Count <= 0) { return; }
 
         var cost = 0;
         //CreateMissionInfoListByDataList(tutoMissionList, out cost);
@@ -379,23 +395,25 @@ public class MissionManager : SceneSingleton<MissionManager>
             return;
         }
 
-        // 선택 보상이 없음
         TakeBasicReward();
     }
     public void TakeBasicReward()
     {
-        // 기본 보상 획득(무빙 추가)
-        foreach (var basicReward in mBasicRewardList)
+        if (!IsLastStageInDay)
         {
-            // 획득 이팩트를 만들어 보여준다.
-            RewardCellUI inst =
-                GameObjectPool.Instantiate<RewardCellUI>(mRewardCellUIPrefab, mRewardCellUITransform);
-            inst.InitCellUI(basicReward);
+            // 기본 보상 획득(무빙 추가)
+            foreach (var basicReward in mBasicRewardList)
+            {
+                // 획득 이팩트를 만들어 보여준다.
+                RewardCellUI inst =
+                    GameObjectPool.Instantiate<RewardCellUI>(mRewardCellUIPrefab, mRewardCellUITransform);
+                inst.InitCellUI(basicReward);
+            }
         }
         ObserverCenter.Instance.SendNotification(Message.CharacterOut);
     }
 
-    
+
     /// <summary>
     /// 1일 단위의 미션 데이터를 미리 생성합니다.
     /// 1일 단위로 호출이 되어야합니다.
@@ -431,18 +449,18 @@ public class MissionManager : SceneSingleton<MissionManager>
     public void RefreshMissionCellUI()
     {
         //ClearMissionCellUIList();
-        
+
         int missionCount = mMissionInfoList.Count;
 
         for (int index = 0; index < 5; index++)
         {
-            if(index >= missionCount)
+            if (index >= missionCount)
             {
-                mMissionCellUIList[index].gameObject.SetActive(false); 
-                continue; 
+                mMissionCellUIList[index].gameObject.SetActive(false);
+                continue;
             }
 
-           // mMissionCellUIList.Add(GameObjectPool.Instantiate<MissionCellUI>(mMissionCellUIPrefab, mMissionCellGridTransform));
+            // mMissionCellUIList.Add(GameObjectPool.Instantiate<MissionCellUI>(mMissionCellUIPrefab, mMissionCellGridTransform));
             mMissionCellUIList[index].InitCellUI(mMissionInfoList[index]);
             mMissionCellUIList[index].gameObject.SetActive(true);
             //mMissionCellUIList[index].transform.SetAsLastSibling();
@@ -451,13 +469,13 @@ public class MissionManager : SceneSingleton<MissionManager>
     }
     public bool CheckMissionTargetByInfo(Vector3 effectPos, System.Type missionType, int color, Sprite missionSprite)
     {
-        if(color <= -100) { return false; }
+        if (color <= -100) { return false; }
 
         int loopCount = mMissionCellUIList.Count;
         MissionInfo instMissionInfo;
         for (int index = 0; index < loopCount; index++)
         {
-            if(!mMissionCellUIList[index].gameObject.activeInHierarchy) { continue; }
+            if (!mMissionCellUIList[index].gameObject.activeInHierarchy) { continue; }
             if (mMissionCellUIList[index].IsComplete) { continue; }
 
             instMissionInfo = mMissionCellUIList[index].CurrentMission;
@@ -484,7 +502,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     public MissionInfo GetMissionInfoByType(System.Type checkType)
     {
         int loopCount = mMissionInfoList.Count;
-        for(int index =0; index< loopCount; index++)
+        for (int index = 0; index < loopCount; index++)
         {
             if (mMissionInfoList[index].MissionType != checkType) { continue; }
             if (mMissionInfoList[index].MissionCount <= 0) { continue; }
@@ -499,9 +517,9 @@ public class MissionManager : SceneSingleton<MissionManager>
         {
             if (mMissionInfoList[index].MissionType != checkType) { continue; }
             if (mMissionInfoList[index].MissionCount <= 0) { continue; }
-            if(mMissionInfoList[index].MissionColor >= 0)
+            if (mMissionInfoList[index].MissionColor >= 0)
             {
-                if(mMissionInfoList[index].MissionColor != blockColor) { continue; }
+                if (mMissionInfoList[index].MissionColor != blockColor) { continue; }
             }
             return true;
         }

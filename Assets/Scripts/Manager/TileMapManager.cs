@@ -1188,8 +1188,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             mPuzzleSize = 1f;
         }
 
-        Debug.Log($"{sizeX}, {sizeY}, {sizeX / sizeY}, {720f / 1280f}");
-
         mCellSize = Vector2.one * mUiCellSize;
 
         mapSize += new Vector2(2, 2);

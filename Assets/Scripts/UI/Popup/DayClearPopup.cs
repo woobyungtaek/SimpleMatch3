@@ -11,8 +11,6 @@ public class DayClearPopup : Popup
     public void OnOkButtonClicked()
     {
         StartCoroutine(DelayFadeInEffect());
-        //PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        //base.OnOkButtonClicked();
     }
     private IEnumerator DelayFadeInEffect()
     {
@@ -23,7 +21,7 @@ public class DayClearPopup : Popup
             yield return SceneLoader.Instance.FadeSecond;
         }
         yield return null;
-        ClosePopup(false);
+        ClosePopup();
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
     }
 }

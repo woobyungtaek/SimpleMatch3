@@ -141,13 +141,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd8d0ad42e7f2e541847629a57f76f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mPopupAni: 0
-  mPopupAniCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  mPopupAniInfo:
+    PopupAniType: 1
+    AniCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: -1.5510825
+        outSlope: -1.5510825
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.027369797
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    Start: {x: 0, y: 0, z: 0}
+    End: {x: 1, y: 1, z: 0}
+    Duration: 0.5
+  mCloseAniInfo:
+    PopupAniType: 1
+    AniCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: -2.7218077
+        outSlope: -2.7218077
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.033460442
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    Start: {x: 1, y: 1, z: 0}
+    End: {x: 0, y: 0, z: 0}
+    Duration: 0.5
 --- !u!1 &1198476647104597106
 GameObject:
   m_ObjectHideFlags: 0

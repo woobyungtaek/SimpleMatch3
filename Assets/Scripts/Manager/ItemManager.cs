@@ -13,6 +13,7 @@ public class ItemManager : SceneSingleton<ItemManager>
 
     [Header("Main Skill")]
     [SerializeField] private PlayerSkillButton mMainSkillButton;
+    [SerializeField] private Slider mMainSkillSlider;
     [SerializeField] private float mMainSkillValue = 0;
     [SerializeField] private int mMainSkillCount = 0;
 
@@ -63,10 +64,11 @@ public class ItemManager : SceneSingleton<ItemManager>
         if(mMainSkillButton.SkillCount > 0) { return; }
 
         mMainSkillValue += 5f;
-        if(mMainSkillValue >= 100f)
+        if (mMainSkillValue >= 100f)
         {
             mMainSkillValue = 0f;
             mMainSkillButton.AddSkillCount(1);
         }
+        mMainSkillSlider.value = mMainSkillValue / 100f;
     }
 }

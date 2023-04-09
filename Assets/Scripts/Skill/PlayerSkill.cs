@@ -177,7 +177,7 @@ public class BlockSwapSkill : PlayerSkill
 
 public class ColorChangeSkill : PlayerSkill
 {
-    public override ESkillType SkillType { get => ESkillType.TwoTile; }
+    public override ESkillType SkillType { get => ESkillType.OneTile; }
     public override int SkillNumber { get => 3; }
 
     private List<Tile> mTargetTileList = new List<Tile>();
@@ -195,17 +195,19 @@ public class ColorChangeSkill : PlayerSkill
         }
     }
 
-    public override void DoSkill(Tile tile1, Tile tile2)
+    public override void DoSkill(Tile tile1 )
     {
         // > 블록 컨테이너가 있고 & 블록이 움직일 수 있는 상태여야한다.
         if (tile1.BlockContainerOrNull.IsFixed) { return; }
-        if (tile2.BlockContainerOrNull.IsFixed) { return; }
 
         int targetNum = tile1.BlockContainerOrNull.MainBlock.BlockNumber;
         if (targetNum == -1) { return; }
 
-        int changeNum = tile2.BlockContainerOrNull.MainBlock.BlockNumber;
-        if (changeNum == -1) { return; }
+        int changeNum = Random.Range(0, 5);
+        while(changeNum == targetNum)
+        {
+            changeNum = Random.Range(0, 5);
+        }
 
         // targetNum과 같은 블록을 changeNum으로 바꾸고 갱신해야한다.
         TileMapManager.Instance.CreateTileListBySameNumber(mTargetTileList, targetNum);

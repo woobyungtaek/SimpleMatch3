@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using WBTWeen;
+using TMPro;
 
 public class RewardCellUI : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class RewardCellUI : MonoBehaviour
     }
     [SerializeField] private RewardData mRewardData;
     [SerializeField] private Image mRewardImage;
-    [SerializeField] private Text mRewardText;
+    [SerializeField] private TextMeshProUGUI mRewardText;
 
     public void InitCellUI(RewardData rewardData)
     {

@@ -1,9 +1,7 @@
 Key,English,Korean
-AttackDefender,,{0}의 공격력으로 공격
-AttackSupport,,다음 [공격]을 {0}만큼 강화합니다.
-GetShield,,{0}의 방어도 획득
-ShieldSupport,,다음 [방어]를 {0}만큼 강화합니다.
-RecoveryHP,,{0}만큼 체력 회복
-RecoverySupport,,다음 [회복]을 {0}만큼 강화합니다.
-ArrangeBlock,,{0}을(를) {1}개 보드에 설치
-ArrangeBlockSupport,,다음 [설치]의 설치 개수를 {0}개 추가
+SkillIcons_1_Name,Random Box,랜덤 물약
+SkillIcons_2_Name,Block Swap,위치 변화
+SkillIcons_3_Name,Color Change,색상 변화
+SkillIcons_1_Desc,Get Random Potion,무작위 합성 물약을 보드위에 생성합니다.
+SkillIcons_2_Desc,Select Two Potion. Change Position,선택한 두 물약의 위치를 바꿉니다.
+SkillIcons_3_Desc,Select Potion. Same Color Potions Change Random Color,선택한 물약과 같은 색의 물약들이 다른 무작위 색으로 바뀝니다.

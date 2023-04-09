@@ -35,6 +35,7 @@ public class MissionData
     public int           Index;
     public EAreaType     Area;
     public EMissionLevel Level;
+    public bool IsTemplate;
 
     public List<MissionData_Element> MissionList;
 
@@ -74,7 +75,7 @@ public class MissionInfo : Pool<MissionInfo>
 
     public Type     MissionType         { get => mMissionType; }
     public String   MissionSpriteName   { get => mSpriteName; }
-    public int      MissionColor        { get => mMissionColor; }
+    public int      MissionColor        { get => mMissionColor; set => mMissionColor = value; }
     public int      MissionCount
     {
         get => mMissionCount;

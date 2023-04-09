@@ -42,7 +42,7 @@ public class TutorialEndPopup : Popup
         ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
 
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        ClosePopup(false);
+        ClosePopup();
     }
     public void OnRestartButtonClicked()
     {
@@ -52,7 +52,7 @@ public class TutorialEndPopup : Popup
         ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
 
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        ClosePopup(false);
+        ClosePopup();
     }
     public void OnTitleSceneButtonClicked()
     {

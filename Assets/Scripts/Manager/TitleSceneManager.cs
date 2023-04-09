@@ -41,6 +41,7 @@ public class TitleSceneManager : SceneSingleton<TitleSceneManager>
         DataManager.Instance.LoadTutoInfoList();
     }
 
+
     public void StartGame()
     {
         if(!SceneLoader.IsExist)
@@ -91,4 +92,8 @@ public class TitleSceneManager : SceneSingleton<TitleSceneManager>
         TitleDepth += 1;
     }
 
+    public void OnEditButtonClicked()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("CreateMissionEditScene");
+    }
 }

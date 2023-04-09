@@ -14,7 +14,7 @@ public class PausePopup : Popup
     {
         ObserverCenter.Instance.SendNotification(Message.ResumeGame);
         Time.timeScale = 1;
-        ClosePopup(false);
+        ClosePopup(true);
     }
 
     public void OnDayRestartButtonClicked()
@@ -29,7 +29,7 @@ public class PausePopup : Popup
     }
     public void OnTitleButtonClicked()
     {
-        ClosePopup(false);
+        ClosePopup();
 
         if (!SceneLoader.IsExist)
         {
@@ -50,7 +50,7 @@ public class PausePopup : Popup
             yield return SceneLoader.Instance.FadeSecond;
         }
         yield return null;
-        ClosePopup(false);
+        ClosePopup();
         PuzzleManager.Instance.ChangeCurrenGameStateForce(EGameState.Pause);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
     }

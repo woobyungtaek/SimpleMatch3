@@ -11,7 +11,7 @@ public class AllClearPopup : Popup
     public void OnOkButtonClicked()
     {
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        ClosePopup(false);
+        ClosePopup();
     }
     public void OnQuitGameButtonClicked()
     {

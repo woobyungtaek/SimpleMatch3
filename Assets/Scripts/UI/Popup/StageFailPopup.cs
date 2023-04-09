@@ -10,7 +10,7 @@ public class StageFailPopup : Popup
     }
     public void OnOkButtonClicked()
     {
-        ClosePopup(false);
+        ClosePopup();
 
         if (!SceneLoader.IsExist)
         {
@@ -31,7 +31,7 @@ public class StageFailPopup : Popup
             yield return SceneLoader.Instance.FadeSecond;
         }
         yield return null;
-        ClosePopup(false);
+        ClosePopup();
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
     }
 }

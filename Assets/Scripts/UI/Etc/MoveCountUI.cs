@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MoveCountUI : MonoBehaviour
 {
     [SerializeField]
-    private Text MoveCountText;
+    private TextMeshProUGUI MoveCountText;
     [SerializeField]
     private Image MoveCountImage;
 
     private void Start()
     {
-        //if (MoveCountText == null) { MoveCountText = GetComponentInChildren<Text>(); }
-        //if (MoveCountImage == null) { MoveCountImage = GetComponentInChildren<Image>(); }
-
         ObserverCenter.Instance.AddObserver(ExcuteRefreshMoveCountByNoti, Message.RefreshMoveCount);
         ObserverCenter.Instance.AddObserver(ExcuteInputStateOnByNoti, EGameState.Input.ToString());
         ObserverCenter.Instance.AddObserver(ExcuteInputStateOnByNoti, EGameState.Match.ToString());

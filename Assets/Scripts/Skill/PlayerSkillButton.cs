@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerSkillButton : MonoBehaviour
 {
     public static PlayerSkill CurrentActiveSkill;
 
     [SerializeField] private Image mItemImage;
-    [SerializeField] private Text mItemCountText;
+    [SerializeField] private TextMeshProUGUI mItemCountText;
 
     [SerializeField] private PlayerSkill mCurrentSkill;
 

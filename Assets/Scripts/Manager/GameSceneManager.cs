@@ -20,8 +20,9 @@ public class GameSceneManager : MonoBehaviour
     [Header("Game Scene Direction")]
     [SerializeField] private Camera mMainCamera;
     [SerializeField] private GameObject mCharacter;
-    private Vector3 mGamePos = new Vector3(0, -5f, -10f);
-    private Vector3 mUpPos = new Vector3(0, 0f, -10f);
+    [SerializeField] private Transform mUpPos;
+    [SerializeField] private Transform mGamePos;
+    private readonly Vector3 DepthPos = new Vector3(0, 0, -10f);
 
     [Header("Animation Curve")]
     [SerializeField] private AnimationCurve mCurve_Order;
@@ -38,12 +39,14 @@ public class GameSceneManager : MonoBehaviour
         ObserverCenter.Instance.AddObserver(Excute_CharacterOut, Message.CharacterOut);
 
         mMainCamera = Camera.main;
-        mMainCamera.transform.position = mUpPos;
+        mMainCamera.transform.position = mUpPos.position + DepthPos;
     }
 
     // 데이터 로드
     private void ExecuteLoadGameByNoti(Notification noti)
     {
+        Random.InitState((int)System.DateTime.Now.Ticks);
+
         Time.timeScale = 1;
         if (PlayDataManager.IsExist)
         {
@@ -181,7 +184,7 @@ public class GameSceneManager : MonoBehaviour
 
     private void Sequence_CameraDown()
     {
-        mMainCamera.transform.Move(mGamePos, 1f).OnComplete(() =>
+        mMainCamera.transform.Move(mGamePos.position + DepthPos, 1f).OnComplete(() =>
             {
                 if (PuzzleManager.Instance.CurrentState == EGameState.StageSuccess)
                 {
@@ -197,7 +200,7 @@ public class GameSceneManager : MonoBehaviour
 
     private void Excute_CameraUp(Notification noti)
     {
-        mMainCamera.transform.Move(mUpPos, 1f)
+        mMainCamera.transform.Move(mUpPos.position + DepthPos, 1f)
             .OnComplete(() =>
             {
                 CheckGameOver();
@@ -215,7 +218,6 @@ public class GameSceneManager : MonoBehaviour
 
     private void CheckGameOver()
     {
-        MissionManager.Instance.ClearMissionCellUIList();
         if (MissionManager.Instance.IsMissionClear)
         {
             Sequence_CharacterGetPotion();
@@ -224,6 +226,7 @@ public class GameSceneManager : MonoBehaviour
         {
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.StageFail);
         }
+        MissionManager.Instance.ClearMissionCellUIList();
     }
 }
 public class MapDataInfoNotiArg : NotificationArgs
