@@ -23,6 +23,8 @@ public class SkillNotiArgs : NotificationArgs, IReUseObject
 [System.Serializable]
 public class PlayerSkill : IReUseObject
 {
+    public static string SkillUseDescKey;
+
     protected PlayerSkillButton mButtonObj;
 
     public int SkillCount;
@@ -59,10 +61,13 @@ public class HammerSkill : PlayerSkill
         mButtonObj = button;
         if (PuzzleManager.Instance.CurrentState == EGameState.Input)
         {
+            SkillUseDescKey = "SkillUseDesc_Hammer";
+            ObserverCenter.Instance.SendNotification(Message.SkillDimmedOn);
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.PlayerSkill, null, GetNotiArgs());
         }
         else if (PuzzleManager.Instance.CurrentState == EGameState.PlayerSkill)
         {
+            ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Input);
         }
     }
@@ -72,6 +77,7 @@ public class HammerSkill : PlayerSkill
         tile.HitTile(false);
         SkillCount--;
         mButtonObj.RefreshSkillInfo();
+        ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
 }
@@ -146,10 +152,13 @@ public class BlockSwapSkill : PlayerSkill
         mButtonObj = button;
         if (PuzzleManager.Instance.CurrentState == EGameState.Input)
         {
+            SkillUseDescKey = "SkillUseDesc_Swap";
+            ObserverCenter.Instance.SendNotification(Message.SkillDimmedOn);
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.PlayerSkill, null, GetNotiArgs());
         }
         else if (PuzzleManager.Instance.CurrentState == EGameState.PlayerSkill)
         {
+            ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Input);
         }
     }
@@ -171,6 +180,7 @@ public class BlockSwapSkill : PlayerSkill
         // 스킬사용 및 매치 체크
         SkillCount--;
         mButtonObj.RefreshSkillInfo();
+        ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
 }
@@ -187,10 +197,13 @@ public class ColorChangeSkill : PlayerSkill
         mButtonObj = button;
         if (PuzzleManager.Instance.CurrentState == EGameState.Input)
         {
+            SkillUseDescKey = "SkillUseDesc_ColorChange";
+            ObserverCenter.Instance.SendNotification(Message.SkillDimmedOn);
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.PlayerSkill, null, GetNotiArgs());
         }
         else if (PuzzleManager.Instance.CurrentState == EGameState.PlayerSkill)
         {
+            ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Input);
         }
     }
@@ -222,6 +235,7 @@ public class ColorChangeSkill : PlayerSkill
         // 스킬사용 및 매치 체크
         SkillCount--;
         mButtonObj.RefreshSkillInfo();
+        ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
 }

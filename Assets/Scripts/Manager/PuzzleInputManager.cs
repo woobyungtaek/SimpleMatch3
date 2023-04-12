@@ -92,6 +92,13 @@ public class PuzzleInputManager : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.C) == true)
+        {
+            ObserverCenter.Instance.SendNotification(Message.ClearMissionCheat);
+            return;
+        }
+#endif
         mCurrentInputFunc?.Invoke();
     }
 

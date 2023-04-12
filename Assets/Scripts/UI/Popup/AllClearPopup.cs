@@ -15,6 +15,13 @@ public class AllClearPopup : Popup
     }
     public void OnQuitGameButtonClicked()
     {
-        Application.Quit();
+        ClosePopup();
+
+        if (!SceneLoader.IsExist)
+        {
+            Instantiate(Resources.Load("Prefabs/SceneLoader"));
+        }
+        SceneLoader.Instance.LoadSceneByName("TitleScene");
+        //Application.Quit();
     }
 }

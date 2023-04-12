@@ -13,11 +13,15 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
     [SerializeField] private Image mMissionImage;
     [SerializeField] private TextMeshProUGUI mMissionCountText;
 
-    private MissionInfo mMissionInfo;
+    [SerializeField] private MissionInfo mMissionInfo;
   
     public void InitCellUI(MissionInfo missionInfo)
     {
         ObserverCenter.Instance.AddObserver(CellRefreshByFakeCount, Message.RefreshMissionCellUI);
+
+#if UNITY_EDITOR
+        ObserverCenter.Instance.AddObserver(Cheat_ClearMission, Message.ClearMissionCheat);
+#endif
 
         mMissionInfo = missionInfo;
 
@@ -48,4 +52,11 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
         }
     }
 
+#if UNITY_EDITOR
+    private void Cheat_ClearMission(Notification noti)
+    {
+        mMissionInfo.MissionCount = 0;
+        mMissionCountText.text = $"{mMissionInfo.MissionCount}";
+    }
+#endif
 }

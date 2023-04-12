@@ -8,7 +8,6 @@ using UnityEngine.U2D;
 public class TileMapManager : SceneSingleton<TileMapManager>
 {
     public Transform TileParentTransform { get => mTileParentTransform; }
-    public Transform PuzzleBoard { get => mBoardTransform; }
     public Transform MoveCountUI { get => mMoveCountUI; }
     public SpriteRenderer BoardBackGround
     {
@@ -55,7 +54,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private int mMoveCount;
 
     [Header("TileMapData")]
-    [SerializeField] private RectTransform mBoardTransform;
     [SerializeField] private Transform mMoveCountUI;
     [SerializeField] private Transform mCollectTransform;
     [SerializeField] private Transform mAllPuzzleTransform;
@@ -66,9 +64,11 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private float mPuzzleSize;
     [SerializeField] private SpriteAtlas mEdgeAtlas;
     [SerializeField] private SpriteRenderer mBackgroundRenderer;
+    [SerializeField] private SkillDimmedControl mMaskedControler;
     [SerializeField] private Color mEdgeColor;
     [SerializeField] private Color mOddColor;
     [SerializeField] private Color mEvenColor;
+
 
     private bool mbBombMerge = false;
 
@@ -110,6 +110,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     {
         MatchInfo.CreateMatchTypeChangeConditionDict();
         CreateExplosionMergeConditionInternal();
+
+        mMaskedControler.Init();
 
         ObserverCenter observerCenter = ObserverCenter.Instance;
         observerCenter.AddObserver(ExecuteTileReadyCheckByNoti, EGameState.TileReadyCheck.ToString());
@@ -1161,11 +1163,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     }
     private void CreateTileByTileStrInternal(string tileStr, Vector2 mapSize)
     {
-        float minX = mBoardTransform.anchorMin.x;
-        float minY = mBoardTransform.anchorMin.y;
-        float maxX = mBoardTransform.anchorMax.x;
-        float maxY = mBoardTransform.anchorMax.y;
-
         // 현재 해상도에 맞게 1칸의 크기 설정
         float width = Screen.width;
         float height = Screen.height;
@@ -1460,6 +1457,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
         drawTexture.Apply();
         mBackgroundRenderer.sprite = Sprite.Create(drawTexture, new Rect(Vector2.zero, mapSize * 100), Vector2.one * 0.5f);
+        mMaskedControler.BoardMaskSprite = mBackgroundRenderer.sprite;
     }
 
     private StringBuilder GetEdgeSpriteStrBuilderInternal(StringBuilder straight, StringBuilder diagona)

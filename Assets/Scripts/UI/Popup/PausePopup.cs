@@ -10,6 +10,16 @@ public class PausePopup : Popup
         ObserverCenter.Instance.SendNotification(Message.PauseGame);
         Time.timeScale = 0;
     }
+
+    public void TestBannerLoad()
+    {
+        //GoogleMobileAdsDemoScirpt.Instance.LoadAd();
+    }
+    public void TestRewardLoad()
+    {
+       // GoogleMobileAdsDemoScirpt.Instance.ShowRewardAd();
+    }
+
     public void OnCancelButtonClicked()
     {
         ObserverCenter.Instance.SendNotification(Message.ResumeGame);

@@ -56,7 +56,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: a281664b95650db41a80234f2f37003d, type: 3}
     - {fileID: 2800000, guid: c4c78b7aedf04f84fa2a02e210d7ffdf, type: 3}
     - {fileID: 2800000, guid: d35073f6aa54825478516931903ccc16, type: 3}
-    totalSpriteSurfaceArea: 39473
+    - {fileID: 2800000, guid: be8edd4d670dcd34886baf01d9951718, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -84,23 +84,10 @@ SpriteAtlas:
   - {fileID: 7467624859126428677, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
   - {fileID: 242506756008974940, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
   - {fileID: 21300000, guid: 34411b1a96a23674f947dd2e81bf121a, type: 3}
-  - {fileID: 5694018657957142291, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -4413724189984464609, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: 6785065909401598979, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -2330755216011948348, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -2826812077145412856, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -1462800486467805356, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -5058413560827345069, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -519962301063372792, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -4471156934694693208, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -3936697302239294697, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: 8057757144743983924, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: 6793396281367717623, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: 5260606234787308515, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -4034052482211926698, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
   - {fileID: 396920002328186316, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -1225259161459057899, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
+  - {fileID: -4034052482211926698, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
   - {fileID: 646631761287619913, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
+  - {fileID: -1225259161459057899, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
   - {fileID: 3276300416788595456, guid: 73c0056a6a78b544eb5cba0205417d61, type: 3}
   - {fileID: 2084251073510830269, guid: 73c0056a6a78b544eb5cba0205417d61, type: 3}
   - {fileID: -8609973278846354255, guid: 73c0056a6a78b544eb5cba0205417d61, type: 3}
@@ -108,6 +95,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c4c78b7aedf04f84fa2a02e210d7ffdf, type: 3}
   - {fileID: 21300000, guid: a464bdda375f1644ab9b56b353cfd486, type: 3}
   - {fileID: 21300000, guid: a281664b95650db41a80234f2f37003d, type: 3}
+  - {fileID: 21300000, guid: be8edd4d670dcd34886baf01d9951718, type: 3}
   - {fileID: -7810306426998302437, guid: bfc4666fd0690be46a47f8bb8d78c284, type: 3}
   m_PackedSpriteNamesToIndex:
   - BattleEquipCellUI_0
@@ -132,23 +120,10 @@ SpriteAtlas:
   - MapUi_Test_9
   - MapUi_Test_8
   - PointHand
-  - Pint_Color_UI_8
-  - Pint_Color_UI_9
   - Icon_Move
-  - Pint_Color_UI_17
-  - Pint_Color_UI_16
-  - Pint_Color_UI_15
-  - Pint_Color_UI_14
-  - Pint_Color_UI_13
-  - Pint_Color_UI_12
-  - Pint_Color_UI_11
-  - Pint_Color_UI_10
-  - Pint_Color_UI_6
-  - Pint_Color_UI_7
   - Pint_Color_UI_0
   - Pint_Color_UI_1
   - Pint_Color_UI_2
-  - Pint_Color_UI_3
   - SkillIcons_1
   - SkillIcons_0
   - SkillIcons_3
@@ -156,6 +131,7 @@ SpriteAtlas:
   - Square100
   - Square16_16
   - Square_empty_16_16
+  - UnderBarBawckground
   - DayOrderBack2_0
   m_RenderDataMap: {}
   m_Tag: UI

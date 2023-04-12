@@ -7,25 +7,25 @@ TextureImporter:
     second: Pint_Color_UI_0
   - first:
       213: 396920002328186316
-    second: Pint_Color_UI_1
+    second: Icon_Move
   - first:
       213: -1225259161459057899
     second: Pint_Color_UI_2
   - first:
       213: 646631761287619913
-    second: Pint_Color_UI_3
+    second: Pint_Color_UI_1
   - first:
       213: 6785065909401598979
-    second: Icon_Move
+    second: Pint_Color_UI_2
   - first:
       213: -8067668135960760969
     second: Pint_Color_UI_5
   - first:
       213: 6793396281367717623
-    second: Pint_Color_UI_6
+    second: Pint_Color_UI_1
   - first:
       213: 5260606234787308515
-    second: Pint_Color_UI_7
+    second: Pint_Color_UI_2
   - first:
       213: 5694018657957142291
     second: Pint_Color_UI_8
@@ -57,7 +57,7 @@ TextureImporter:
       213: -2330755216011948348
     second: Pint_Color_UI_17
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -78,6 +78,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -116,6 +117,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -165,6 +167,18 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -172,10 +186,10 @@ TextureImporter:
       name: Pint_Color_UI_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 230
-        width: 65
-        height: 19
+        x: 2
+        y: 47
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,16 +204,16 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pint_Color_UI_1
+      name: Icon_Move
       rect:
         serializedVersion: 2
-        x: 85
-        y: 201
-        width: 48
-        height: 48
+        x: 28
+        y: 49
+        width: 12
+        height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 10, y: 11, z: 11, w: 11}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -211,34 +225,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pint_Color_UI_2
+      name: Pint_Color_UI_1
       rect:
         serializedVersion: 2
-        x: 6
-        y: 198
-        width: 25
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 51b907bc8410ffee0800000000000000
-      internalID: -1225259161459057899
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_3
-      rect:
-        serializedVersion: 2
-        x: 36
-        y: 209
-        width: 16
-        height: 16
+        x: 5
+        y: 29
+        width: 9
+        height: 9
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -253,53 +246,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Icon_Move
+      name: Pint_Color_UI_2
       rect:
         serializedVersion: 2
-        x: 59
-        y: 212
-        width: 12
-        height: 12
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 30cbe7bee75692e50800000000000000
-      internalID: 6785065909401598979
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_6
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 194
-        width: 9
-        height: 9
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7f6e169ccedf64e50800000000000000
-      internalID: 6793396281367717623
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_7
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 194
+        x: 28
+        y: 29
         width: 6
         height: 9
       alignment: 0
@@ -309,218 +260,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3e3e3b7af7d610940800000000000000
-      internalID: 5260606234787308515
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_8
-      rect:
-        serializedVersion: 2
-        x: 9
-        y: 136
-        width: 8
-        height: 49
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 4, z: 0, w: 4}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 31f5bfb1dc7350f40800000000000000
-      internalID: 5694018657957142291
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_9
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 132
-        width: 19
-        height: 57
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 35, z: 0, w: 11}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f116d6feb3d4fb2c0800000000000000
-      internalID: -4413724189984464609
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_10
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 134
-        width: 8
-        height: 49
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 1, z: 0, w: 4}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 43bb4da6e67e2df60800000000000000
-      internalID: 8057757144743983924
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_11
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 159
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 71bc9cf39aa0e59c0800000000000000
-      internalID: -3936697302239294697
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_12
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 123
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8a69f74057243f1c0800000000000000
-      internalID: -4471156934694693208
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_13
-      rect:
-        serializedVersion: 2
-        x: 8
-        y: 108
-        width: 40
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 1, y: 0, z: 1, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 800e584ca09b8c8f0800000000000000
-      internalID: -519962301063372792
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_14
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 84
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3570ed3caa7ecc9b0800000000000000
-      internalID: -5058413560827345069
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_15
-      rect:
-        serializedVersion: 2
-        x: 4
-        y: 48
-        width: 48
-        height: 56
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 45f51d235b613bbe0800000000000000
-      internalID: -1462800486467805356
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_16
-      rect:
-        serializedVersion: 2
-        x: 60
-        y: 48
-        width: 32
-        height: 41
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 80ba6f6946525c8d0800000000000000
-      internalID: -2826812077145412856
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pint_Color_UI_17
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 47
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4ce083bda7e77afd0800000000000000
-      internalID: -2330755216011948348
+      spriteID: 30cbe7bee75692e50800000000000000
+      internalID: -1225259161459057899
       vertices: []
       indices: 
       edges: []
@@ -535,6 +276,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Icon_Move: 396920002328186316
+      Pint_Color_UI_0: -4034052482211926698
+      Pint_Color_UI_1: 646631761287619913
+      Pint_Color_UI_2: -1225259161459057899
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

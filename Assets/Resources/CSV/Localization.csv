@@ -5,3 +5,6 @@ SkillIcons_3_Name,Color Change,색상 변화
 SkillIcons_1_Desc,Get Random Potion,무작위 합성 물약을 보드위에 생성합니다.
 SkillIcons_2_Desc,Select Two Potion. Change Position,선택한 두 물약의 위치를 바꿉니다.
 SkillIcons_3_Desc,Select Potion. Same Color Potions Change Random Color,선택한 물약과 같은 색의 물약들이 다른 무작위 색으로 바뀝니다.
+SkillUseDesc_Hammer,Select One Block,획득할 <color=blue>1개</color>의 블럭을 선택하세요.
+SkillUseDesc_Swap,Select Two Block,위치를 변경할 <color=blue>2개</color>의 블럭을 선택하세요.
+SkillUseDesc_ColorChange,Select One Block,선택한 블록과 <color=blue>같은 색상의 블럭</color>들이 <color=red>무작위 다른 색상</color>으로 변경됩니다.

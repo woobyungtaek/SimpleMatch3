@@ -45,16 +45,18 @@ public class StageSuccessPopup : Popup
     }
 
     public void OnSelectRewardButtonClicked(SelectRewardCellUI cellUI)
-    { 
-        if(mSelectedReward == cellUI.CellRewardData)
-        {
-            OnCancelButtonClicked();
-            return;
-        }
+    {
+        //if(mSelectedReward == cellUI.CellRewardData)
+        //{
+        //    OnCancelButtonClicked();
+        //    return;
+        //}
+        //mSelectImage.transform.position = cellUI.transform.position;
+        //mSelectImage.SetActive(true);
 
-        mSelectImage.transform.position = cellUI.transform.position;
-        mSelectImage.SetActive(true);
+
         mSelectedReward = cellUI.CellRewardData;
+        OnCancelButtonClicked();
 
         int loopCount = mSelectRewardCellList.Count;
         for (int index = 0; index < loopCount; index++)

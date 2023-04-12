@@ -87,7 +87,7 @@ TextureImporter:
       213: -4294178637298049310
     second: ColorExplosionBlock_1
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -108,6 +108,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -146,6 +147,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -185,6 +187,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -796,6 +810,35 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      AroundBombBlock_0: -5944743278583391973
+      AroundBombBlock_1: 5277073011860571681
+      AroundBombBlock_2: -3077010677095575379
+      AroundBombBlock_3: 2876425705220389974
+      AroundBombBlock_4: 7110734979693137073
+      ColorExplosionBlock: 5448124094025809334
+      ColorExplosionBlock_0: 1502301090302230716
+      ColorExplosionBlock_1: -4294178637298049310
+      HomingExplosionBlock_0: -1746241471011797361
+      HomingExplosionBlock_1: 5739823870517371427
+      HomingExplosionBlock_2: -5942323310438270083
+      HomingExplosionBlock_3: -2909260099060321293
+      HomingExplosionBlock_4: 4229224651240144850
+      HorizontalBombBlock_0: 7681542623750436763
+      HorizontalBombBlock_1: -640151632423964689
+      HorizontalBombBlock_2: -4070125333608054650
+      HorizontalBombBlock_3: -997364571583834132
+      HorizontalBombBlock_4: 8606894278792355763
+      NormalBlock_0: -5105503301555207847
+      NormalBlock_1: -1431211451974354091
+      NormalBlock_2: 6586349059364213624
+      NormalBlock_3: 3665893183369595187
+      NormalBlock_4: -7653235529322053108
+      VerticalBombBlock_0: 8826945667641154271
+      VerticalBombBlock_1: -5065506375744796084
+      VerticalBombBlock_2: -4182547997122294876
+      VerticalBombBlock_3: 6106522152396350941
+      VerticalBombBlock_4: 4434528979735717645
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

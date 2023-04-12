@@ -73,6 +73,7 @@ Shader "Unlit/FlowImage"
 
 				float _SpeedX;
 				float _SpeedY;
+				float _UnscaledTime;
 
 				fixed4 Frag(v2f IN) : SV_Target
 				{
@@ -87,8 +88,8 @@ Shader "Unlit/FlowImage"
 					uv.y *= ty;
 
 					// 시간 * 속도만큼 uv값 조절 
-					uv.x += _Time.x * _SpeedX;
-					uv.y += _Time.y * _SpeedY;
+					uv.x += _UnscaledTime * _SpeedX;
+					uv.y += _UnscaledTime * _SpeedY;
 
 					// 조절된 uv값에 해당하는 원본 색상 출력
 					fixed4 c = tex2D(_MainTex, uv);
