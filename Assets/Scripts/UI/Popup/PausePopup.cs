@@ -13,11 +13,11 @@ public class PausePopup : Popup
 
     public void TestBannerLoad()
     {
-        //GoogleMobileAdsDemoScirpt.Instance.LoadAd();
+        GoogleMobileAdsDemoScirpt.Instance.LoadAd();
     }
     public void TestRewardLoad()
     {
-       // GoogleMobileAdsDemoScirpt.Instance.ShowRewardAd();
+        GoogleMobileAdsDemoScirpt.Instance.ShowRewardAd();
     }
 
     public void OnCancelButtonClicked()
