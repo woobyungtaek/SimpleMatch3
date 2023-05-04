@@ -19,6 +19,16 @@ public class SceneLoader : Singleton<SceneLoader>
     [SerializeField] private Slider         mLoadingBar;
 
     [SerializeField] private string mLoadSceneName;
+    
+    [RuntimeInitializeOnLoadMethod]
+    private static void Init()
+    {
+        if (!IsExist)
+        {
+            Instantiate(Resources.Load("Prefabs/SceneLoader"));
+        }
+        Instance.gameObject.SetActive(false);
+    }
 
     private void Awake()
     {

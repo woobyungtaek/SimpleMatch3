@@ -69,7 +69,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private Color mOddColor;
     [SerializeField] private Color mEvenColor;
 
-
     private bool mbBombMerge = false;
 
     [Header("TilePrefabs")]
@@ -106,10 +105,18 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     ///콤보 : 매치 성공 카운트
     [SerializeField] private int TestComboCount;
 
+    // 맵 기믹 : 맵별 기믹
+    [SerializeField] private string mMapGimmickName;
+    [SerializeField] private string mMapGimmickCheckName;
+    private System.Func<bool> mMapGimmickCheckFunc;
+    private System.Action mMapGimmickFunc;
+
     private void Awake()
     {
         MatchInfo.CreateMatchTypeChangeConditionDict();
         CreateExplosionMergeConditionInternal();
+
+        SetMapGimmick();
 
         mMaskedControler.Init();
 
@@ -173,6 +180,27 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         mExplosionMergeConditionDict[typeof(ColorBombBlock)].Add(typeof(HomingBombBlock), typeof(ColorChangeBombBlock));
         mExplosionMergeConditionDict[typeof(ColorBombBlock)].Add(typeof(ColorBombBlock), typeof(AllClearBombBlock));
         //mExplosionMergeConditionDict[typeof(ColorBombBlock)].Add(typeof(CrossBombBlock), typeof(ColorChangeBombBlock));
+    }
+
+    private void SetMapGimmick()
+    {
+        mMapGimmickFunc = null;
+        mMapGimmickCheckFunc = null;
+
+        if (PlayDataManager.IsExist)
+        {
+            var dataManager = PlayDataManager.Instance;
+            mMapGimmickName = dataManager.MapGimmickName;
+            mMapGimmickCheckName = dataManager.MapGimmickCheckName;
+        }
+
+        System.Reflection.MethodInfo methodInfo = MapGimmickMethodBook.GetMapGimmickMethod(mMapGimmickName);
+        if (methodInfo == null) { return; }
+        mMapGimmickFunc = (System.Action)methodInfo.CreateDelegate(typeof(System.Action));
+
+        methodInfo = MapGimmickMethodBook.GetMapGimmickMethod(mMapGimmickCheckName);
+        if (methodInfo == null) { mMapGimmickFunc = null; return; }
+        mMapGimmickCheckFunc = (System.Func<bool>)methodInfo.CreateDelegate(typeof(System.Func<bool>));
     }
 
     /*상태변화시 실행*/
@@ -611,8 +639,10 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
 
-    private void GimmickCheck()
+    private IEnumerator GimickCheckCoroutine()
     {
+        EGameState eNextState = EGameState.ReturnSwap;
+
         #region VineBlock 기믹 실행
         if (VineBlock.VineBlockCount > 0)
         {
@@ -650,12 +680,32 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                     targetTileList[randIdx].RemoveBlockContainer();
                     BlockManager.Instance.CreateBlockByBlockDataInTile(targetTileList[randIdx], typeof(VineBlock), -1, 1);
                 }
+                yield return VineBlock.mVineDelayTime;
             }
         }
         VineBlock.IsVineHited = false;
         #endregion
 
-        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.ReturnSwap);
+
+        #region 맵 기믹 실행
+        bool bMapGimmick = false;
+        if (mMapGimmickCheckFunc != null)
+        {
+            bMapGimmick = mMapGimmickCheckFunc.Invoke();
+        }
+        if (bMapGimmick)
+        {
+            mMapGimmickFunc?.Invoke();
+
+            // 리턴 스왑이 아니라 MatchCheck일수도 있겠네...
+            // eNextState = EGameState.MatchCheck;
+        }
+        #endregion
+
+        yield return null;
+
+
+        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(eNextState);
     }
 
     private IEnumerator MatchCoroutine()
@@ -771,6 +821,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         TestComboCount++;
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.TileReadyCheck);
     }
+
     private IEnumerator ResultCheckCoroutine()
     {
         TestComboCount = 0;
@@ -784,15 +835,25 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         if (MoveCount <= 0)
         {
             yield return GameConfig.yieldGameOverDuration;//임의의로 
+
+#if UNITY_ANDROID || UNITY_IOS
+
+            // 시청 가능한 광고 횟수
+            PopupManager.Instance.CreatePopupByName("RewardAdPopup");
+            yield break;
+
+#endif
             ObserverCenter.Instance.SendNotification(Message.CameraUp);
             yield break;
         }
 
-        if(IsMatched)
+        if (IsMatched)
         {
+            // 무브 카운트가 감소한 경우만
+
             // 드랍이 모두 끝나고 매치가 더 없는 시점
             // 각종 기믹이 실행 되고 리턴스왑 호출
-            GimmickCheck();            
+            StartCoroutine(GimickCheckCoroutine());
         }
         else
         {
@@ -1167,11 +1228,11 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         float width = Screen.width;
         float height = Screen.height;
 
-        float sizeX =  width / mapSize.x;
-        float sizeY =  height / mapSize.y;
+        float sizeX = width / mapSize.x;
+        float sizeY = height / mapSize.y;
 
         mUiCellSize = sizeX;
-        if (mUiCellSize > sizeY )
+        if (mUiCellSize > sizeY)
         {
             mUiCellSize = sizeY;
         }
@@ -1180,7 +1241,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         var standardAspect = 720f / 1280f;
         var currentAspect = sizeX / sizeY;
         mPuzzleSize = currentAspect / standardAspect;
-        if(mPuzzleSize > 1f)
+        if (mPuzzleSize > 1f)
         {
             mPuzzleSize = 1f;
         }

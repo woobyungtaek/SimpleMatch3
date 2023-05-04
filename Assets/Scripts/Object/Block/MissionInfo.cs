@@ -25,15 +25,16 @@ public enum EMissionLevel
 [System.Serializable]
 public struct MissionData_Element
 {
-    public string   MissionName;
-    public int      MissionColor;
-    public int      MissionCount;
+    public string MissionName;
+    public int MissionColor;
+    public int MissionCount;
 }
 
-public class MissionData
+[System.Serializable]
+public class MissionDataPreset
 {
-    public int           Index;
-    public EAreaType     Area;
+    public int Index;
+    public EAreaType Area;
     public EMissionLevel Level;
     public bool IsTemplate;
 
@@ -41,14 +42,14 @@ public class MissionData
 
     private MissionData_Element mCurrentMissionDataElement;
 
+    // CSV 리더가 사용
     public string Block_Name
     {
-        set 
+        set
         {
-            if(MissionList == null) { MissionList = new List<MissionData_Element>(); }
-
+            if (MissionList == null) { MissionList = new List<MissionData_Element>(); }
             mCurrentMissionDataElement = new MissionData_Element();
-            mCurrentMissionDataElement.MissionName = value;    
+            mCurrentMissionDataElement.MissionName = value;
         }
     }
     public int Block_Color
@@ -68,15 +69,81 @@ public class MissionData
     }
 }
 
+public class MissionData : Pool<MissionData>
+{
+    private static int[] ColorArr = { 0, 1, 2, 3, 4 };
+
+    public EAreaType Area;
+    public EMissionLevel Level;
+    public List<MissionInfo> MissionInfoList = new List<MissionInfo>();
+
+    public void Init(MissionDataPreset presetData)
+    {
+        Area = presetData.Area;
+        Level = presetData.Level;
+        CreateMissionInfoListByDataPreset(presetData);
+    }
+
+    private void ClearMissionInfoList()
+    {
+        int loopCount = MissionInfoList.Count;
+        for (int index = 0; index < loopCount; index++)
+        {
+            MissionInfo.Destroy(MissionInfoList[index]);
+        }
+        MissionInfoList.Clear();
+    }
+    private void ShuffleColorArr()
+    {
+        int shuffleCount = UnityEngine.Random.Range(3, 10);
+        for (int count = 0; count < shuffleCount; ++count)
+        {
+            int aIdx = UnityEngine.Random.Range(0, 5);
+            int bIdx = UnityEngine.Random.Range(0, 5);
+
+            int temp = ColorArr[aIdx];
+            ColorArr[aIdx] = ColorArr[bIdx];
+            ColorArr[bIdx] = temp;
+        }
+
+        Debug.Log($"{ColorArr[0]} /{ColorArr[1]} /{ColorArr[2]} /{ColorArr[3]} /{ColorArr[4]}");
+    }
+    private void CreateMissionInfoListByDataPreset(MissionDataPreset preset)
+    {
+        ClearMissionInfoList();
+
+        // Template일때
+        if (preset.IsTemplate)
+        {
+            // ColorArr 섞기
+            ShuffleColorArr();
+        }
+
+        for (int idx = 0; idx < preset.MissionList.Count; ++idx)
+        {
+            var element = preset.MissionList[idx];
+            if (preset.IsTemplate)
+            {
+                // MissionColor가 인덱스로 사용된다.
+                element.MissionColor = ColorArr[element.MissionColor];
+            }
+            var info = MissionInfo.Instantiate();
+            info.InitMissionInfo(element);
+
+            MissionInfoList.Add(info);
+        }
+    }    
+}
+
 public class MissionInfo : Pool<MissionInfo>
 {
     //MissionData가 복사되어 들어가는 일종의 슬롯이다.
     private static string SpriteFieldName = "spriteString";
 
-    public Type     MissionType         { get => mMissionType; }
-    public String   MissionSpriteName   { get => mSpriteName; }
-    public int      MissionColor        { get => mMissionColor; set => mMissionColor = value; }
-    public int      MissionCount
+    public Type MissionType { get => mMissionType; }
+    public String MissionSpriteName { get => mSpriteName; }
+    public int MissionColor { get => mMissionColor; set => mMissionColor = value; }
+    public int MissionCount
     {
         get => mMissionCount;
         set
@@ -86,11 +153,11 @@ public class MissionInfo : Pool<MissionInfo>
         }
     }
 
-    private Type    mMissionType;
-    private int     mMissionColor;
-    private int     mMissionCount;
+    private Type mMissionType;
+    private int mMissionColor;
+    private int mMissionCount;
 
-    private string  mSpriteName;
+    private string mSpriteName;
 
     public void InitMissionInfo(Type missionType, int color, int count)
     {

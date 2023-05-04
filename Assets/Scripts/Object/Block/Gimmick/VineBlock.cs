@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VineBlock : Block
 {
-    private static WaitForSeconds mVineDelayTime = new WaitForSeconds(0.25f);
+    public static readonly WaitForSeconds mVineDelayTime = new WaitForSeconds(0.25f);
     public static bool IsVineHited;
     public static int VineBlockCount;
 

@@ -8,8 +8,6 @@ public class MissionManager : SceneSingleton<MissionManager>
 {
     private readonly string MAP_DATA_FILE_FORMAT = "DayMap_{0}";
     private readonly string TUTO_MAP_FILE_FORMAT = "TutorialMap_{0}";
-    private readonly string MISSION_DATA_FILE_NAME = "MissionDataList";
-    private readonly string REWARD_DATA_FILE_NAME = "RewardDataList";
 
     public bool IsMissionClear
     {
@@ -46,7 +44,6 @@ public class MissionManager : SceneSingleton<MissionManager>
     [Header("Reward")]
     [SerializeField] private Transform mRewardCellUITransform;
     [SerializeField] private GameObject mRewardCellUIPrefab;
-    public List<MissionInfo> MissionInfoList { get => mMissionInfoList; }
     public List<RewardData> SelectRewardDataList { get => mSelectRewardList; }
 
 
@@ -90,15 +87,12 @@ public class MissionManager : SceneSingleton<MissionManager>
     [SerializeField]
     private GameObject mMissionCellUIPrefab;
     private List<MissionCellUI> mMissionCellUIList = new List<MissionCellUI>();
-    private List<MissionInfo> mMissionInfoList = new List<MissionInfo>();
     private List<GameObject> mAllCollectEffectList = new List<GameObject>();
 
     [SerializeField]
-    private List<MissionData>[] mMissionDataListArr = new List<MissionData>[(int)EMissionLevel.Max];
-    private Queue<MissionData> mDayMissionDataQueue = new Queue<MissionData>();
+    private List<MissionDataPreset>[] mMissionDataListArr;
+    private List<MissionData> mDayMissionDataList = new List<MissionData>();
     private MissionData mCurrentMissionData;
-
-    private int[] mColorArr = { 0, 1, 2, 3, 4 };
 
     [Header("Reward")]
     [SerializeField]
@@ -113,20 +107,8 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     private void Awake()
     {
-        //얘는 1번만 하면 되는디....
-        var missionDataList = Utility.LoadCSVFile<MissionData>(MISSION_DATA_FILE_NAME);
-        foreach (var data in missionDataList)
-        {
-            // Area Check
-
-            // level Check
-            int level = (int)data.Level;
-            if (mMissionDataListArr[level] == null) { mMissionDataListArr[level] = new List<MissionData>(); }
-
-            mMissionDataListArr[level].Add(data);
-        }
-
-        mRewardDataList = Utility.LoadCSVFile<RewardData>(REWARD_DATA_FILE_NAME);
+        mMissionDataListArr = DataManager.Instance.MissionDataListArr;
+        mRewardDataList = DataManager.Instance.RewardDataList;
         CreateMissionCellUI();
     }
 
@@ -134,13 +116,14 @@ public class MissionManager : SceneSingleton<MissionManager>
     {
         for (int index = 0; index < 5; index++)
         {
-            mMissionCellUIList.Add(GameObjectPool.Instantiate<MissionCellUI>(mMissionCellUIPrefab, mMissionCellGridTransform));
+            var cellUI = GameObjectPool.Instantiate<MissionCellUI>(mMissionCellUIPrefab, mMissionCellGridTransform);
+            mMissionCellUIList.Add(cellUI);
             mMissionCellUIList[index].transform.SetAsLastSibling();
             mMissionCellUIList[index].gameObject.SetActive(false);
         }
     }
 
-    private MissionData CreateMissionDataList(EMissionLevel level)
+    private MissionDataPreset GetMissionDataPreset(EMissionLevel level)
     {
         if (mMissionDataListArr[(int)level] == null) { return null; }
         int count = mMissionDataListArr[(int)level].Count;
@@ -148,57 +131,8 @@ public class MissionManager : SceneSingleton<MissionManager>
 
         return mMissionDataListArr[(int)level][randIdx];
     }
-    private void CreateMissionInfoListByDataList(MissionData data)
-    {
-        ClearMissionInfoList();
-
-        // Template일때
-        if (data.IsTemplate)
-        {
-            // ColorArr 섞기
-            ShuffleColorArr();
-        }
-
-        for (int idx = 0; idx < data.MissionList.Count; ++idx)
-        {
-            var element = data.MissionList[idx];
-            if (data.IsTemplate)
-            {
-                // MissionColor가 인덱스로 사용된다.
-                element.MissionColor = mColorArr[element.MissionColor];
-            }
-            var info = MissionInfo.Instantiate();
-            info.InitMissionInfo(element);
 
 
-            mMissionInfoList.Add(info);
-        }
-    }
-    private void ShuffleColorArr()
-    {
-        int shuffleCount = Random.Range(3, 10);
-        for (int count = 0; count < shuffleCount; ++count)
-        {
-            int aIdx = Random.Range(0, 5);
-            int bIdx = Random.Range(0, 5);
-
-            int temp = mColorArr[aIdx];
-            mColorArr[aIdx] = mColorArr[bIdx];
-            mColorArr[bIdx] = temp;
-        }
-
-        Debug.Log($"{mColorArr[0]} /{mColorArr[1]} /{mColorArr[2]} /{mColorArr[3]} /{mColorArr[4]}");
-    }
-
-    private void ClearMissionInfoList()
-    {
-        int loopCount = mMissionInfoList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            MissionInfo.Destroy(mMissionInfoList[index]);
-        }
-        mMissionInfoList.Clear();
-    }
     public void ClearMissionCellUIList()
     {
         int loopCount = mMissionCellUIList.Count;
@@ -235,12 +169,12 @@ public class MissionManager : SceneSingleton<MissionManager>
     }
     public void CreateStageClearRewardDataList()
     {
-        //CostCalculator는 이제 사용하지 않음.
-
         // 기본 움직임 횟수 충전
         mBasicRewardList.Clear();
         mBasicRewardList.Add(GetRewardDataByNameGrade("MoveCount", 0));
         mBasicRewardList[0].RewardCount = 5;
+
+        if (mCurrentMissionData == null) { return; }
 
         int grade;
         int selectItemCount = 0; // 선택 아이템
@@ -379,8 +313,26 @@ public class MissionManager : SceneSingleton<MissionManager>
     /// </summary>
     public void SetStageInfo()
     {
-        mCurrentMissionData = mDayMissionDataQueue.Dequeue();
-        CreateMissionInfoListByDataList(mCurrentMissionData);
+        if (mCurrentMissionData != null)
+        {
+            MissionData.Destroy(mCurrentMissionData);
+        }
+        mCurrentMissionData = mDayMissionDataList[0];
+        mDayMissionDataList.RemoveAt(0);
+    }
+
+    public MissionData GetStageInfoByIndex(int index)
+    {
+        if (mDayMissionDataList == null) { return null; }
+        if (mDayMissionDataList.Count == 0) { return null; }
+        if (mDayMissionDataList.Count <= index) { return null; }
+
+        return mDayMissionDataList[index];
+    }
+
+    public void OnRemainCustomerButtonClicked()
+    {
+        PopupManager.Instance.CreatePopupByName("RemainCustomerPopup");
     }
 
     public void TakeStageClearReward()
@@ -420,12 +372,16 @@ public class MissionManager : SceneSingleton<MissionManager>
     /// </summary>
     public void CreateDayStageInfo()
     {
-        mDayMissionDataQueue.Clear();
+        mDayMissionDataList.Clear();
 
         foreach (var stageLevel in mTestStageList[mDayCount])
         {
             // 사용할 미션을 담아둔다.
-            mDayMissionDataQueue.Enqueue(CreateMissionDataList(stageLevel));
+            var missionDataPreset = GetMissionDataPreset(stageLevel);
+            var missionData = MissionData.Instantiate();
+            missionData.Init(missionDataPreset);
+
+            mDayMissionDataList.Add(missionData);
         }
     }
 
@@ -448,9 +404,8 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public void RefreshMissionCellUI()
     {
-        //ClearMissionCellUIList();
-
-        int missionCount = mMissionInfoList.Count;
+        if (mCurrentMissionData == null) { return; }
+        int missionCount = mCurrentMissionData.MissionInfoList.Count;
 
         for (int index = 0; index < 5; index++)
         {
@@ -460,10 +415,8 @@ public class MissionManager : SceneSingleton<MissionManager>
                 continue;
             }
 
-            // mMissionCellUIList.Add(GameObjectPool.Instantiate<MissionCellUI>(mMissionCellUIPrefab, mMissionCellGridTransform));
-            mMissionCellUIList[index].InitCellUI(mMissionInfoList[index]);
+            mMissionCellUIList[index].InitCellUI(mCurrentMissionData.MissionInfoList[index]);
             mMissionCellUIList[index].gameObject.SetActive(true);
-            //mMissionCellUIList[index].transform.SetAsLastSibling();
         }
         ObserverCenter.Instance.SendNotification(Message.RefreshMission);
     }
@@ -501,25 +454,27 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public MissionInfo GetMissionInfoByType(System.Type checkType)
     {
-        int loopCount = mMissionInfoList.Count;
+        if (mCurrentMissionData == null) { return null; }
+        int loopCount = mCurrentMissionData.MissionInfoList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (mMissionInfoList[index].MissionType != checkType) { continue; }
-            if (mMissionInfoList[index].MissionCount <= 0) { continue; }
-            return mMissionInfoList[index];
+            if (mCurrentMissionData.MissionInfoList[index].MissionType != checkType) { continue; }
+            if (mCurrentMissionData.MissionInfoList[index].MissionCount <= 0) { continue; }
+            return mCurrentMissionData.MissionInfoList[index];
         }
         return null;
     }
     public bool IsMissionBlock(System.Type checkType, int blockColor)
     {
-        int loopCount = mMissionInfoList.Count;
+        if (mCurrentMissionData == null) { return false; }
+        int loopCount = mCurrentMissionData.MissionInfoList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (mMissionInfoList[index].MissionType != checkType) { continue; }
-            if (mMissionInfoList[index].MissionCount <= 0) { continue; }
-            if (mMissionInfoList[index].MissionColor >= 0)
+            if (mCurrentMissionData.MissionInfoList[index].MissionType != checkType) { continue; }
+            if (mCurrentMissionData.MissionInfoList[index].MissionCount <= 0) { continue; }
+            if (mCurrentMissionData.MissionInfoList[index].MissionColor >= 0)
             {
-                if (mMissionInfoList[index].MissionColor != blockColor) { continue; }
+                if (mCurrentMissionData.MissionInfoList[index].MissionColor != blockColor) { continue; }
             }
             return true;
         }

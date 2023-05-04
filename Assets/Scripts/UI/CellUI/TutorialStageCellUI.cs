@@ -20,6 +20,6 @@ public class TutorialStageCellUI : MonoBehaviour
         PlayDataManager.Instance.ConceptName = CONCEPT_NAME;
         PlayDataManager.Instance.MapName = string.Format("TutorialMap_{0}", mTutoIndex);
 
-        TitleSceneManager.Instance.StartGame();
+        LobbySceneManager.Instance.StartGame();
     }
 }

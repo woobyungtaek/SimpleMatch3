@@ -56,11 +56,7 @@ public class TutorialEndPopup : Popup
     }
     public void OnTitleSceneButtonClicked()
     {
-        if (!SceneLoader.IsExist)
-        {
-            Instantiate(Resources.Load("Prefabs/SceneLoader"));
-        }
-        SceneLoader.Instance.LoadSceneByName("TitleScene");
+        SceneLoader.Instance.LoadSceneByName("LobbyScene");
     }
     public void OnQuitGameButtonClicked()
     {

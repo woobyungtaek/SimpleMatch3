@@ -206,6 +206,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         yield return GameConfig.yieldGameEndDuration;
         yield return null;
 
+        // StageFailPopup이 떠야함
         PopupManager.Instance.CreatePopupByName("StageFailPopup");
     }
 

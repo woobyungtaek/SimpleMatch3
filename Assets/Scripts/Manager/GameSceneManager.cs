@@ -20,6 +20,7 @@ public class GameSceneManager : MonoBehaviour
     [Header("Game Scene Direction")]
     [SerializeField] private Camera mMainCamera;
     [SerializeField] private GameObject mCharacter;
+    [SerializeField] private GameObject mSpeachBubble;
     [SerializeField] private Transform mUpPos;
     [SerializeField] private Transform mGamePos;
     private readonly Vector3 DepthPos = new Vector3(0, 0, -10f);
@@ -29,6 +30,10 @@ public class GameSceneManager : MonoBehaviour
 
     private void Awake()
     {
+#if UNITY_ANDROID || UNITY_IOS
+        AdsManager.Instance.Init();
+#endif
+
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         ObserverCenter.Instance.AddObserver(ExecuteChagneMapDataInfoByNoti, Message.ChangeMapInfo);
@@ -146,20 +151,23 @@ public class GameSceneManager : MonoBehaviour
     private void Sequence_CharacterEnter()
     {
         // 등장 시퀀스
-        mCharacter.transform.localPosition = new Vector3(0, 4f, 0);
-        mCharacter.transform.localScale = Vector3.one * 0.5f;
-        mCharacter.transform.Scale(Vector3.one, 1f);
-        mCharacter.transform.MoveLocal(new Vector3(0, 3, 0), 1f)
+        // Right > Left 
+        mCharacter.transform.localPosition = new Vector3(6.5f, 2.5f, 0);
+        mCharacter.transform.MoveLocal(new Vector3(1.5f, 2.5f, 0), 1f)
             .OnComplete(() => { Sequence_CharacterOrder(); });
     }
 
     private void Sequence_CharacterOrder()
     {
         MissionManager.Instance.SetStageInfo();
-        mCharacter.transform.Scale(Vector3.one * 1.2f, 1f).SetEase(mCurve_Order)
-            .OnComplete(() =>
-            {
-                Sequence_CameraDown();
+
+        mSpeachBubble.transform.Scale(Vector3.one, 0.5f)
+            .OnComplete(() => {
+                mSpeachBubble.transform.Scale(Vector3.zero, 0.5f).SetDelay(0.75f)
+                .OnComplete(() =>
+                {
+                    Sequence_CameraDown();
+                });
             });
     }
 
@@ -176,7 +184,7 @@ public class GameSceneManager : MonoBehaviour
     }
     private void Sequence_CharacterOut()
     {
-        mCharacter.transform.MoveLocal(mCharacter.transform.localPosition + new Vector3(-5, 0, 0), 1f)
+        mCharacter.transform.MoveLocal(new Vector3(-6.5f, 2.5f, 0), 1f)
             .OnComplete(() => {
                 PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.StageSuccess);
             });

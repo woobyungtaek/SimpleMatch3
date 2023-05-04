@@ -12,7 +12,6 @@ public class StageSuccessPopup : Popup
     [SerializeField] private RewardData mSelectedReward;
     [SerializeField] private GameObject mSelectCellUIPrefab;
     [SerializeField] private GridLayoutGroup mSelectRewardCellGrid;
-    [SerializeField] private GameObject mSelectImage;
     [SerializeField] private List<GameObject> mSelectUiObjectList = new List<GameObject>();
     private List<SelectRewardCellUI> mSelectRewardCellList = new List<SelectRewardCellUI>();
     private object[] mRewardParam = new object[1];
@@ -46,15 +45,6 @@ public class StageSuccessPopup : Popup
 
     public void OnSelectRewardButtonClicked(SelectRewardCellUI cellUI)
     {
-        //if(mSelectedReward == cellUI.CellRewardData)
-        //{
-        //    OnCancelButtonClicked();
-        //    return;
-        //}
-        //mSelectImage.transform.position = cellUI.transform.position;
-        //mSelectImage.SetActive(true);
-
-
         mSelectedReward = cellUI.CellRewardData;
         OnCancelButtonClicked();
 
@@ -65,21 +55,11 @@ public class StageSuccessPopup : Popup
         }
     }
 
-    private void Awake()
-    {
-        mPopupAniInfo.Start = GetDownPos(transform as RectTransform);
-        mPopupAniInfo.End = Vector3.zero;
-
-        mCloseAniInfo.Start = Vector3.zero;
-        mCloseAniInfo.End = GetUpPos(transform as RectTransform);
-    }
-
     public override void Init()
     {
         base.Init();
 
         mSelectedReward = null;
-        mSelectImage.SetActive(false);
         CreateSelectRewardMissionCellUI(MissionManager.Instance.SelectRewardDataList);
     }
     public void OnCancelButtonClicked()

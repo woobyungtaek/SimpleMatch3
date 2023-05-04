@@ -52,9 +52,9 @@ public partial class BTTransformTween
     private System.Action mCompleteFunc;
     private System.Action mStartFunc;
 
-    public Vector3 From { set => mFrom = value; }
-    public Vector3 To { set => mTo = value; }
-    public float Duration { set => mDuration = value; }
+    public Vector3 From     { set => mFrom = value; }
+    public Vector3 To       { set => mTo = value; }
+    public float Duration   { set => mDuration = value; }
 
 
     public void Init(Transform transform)

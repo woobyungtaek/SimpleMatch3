@@ -48,6 +48,7 @@ public class Popup : MonoBehaviour
     }
 
     [Header("Popup Ani")]
+    [SerializeField] protected Transform mPopupAniTransform;
     [SerializeField] protected PopupAniInfo mPopupAniInfo;
     [SerializeField] protected PopupAniInfo mCloseAniInfo;
 
@@ -86,6 +87,11 @@ public class Popup : MonoBehaviour
 
     public virtual void Init()
     {
+        if(mPopupAniTransform == null)
+        {
+            mPopupAniTransform = transform;
+        }
+
         OnDimmied = true;
         if (CurrentPopupObj != null)
         {
@@ -180,7 +186,7 @@ public class Popup : MonoBehaviour
 
     private IEnumerator PopupAni_Pop(PopupAniInfo info)
     {
-        transform.localScale = info.Start;
+        mPopupAniTransform.localScale = info.Start;
         float time = 0;
         float value = 0;
         while (value < 1f)
@@ -188,7 +194,7 @@ public class Popup : MonoBehaviour
             yield return null;
             time += Time.unscaledDeltaTime;
             value = time / info.Duration;
-            transform.localScale = Vector3.LerpUnclamped(info.Start, info.End, info.AniCurve.Evaluate(value));
+            mPopupAniTransform.localScale = Vector3.LerpUnclamped(info.Start, info.End, info.AniCurve.Evaluate(value));
         }
 
         InputBlockDimmed.SetActive(false);
@@ -197,7 +203,7 @@ public class Popup : MonoBehaviour
 
     private IEnumerator PopupAni_Slide(PopupAniInfo info)
     {
-        transform.localPosition = info.Start;
+        mPopupAniTransform.localPosition = info.Start;
         float time = 0;
         float value = 0;
 
@@ -206,7 +212,7 @@ public class Popup : MonoBehaviour
             yield return null;
             time += Time.unscaledDeltaTime;
             value = time / 0.5f;
-            transform.localPosition = Vector3.LerpUnclamped(info.Start, info.End, info.AniCurve.Evaluate(value));
+            mPopupAniTransform.localPosition = Vector3.LerpUnclamped(info.Start, info.End, info.AniCurve.Evaluate(value));
         }
 
         InputBlockDimmed.SetActive(false);

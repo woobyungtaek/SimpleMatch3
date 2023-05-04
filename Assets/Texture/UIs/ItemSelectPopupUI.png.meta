@@ -23,6 +23,12 @@ TextureImporter:
   - first:
       213: -4185411765606549154
     second: ItemSelectPopupUI_6
+  - first:
+      213: -8809312301495474284
+    second: ItemSelectPopupUI_7
+  - first:
+      213: -5521721722075263890
+    second: ItemSelectPopupUI_8
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -45,7 +51,6 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -158,7 +163,7 @@ TextureImporter:
         width: 41
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 10, y: 0, z: 10, w: 0}
       outline: []
       physicsShape: []
@@ -179,7 +184,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 8, y: 8, z: 8, w: 8}
       outline: []
       physicsShape: []
@@ -200,7 +205,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 11, y: 11, z: 12, w: 11}
       outline: []
       physicsShape: []
@@ -221,7 +226,7 @@ TextureImporter:
         width: 41
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -242,7 +247,7 @@ TextureImporter:
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 13, y: 12, z: 13, w: 13}
       outline: []
       physicsShape: []
@@ -263,7 +268,7 @@ TextureImporter:
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 23, y: 22, z: 10, w: 9}
       outline: []
       physicsShape: []
@@ -284,7 +289,7 @@ TextureImporter:
         width: 1
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -292,6 +297,48 @@ TextureImporter:
       bones: []
       spriteID: e59f748ac2e6ae5c0800000000000000
       internalID: -4185411765606549154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ItemSelectPopupUI_7
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49722e1b2290fb580800000000000000
+      internalID: -8809312301495474284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ItemSelectPopupUI_8
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6c452f5957ee53b0800000000000000
+      internalID: -5521721722075263890
       vertices: []
       indices: 
       edges: []
@@ -306,14 +353,6 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      ItemSelectPopupUI_0: -2724558838527232326
-      ItemSelectPopupUI_1: -715149787376277989
-      ItemSelectPopupUI_2: 8269733148490869527
-      ItemSelectPopupUI_3: -5196181838373347626
-      ItemSelectPopupUI_4: 940980890816771600
-      ItemSelectPopupUI_5: 4662044243005677547
-      ItemSelectPopupUI_6: -4185411765606549154
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

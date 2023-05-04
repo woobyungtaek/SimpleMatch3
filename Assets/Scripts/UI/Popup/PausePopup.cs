@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using GoogleMobileAds.Api;
+
 public class PausePopup : Popup
 {
     public override void Init()
@@ -13,11 +15,11 @@ public class PausePopup : Popup
 
     public void TestBannerLoad()
     {
-        GoogleMobileAdsDemoScirpt.Instance.LoadAd();
+        AdsManager.Instance.LoadAd();
     }
     public void TestRewardLoad()
     {
-        GoogleMobileAdsDemoScirpt.Instance.ShowRewardAd();
+        AdsManager.Instance.ShowRewardAd((Reward reward) => { Debug.Log($"{reward.Type} / {reward.Amount}"); });
     }
 
     public void OnCancelButtonClicked()
@@ -41,11 +43,7 @@ public class PausePopup : Popup
     {
         ClosePopup();
 
-        if (!SceneLoader.IsExist)
-        {
-            Instantiate(Resources.Load("Prefabs/SceneLoader"));
-        }
-        SceneLoader.Instance.LoadSceneByName("TitleScene");
+        SceneLoader.Instance.LoadSceneByName("LobbyScene");
     }
     public void OnQuitGameButtonClicked()
     {

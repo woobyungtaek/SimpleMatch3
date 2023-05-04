@@ -14,15 +14,24 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
     [SerializeField] private TextMeshProUGUI mMissionCountText;
 
     [SerializeField] private MissionInfo mMissionInfo;
-  
-    public void InitCellUI(MissionInfo missionInfo)
+
+    private void Start()
     {
         ObserverCenter.Instance.AddObserver(CellRefreshByFakeCount, Message.RefreshMissionCellUI);
 
 #if UNITY_EDITOR
         ObserverCenter.Instance.AddObserver(Cheat_ClearMission, Message.ClearMissionCheat);
-#endif
+#endif 
+    }
 
+    //private void OnDestroy()
+    //{
+    //    ObserverCenter.Instance.RemoveObserver(Message.RefreshMissionCellUI, CellRefreshByFakeCount);
+    //    ObserverCenter.Instance.RemoveObserver(Message.ClearMissionCheat, Cheat_ClearMission);
+    //}
+
+    public void InitCellUI(MissionInfo missionInfo)
+    {
         mMissionInfo = missionInfo;
 
         mFakeCount = mMissionInfo.MissionCount;
