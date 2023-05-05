@@ -36,6 +36,11 @@ public class PlayerSkill : IReUseObject
     public virtual void DoSkill(Tile tile) { }
     public virtual void DoSkill(Tile tile1, Tile tile2) { }
 
+    protected void IncreaseItemUseCount()
+    {
+        TileMapManager.Instance.IncreaseItemUseCount();
+    }
+
     protected SkillNotiArgs GetNotiArgs()
     {
         var noti = ObjectPool.GetInst<SkillNotiArgs>();
@@ -74,6 +79,8 @@ public class HammerSkill : PlayerSkill
 
     public override void DoSkill(Tile tile)
     {
+        IncreaseItemUseCount();
+
         tile.HitTile(false);
         SkillCount--;
         mButtonObj.RefreshSkillInfo();
@@ -135,6 +142,7 @@ public class RandomBoxSkill : PlayerSkill
             blockColor = mission.MissionColor;
         }
 
+        IncreaseItemUseCount();
         SkillCount--;
         mButtonObj.RefreshSkillInfo();
         selectTile.RemoveBlockContainer();
@@ -176,6 +184,8 @@ public class BlockSwapSkill : PlayerSkill
 
         tile1.BlockContainerOrNull.transform.position = tile1.transform.position;
         tile2.BlockContainerOrNull.transform.position = tile2.transform.position;
+        
+        IncreaseItemUseCount();
 
         // 스킬사용 및 매치 체크
         SkillCount--;
@@ -231,6 +241,8 @@ public class ColorChangeSkill : PlayerSkill
             int hp = bc.MainBlock.BlockHP;
             bc.MainBlock.SetBlockData(changeNum, hp);
         }
+
+        IncreaseItemUseCount();
 
         // 스킬사용 및 매치 체크
         SkillCount--;

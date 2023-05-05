@@ -54,7 +54,7 @@ public class PlayerSkillButton : MonoBehaviour
     public void OnButtonClicked()
     {
         if(mCurrentSkill.SkillCount <= 0) { return; }
-        
+
         CurrentActiveSkill = mCurrentSkill;
         mCurrentSkill.OnButtonClicked(this);
     }

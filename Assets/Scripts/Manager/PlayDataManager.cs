@@ -23,6 +23,9 @@ public class PlayDataManager : Singleton<PlayDataManager>
     /// </summary>
     public int ChapterNumber;
 
-    public string MapGimmickName;
-    public string MapGimmickCheckName;
+    /// <summary>
+    /// 챕터 기믹
+    /// 맵 기믹에 대한 정보
+    /// </summary>
+    public MapGimmickInfo ChapterMapGimmickInfo;
 }

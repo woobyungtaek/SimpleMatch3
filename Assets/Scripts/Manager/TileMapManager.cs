@@ -106,10 +106,10 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private int TestComboCount;
 
     // 맵 기믹 : 맵별 기믹
-    [SerializeField] private string mMapGimmickName;
-    [SerializeField] private string mMapGimmickCheckName;
-    private System.Func<bool> mMapGimmickCheckFunc;
-    private System.Action mMapGimmickFunc;
+    [SerializeField] private string mTestMapGimmickName;
+    [SerializeField] private string mTestMapGimmickCheckName;
+    [SerializeField] private int mTestMapGimmickExcuteCount;
+    private MapGimmickInfo mMapGimmickInfo; // 맘에안들어
 
     private void Awake()
     {
@@ -184,23 +184,22 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
     private void SetMapGimmick()
     {
-        mMapGimmickFunc = null;
-        mMapGimmickCheckFunc = null;
-
         if (PlayDataManager.IsExist)
         {
-            var dataManager = PlayDataManager.Instance;
-            mMapGimmickName = dataManager.MapGimmickName;
-            mMapGimmickCheckName = dataManager.MapGimmickCheckName;
+            mMapGimmickInfo = PlayDataManager.Instance.ChapterMapGimmickInfo;
+            mMapGimmickInfo.Init();
+            return;
         }
 
-        System.Reflection.MethodInfo methodInfo = MapGimmickMethodBook.GetMapGimmickMethod(mMapGimmickName);
-        if (methodInfo == null) { return; }
-        mMapGimmickFunc = (System.Action)methodInfo.CreateDelegate(typeof(System.Action));
+        if(mMapGimmickInfo == null)
+        {
+            mMapGimmickInfo = new MapGimmickInfo();
+        }
 
-        methodInfo = MapGimmickMethodBook.GetMapGimmickMethod(mMapGimmickCheckName);
-        if (methodInfo == null) { mMapGimmickFunc = null; return; }
-        mMapGimmickCheckFunc = (System.Func<bool>)methodInfo.CreateDelegate(typeof(System.Func<bool>));
+        mMapGimmickInfo.MapGimmickName = mTestMapGimmickName;
+        mMapGimmickInfo.MapGimmickCheckName = mTestMapGimmickCheckName;
+        mMapGimmickInfo.ExcuteCheckCount = mTestMapGimmickExcuteCount;
+        mMapGimmickInfo.Init();
     }
 
     /*상태변화시 실행*/
@@ -634,6 +633,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
         if (PuzzleInputManager.SelectTileOrNull != null && PuzzleInputManager.TargetTileOrNull != null)
         {
+            mMapGimmickInfo.MoveUseCount++;
             MoveCount -= 1;
         }
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
@@ -688,15 +688,11 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
 
         #region 맵 기믹 실행
-        bool bMapGimmick = false;
-        if (mMapGimmickCheckFunc != null)
+        if(mMapGimmickInfo.IsExcutePossible)
         {
-            bMapGimmick = mMapGimmickCheckFunc.Invoke();
-        }
-        if (bMapGimmick)
-        {
-            mMapGimmickFunc?.Invoke();
+            mMapGimmickInfo.ExcuteMapGimmick();
 
+            // yield return null;
             // 리턴 스왑이 아니라 MatchCheck일수도 있겠네...
             // eNextState = EGameState.MatchCheck;
         }
@@ -830,6 +826,10 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             //콜레팅 이펙트가 끝날때 까지 대기해야함, 간단하게 Max시간만큼 대기
             yield return MissionCollectEffect.MaxDuration;
             ObserverCenter.Instance.SendNotification(Message.CameraUp);
+
+            // 손님 클리어수 증가
+            mMapGimmickInfo.OrderClearCount++;
+
             yield break;
         }
         if (MoveCount <= 0)
@@ -1652,5 +1652,12 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         targetTileList.Clear();
 
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
+    }
+
+
+    // 아이템사용, 오더클리어 카운트 증가
+    public void IncreaseItemUseCount()
+    {
+        mMapGimmickInfo.ItemUseCount++;
     }
 }
