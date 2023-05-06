@@ -1997,8 +1997,9 @@ MonoBehaviour:
   mSquareMatchInfoList: []
   TestComboCount: 0
   mTestMapGimmickName: Add_VineBlock
-  mTestMapGimmickCheckName: OrderCountCheck
-  mTestMapGimmickExcuteCount: 1
+  mTestMapGimmickCheckName: MoveCountCheck
+  mTestMapGimmickExcuteCount: 5
+  mTestGimmickCount: 3
 --- !u!1 &918871405
 GameObject:
   m_ObjectHideFlags: 0

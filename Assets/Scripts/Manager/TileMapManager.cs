@@ -109,6 +109,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private string mTestMapGimmickName;
     [SerializeField] private string mTestMapGimmickCheckName;
     [SerializeField] private int mTestMapGimmickExcuteCount;
+    [SerializeField] private int mTestGimmickCount;
     private MapGimmickInfo mMapGimmickInfo; // 맘에안들어
 
     private void Awake()
@@ -199,6 +200,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         mMapGimmickInfo.MapGimmickName = mTestMapGimmickName;
         mMapGimmickInfo.MapGimmickCheckName = mTestMapGimmickCheckName;
         mMapGimmickInfo.ExcuteCheckCount = mTestMapGimmickExcuteCount;
+        mMapGimmickInfo.GimickCount = mTestGimmickCount;
         mMapGimmickInfo.Init();
     }
 
@@ -690,8 +692,14 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         #region 맵 기믹 실행
         if(mMapGimmickInfo.IsExcutePossible)
         {
+            mMapGimmickInfo.ENextGameState = EGameState.None;
             mMapGimmickInfo.ExcuteMapGimmick();
-
+            if (mMapGimmickInfo.ENextGameState != EGameState.None)
+            {
+                // 근데 아래쪽에서 더 중요한것으로 대체되어야한다.
+                // 리턴 스왑 보단 MatchCheck가 우선순위가 높다.
+                eNextState = mMapGimmickInfo.ENextGameState;
+            }
             // yield return null;
             // 리턴 스왑이 아니라 MatchCheck일수도 있겠네...
             // eNextState = EGameState.MatchCheck;
@@ -1071,6 +1079,40 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         ReuseTileList.Destroy(reuseTileList);
         return resultTile;
     }
+    public void GetRandomNormalTileList(List<Tile> result, int count, int shuffleCount = 64)
+    {
+        if (mNormalTileList.Count <= 0) { return; }
+
+        // 전체 타일수를 넘길수는 없다.
+        count = Mathf.Min(mNormalTileList.Count, count);
+
+
+        // 중복없는 타일 선정
+        ReuseTileList reuseTileList = ReuseTileList.Instantiate();
+        for(int cnt = 0; cnt < mNormalTileList.Count; ++cnt)
+        {
+            reuseTileList.tileList.Add(mNormalTileList[cnt]);
+        }
+   
+        for(int cnt = 0; cnt < shuffleCount; ++cnt)
+        {
+            int idx_0 = Random.Range(0, mNormalTileList.Count);
+            int idx_1 = Random.Range(0, mNormalTileList.Count);
+
+            var temp = reuseTileList.tileList[idx_0];
+            reuseTileList.tileList[idx_0] = reuseTileList.tileList[idx_1];
+            reuseTileList.tileList[idx_1] = temp;
+        }
+
+        result.Clear();
+        for (int cnt = 0; cnt < count; ++cnt)
+        {
+            result.Add(reuseTileList.tileList[cnt]);
+        }
+
+        ReuseTileList.Destroy(reuseTileList);
+    }
+
     public void CreateTileListByAllClearArea(List<Tile> resultList)
     {
         int loopCount = mNormalTileList.Count;
