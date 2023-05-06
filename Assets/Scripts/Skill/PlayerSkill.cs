@@ -81,7 +81,7 @@ public class HammerSkill : PlayerSkill
     {
         IncreaseItemUseCount();
 
-        tile.HitTile(false);
+        tile.HitTile(true);
         SkillCount--;
         mButtonObj.RefreshSkillInfo();
         ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);

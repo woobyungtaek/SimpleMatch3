@@ -1996,10 +1996,8 @@ MonoBehaviour:
   mDuplicateMatchInfoList: []
   mSquareMatchInfoList: []
   TestComboCount: 0
-  mTestMapGimmickName: Add_VineBlock
-  mTestMapGimmickCheckName: MoveCountCheck
-  mTestMapGimmickExcuteCount: 5
-  mTestGimmickCount: 3
+  mTestMapGimmickInfo: {fileID: 11400000, guid: c1e60f2ebc74fe54a84d509fca564e90,
+    type: 2}
 --- !u!1 &918871405
 GameObject:
   m_ObjectHideFlags: 0

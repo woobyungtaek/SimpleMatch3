@@ -52,6 +52,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
     [Header("StageInfo")]
     [SerializeField] private int mMoveCount;
+    private bool IsPlayerInputMove;
 
     [Header("TileMapData")]
     [SerializeField] private Transform mMoveCountUI;
@@ -93,7 +94,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     private List<Tile> remainChainList = new List<Tile>();
     private List<Tile> hitTileList = new List<Tile>();
     private List<Tile> mSquareTileList = new List<Tile>();
-
     //타일 리스트 : 매치 체크리스트
     private List<ReuseTileList> mChainListList = new List<ReuseTileList>();
     private List<ReuseTileList> mAllVerticalListList = new List<ReuseTileList>();
@@ -106,11 +106,9 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private int TestComboCount;
 
     // 맵 기믹 : 맵별 기믹
-    [SerializeField] private string mTestMapGimmickName;
-    [SerializeField] private string mTestMapGimmickCheckName;
-    [SerializeField] private int mTestMapGimmickExcuteCount;
-    [SerializeField] private int mTestGimmickCount;
-    private MapGimmickInfo mMapGimmickInfo; // 맘에안들어
+    [SerializeField] private MapGimmickInfo mTestMapGimmickInfo;
+
+    private MapGimmickInfo mMapGimmickInfo;
 
     private void Awake()
     {
@@ -197,10 +195,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             mMapGimmickInfo = new MapGimmickInfo();
         }
 
-        mMapGimmickInfo.MapGimmickName = mTestMapGimmickName;
-        mMapGimmickInfo.MapGimmickCheckName = mTestMapGimmickCheckName;
-        mMapGimmickInfo.ExcuteCheckCount = mTestMapGimmickExcuteCount;
-        mMapGimmickInfo.GimickCount = mTestGimmickCount;
+        mMapGimmickInfo = mTestMapGimmickInfo;
         mMapGimmickInfo.Init();
     }
 
@@ -636,6 +631,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         if (PuzzleInputManager.SelectTileOrNull != null && PuzzleInputManager.TargetTileOrNull != null)
         {
             mMapGimmickInfo.MoveUseCount++;
+            IsPlayerInputMove = true;
             MoveCount -= 1;
         }
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
@@ -855,9 +851,10 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             yield break;
         }
 
-        if (IsMatched)
+        if (IsMatched && IsPlayerInputMove)
         {
-            // 무브 카운트가 감소한 경우만
+            // 플레이어가 입력해서 매치된 경우만 Gimmick 실행
+            IsPlayerInputMove = false;
 
             // 드랍이 모두 끝나고 매치가 더 없는 시점
             // 각종 기믹이 실행 되고 리턴스왑 호출
