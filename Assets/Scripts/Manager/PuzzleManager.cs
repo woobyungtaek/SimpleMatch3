@@ -164,8 +164,8 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
     private IEnumerator StageSuccessCoroutine()
     {
         //공통 실행
-        bool bLastStage = MissionManager.Instance.IsLastStageInDay;
-        if (MissionManager.Instance.IsLastDay && bLastStage)
+        bool bLastStage = MissionManager.Instance.IsLastStageInPart;
+        if (MissionManager.Instance.IsLastPart && bLastStage)
         {
             yield return GameConfig.yieldGameEndDuration;
             yield return null;

@@ -23,6 +23,13 @@ public class PlayDataManager : Singleton<PlayDataManager>
     /// </summary>
     public int ChapterNumber;
 
+
+    /// <summary>
+    /// 챕터 별 난이도 데이터
+    /// Stage들의 난이도 데이터가 정해져 있다.
+    /// </summary>
+    public ChapterData CurrentChapterData;
+
     /// <summary>
     /// 챕터 기믹
     /// 맵 기믹에 대한 정보

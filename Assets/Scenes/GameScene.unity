@@ -4531,8 +4531,9 @@ MonoBehaviour:
   mRewardCellUITransform: {fileID: 1659780410}
   mRewardCellUIPrefab: {fileID: 1008425632694493388, guid: a19908520d738374493432fa57eb0930,
     type: 3}
-  mDayCount: 0
+  mPartCount: 0
   mStageCount: 0
+  mChapterData: {fileID: 11400000, guid: 6f773d10bf0857442bd4ac853dddbf39, type: 2}
   mDayCountText: {fileID: 877968915833617774}
   mOrderCountText: {fileID: 877968916716206705}
   mMissionCellGridTransform: {fileID: 1712113280}

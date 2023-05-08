@@ -23,23 +23,21 @@ public class MissionManager : SceneSingleton<MissionManager>
             return true;
         }
     }
-    public bool IsLastStageInDay
+    public bool IsLastStageInPart
     {
         get
         {
             //현재 스테이지가 Day의 가장 마지막 스테이지 인지 확인합니다.
-            return (mStageCount + 1) >= mTestStageList[mDayCount].Count;
+            return (mStageCount + 1) >= mChapterData.GetStageCount(mPartCount);
         }
     }
-    public bool IsLastDay
+    public bool IsLastPart
     {
         get
         {
-            return (mDayCount + 1) >= mTestStageList.Count;
+            return (mPartCount + 1) >= mChapterData.PartCount;
         }
     }
-
-    public int DayCount { get => mDayCount; }
 
     [Header("Reward")]
     [SerializeField] private Transform mRewardCellUITransform;
@@ -48,31 +46,10 @@ public class MissionManager : SceneSingleton<MissionManager>
 
 
     [Header("Stage")]
-    [SerializeField] private int mDayCount = 0;
+    [SerializeField] private int mPartCount = 0;
     [SerializeField] private int mStageCount = 0;
     private int mRewardMoveCount = 0;
-    private List<List<EMissionLevel>> mTestStageList
-        = new List<List<EMissionLevel>>()
-        {
-            new List<EMissionLevel>()
-            {
-                EMissionLevel.VeryEasy, EMissionLevel.Easy,
-                EMissionLevel.VeryEasy,EMissionLevel.Easy,EMissionLevel.Normal
-            },
-            new List<EMissionLevel>()
-            {
-                EMissionLevel.VeryEasy, EMissionLevel.Easy,
-                EMissionLevel.VeryEasy,EMissionLevel.Easy,EMissionLevel.Normal,
-                EMissionLevel.Easy,EMissionLevel.Easy,EMissionLevel.Hard,
-            },
-            new List<EMissionLevel>()
-            {
-                EMissionLevel.VeryEasy, EMissionLevel.Easy, EMissionLevel.Easy,
-                EMissionLevel.VeryEasy,EMissionLevel.Easy,EMissionLevel.Normal,
-                EMissionLevel.Easy,EMissionLevel.Easy,EMissionLevel.Hard,
-                EMissionLevel.VeryEasy,EMissionLevel.Normal,EMissionLevel.VeryHard
-            }
-        };
+    [SerializeField]  private ChapterData mChapterData;
 
     [Header("Mission")]
     [SerializeField] private TextMeshProUGUI mDayCountText;
@@ -199,7 +176,7 @@ public class MissionManager : SceneSingleton<MissionManager>
                 break;
         }
 
-        if (IsLastStageInDay && IsLastDay)
+        if (IsLastStageInPart && IsLastPart)
         {
             selectItemCount = 0;
         }
@@ -243,7 +220,7 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public void ResetGameInfoByGameOver()
     {
-        mDayCount = 0;
+        mPartCount = 0;
         mStageCount = 0;
         //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
         ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
@@ -255,10 +232,10 @@ public class MissionManager : SceneSingleton<MissionManager>
         {
             data.ConceptName = PlayDataManager.Instance.ConceptName;
         }
-        data.MapName = string.Format(MAP_DATA_FILE_FORMAT, mDayCount);
+        data.MapName = string.Format(MAP_DATA_FILE_FORMAT, mPartCount);
         if (data.ConceptName == "Tutorial")
         {
-            data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mDayCount);
+            data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mPartCount);
         }
 
         ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
@@ -268,7 +245,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         TileMapManager.Instance.MoveCount = mapdata.moveCount;
 
         //게임 시작을 체크하는 부분을 따로 정확하게 만들어야한다.
-        if (mDayCount == 0)
+        if (mPartCount == 0)
         {
             //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
             ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
@@ -297,13 +274,13 @@ public class MissionManager : SceneSingleton<MissionManager>
     public void SetNextStageInfo()
     {
         mStageCount += 1;
-        if (mStageCount >= mTestStageList[mDayCount].Count)
+        if (mStageCount >= mChapterData.GetStageCount(mPartCount))
         {
             mStageCount = 0;
-            mDayCount += 1;
-            if (mDayCount >= mTestStageList.Count)
+            mPartCount += 1;
+            if (mPartCount >= mChapterData.PartCount)
             {
-                mDayCount = 0;
+                mPartCount = 0;
             }
         }
     }
@@ -351,7 +328,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     }
     public void TakeBasicReward()
     {
-        if (!IsLastStageInDay)
+        if (!IsLastStageInPart)
         {
             // 기본 보상 획득(무빙 추가)
             foreach (var basicReward in mBasicRewardList)
@@ -372,9 +349,14 @@ public class MissionManager : SceneSingleton<MissionManager>
     /// </summary>
     public void CreateDayStageInfo()
     {
+        if(PlayDataManager.IsExist)
+        {
+            mChapterData = PlayDataManager.Instance.CurrentChapterData;
+        }
+
         mDayMissionDataList.Clear();
 
-        foreach (var stageLevel in mTestStageList[mDayCount])
+        foreach (var stageLevel in mChapterData.MissionLevelList[mPartCount].list)
         {
             // 사용할 미션을 담아둔다.
             var missionDataPreset = GetMissionDataPreset(stageLevel);
@@ -398,8 +380,8 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public void RefreshDayOrderUI()
     {
-        mDayCountText.text = $"{mDayCount + 1}";
-        mOrderCountText.text = $"{mTestStageList[mDayCount].Count - mStageCount}";
+        mDayCountText.text = $"{mPartCount + 1}";
+        mOrderCountText.text = $"{mChapterData.GetStageCount(mPartCount) - mStageCount}";
     }
 
     public void RefreshMissionCellUI()
