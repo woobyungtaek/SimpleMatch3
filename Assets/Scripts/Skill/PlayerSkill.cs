@@ -82,8 +82,7 @@ public class HammerSkill : PlayerSkill
         IncreaseItemUseCount();
 
         tile.HitTile(true);
-        SkillCount--;
-        mButtonObj.RefreshSkillInfo();
+        mButtonObj.SkillUse();
         ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
@@ -143,8 +142,7 @@ public class RandomBoxSkill : PlayerSkill
         }
 
         IncreaseItemUseCount();
-        SkillCount--;
-        mButtonObj.RefreshSkillInfo();
+        mButtonObj.SkillUse();
         selectTile.RemoveBlockContainer();
         BlockManager.Instance.CreateBlockByBlockDataInTile(selectTile, blockType, blockColor, blockHp);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
@@ -188,8 +186,7 @@ public class BlockSwapSkill : PlayerSkill
         IncreaseItemUseCount();
 
         // 스킬사용 및 매치 체크
-        SkillCount--;
-        mButtonObj.RefreshSkillInfo();
+        mButtonObj.SkillUse();
         ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
@@ -245,8 +242,7 @@ public class ColorChangeSkill : PlayerSkill
         IncreaseItemUseCount();
 
         // 스킬사용 및 매치 체크
-        SkillCount--;
-        mButtonObj.RefreshSkillInfo();
+        mButtonObj.SkillUse();
         ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }

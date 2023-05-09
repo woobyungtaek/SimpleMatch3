@@ -8,6 +8,7 @@ public class PlayerSkillButton : MonoBehaviour
 {
     public static PlayerSkill CurrentActiveSkill;
 
+    [SerializeField] private Button mSkillButton;
     [SerializeField] private Image mItemImage;
     [SerializeField] private TextMeshProUGUI mItemCountText;
 
@@ -15,6 +16,9 @@ public class PlayerSkillButton : MonoBehaviour
 
     public void SetPlayerSkill(PlayerSkill skill)
     {
+        mSkillButton.onClick.RemoveAllListeners();
+        mSkillButton.onClick.AddListener(OnButtonClicked);
+
         mCurrentSkill = skill;
         mItemImage.sprite = SpriteManager.Instance.GetUISpriteByName($"SkillIcons_{skill.SkillNumber}");
 
@@ -33,6 +37,12 @@ public class PlayerSkillButton : MonoBehaviour
         RefreshSkillInfo();
     }
 
+    public virtual void SkillUse()
+    {
+        mCurrentSkill.SkillCount -= 1;
+        RefreshSkillInfo();
+    }
+
     public int SkillCount
     {
         get
@@ -46,7 +56,7 @@ public class PlayerSkillButton : MonoBehaviour
         }
     }
 
-    public void RefreshSkillInfo()
+    public virtual void RefreshSkillInfo()
     {
         mItemCountText.text = mCurrentSkill.SkillCount.ToString();
     }

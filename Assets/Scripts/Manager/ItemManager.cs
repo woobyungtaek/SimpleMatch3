@@ -12,10 +12,7 @@ public class ItemManager : SceneSingleton<ItemManager>
         = new Dictionary<System.Type, PlayerSkillButton>();
 
     [Header("Main Skill")]
-    [SerializeField] private PlayerSkillButton mMainSkillButton;
-    [SerializeField] private Slider mMainSkillSlider;
-    [SerializeField] private float mMainSkillValue = 0;
-    [SerializeField] private int mMainSkillCount = 0;
+    [SerializeField] private PlayerSkillButton_Charge mMainSkillButton;
 
     private void Start()
     {
@@ -24,7 +21,6 @@ public class ItemManager : SceneSingleton<ItemManager>
 
     public void Init()
     {
-        mMainSkillValue = 0;
         ObserverCenter.Instance.AddObserver(ExcuteMainSkillIncrease, Message.MainSkillIncrease);
 
         // 초기화
@@ -36,7 +32,7 @@ public class ItemManager : SceneSingleton<ItemManager>
 
         // 메인 스킬 설정 및 초기화
         var obj = ObjectPool.GetInstByStr(typeof(HammerSkill).Name);
-        mMainSkillButton.SetPlayerSkill(obj as PlayerSkill);
+        mMainSkillButton.SetPlayerChargeSkill(obj as PlayerSkill, 100f, 0f);
         mMainSkillButton.SkillCount = 0;
     }
 
@@ -62,13 +58,6 @@ public class ItemManager : SceneSingleton<ItemManager>
     public void ExcuteMainSkillIncrease(Notification noti)
     {
         if(mMainSkillButton.SkillCount > 0) { return; }
-
-        mMainSkillValue += 5f;
-        if (mMainSkillValue >= 100f)
-        {
-            mMainSkillValue = 0f;
-            mMainSkillButton.AddSkillCount(1);
-        }
-        mMainSkillSlider.value = mMainSkillValue / 100f;
+        mMainSkillButton.FillCurrent += 5f;
     }
 }
