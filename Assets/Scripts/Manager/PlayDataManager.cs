@@ -23,7 +23,6 @@ public class PlayDataManager : Singleton<PlayDataManager>
     /// </summary>
     public int ChapterNumber;
 
-
     /// <summary>
     /// 챕터 별 난이도 데이터
     /// Stage들의 난이도 데이터가 정해져 있다.
@@ -35,4 +34,54 @@ public class PlayDataManager : Singleton<PlayDataManager>
     /// 맵 기믹에 대한 정보
     /// </summary>
     public MapGimmickInfo ChapterMapGimmickInfo;
+
+
+    // >플레이어 정보<
+
+    #region 부스터 적용 값들
+
+    private int mStartCount;
+    public int AdditoryMoveCount;
+    public int ContinueCount;
+    public int ColorChangeCount;
+    public int BlockSwapCount;
+    public int RandomBombBoxCount;
+
+    public int AdditoryRewardItemCount;
+
+    public float DoubleChancePer;
+    public float AdditoryGoldPer;
+
+    public bool IsLockItem;
+
+    public int StartCount
+    {
+        get => mStartCount;
+        set
+        {
+            mStartCount = value;
+            if (mStartCount <= 0)
+            {
+                mStartCount = 1;
+            }
+        }
+    }
+    public void InitBoosterEffect()
+    {
+        mStartCount = 0;
+        AdditoryMoveCount = 0;
+        ContinueCount = 0;
+        ColorChangeCount = 0;
+        BlockSwapCount = 0;
+        RandomBombBoxCount = 0;
+        AdditoryRewardItemCount = 0;
+
+        DoubleChancePer = 0f;
+        AdditoryGoldPer = 0f;
+
+        IsLockItem = false;
+    }
+
+    #endregion
+
 }
