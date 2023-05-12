@@ -59,10 +59,13 @@ public class GameSceneManager : MonoBehaviour
             mMapName = PlayDataManager.Instance.MapName;
         }
 
+        var tileMapManager = TileMapManager.Instance;
+        var missionManager = MissionManager.Instance;
+
         #region Restart시 선행 되어야 하는것들
 
-        TileMapManager.Instance.AllStopCoroutine();
-        MissionManager.Instance.ClearAllMissionCollectEffect();
+        tileMapManager.AllStopCoroutine();
+        missionManager.ClearAllMissionCollectEffect();
         BlockManager.Instance.ClearAllBlockContainers();
 
         #endregion
@@ -70,9 +73,9 @@ public class GameSceneManager : MonoBehaviour
         LoadMapDataInternal();
         LoadTutoDataInternal();
 
-        TileMapManager.Instance.CreateMapByMapData(mMapData);
-        MissionManager.Instance.ResetGameInfoByMapData(mMapData);
-        MissionManager.Instance.CreateDayStageInfo();
+        tileMapManager.CreateMapByMapData(mMapData);
+        missionManager.SetMoveAndItemCount(mMapData);
+        missionManager.CreateDayStageInfo();
 
         if (mTutoData != null)
         {
@@ -81,7 +84,7 @@ public class GameSceneManager : MonoBehaviour
         }
         else
         {
-            MissionManager.Instance.RefreshDayOrderUI();
+            missionManager.RefreshDayOrderUI();
             //MissionManager.Instance.StartStage();
         }
 

@@ -29,16 +29,17 @@ public class PausePopup : Popup
         ClosePopup(true);
     }
 
-    public void OnDayRestartButtonClicked()
-    {
-        MissionManager.Instance.ResetGameInfoByDay();
-        StartCoroutine(DelayFadeInEffect());
-    }
-    public void OnRestartButtonClicked()
-    {
-        MissionManager.Instance.ResetGameInfoByGameOver();
-        StartCoroutine(DelayFadeInEffect());
-    }
+    //public void OnDayRestartButtonClicked()
+    //{
+    //    MissionManager.Instance.ResetGameInfoByDay();
+    //    StartCoroutine(DelayFadeInEffect());
+    //}
+    //public void OnRestartButtonClicked()
+    //{
+    //    MissionManager.Instance.ResetGameInfoByGameOver();
+    //    StartCoroutine(DelayFadeInEffect());
+    //}
+
     public void OnTitleButtonClicked()
     {
         ClosePopup();

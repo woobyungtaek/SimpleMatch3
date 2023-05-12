@@ -285,8 +285,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBCF4\uC0C1\uC744 \uC120\uD0DD\uD558\uC138\uC694."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a1b71b42ac2565742a78cf8fe32728ad, type: 2}
-  m_sharedMaterial: {fileID: 6050021553224815848, guid: a1b71b42ac2565742a78cf8fe32728ad,
+  m_fontAsset: {fileID: 11400000, guid: b87d64018b3d8ed40876e2be7e353442, type: 2}
+  m_sharedMaterial: {fileID: -5403247456632559134, guid: b87d64018b3d8ed40876e2be7e353442,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

@@ -170,7 +170,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
             yield return GameConfig.yieldGameEndDuration;
             yield return null;
 
-            MissionManager.Instance.ResetGameInfoByGameOver();
+            //MissionManager.Instance.ResetGameInfoByGameOver();
             PopupManager.Instance.CreatePopupByName("AllClearPopup");
            yield break;
         }

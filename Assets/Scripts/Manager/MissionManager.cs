@@ -48,8 +48,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     [Header("Stage")]
     [SerializeField] private int mPartCount = 0;
     [SerializeField] private int mStageCount = 0;
-    private int mRewardMoveCount = 0;
-    [SerializeField]  private ChapterData mChapterData;
+    [SerializeField] private ChapterData mChapterData;
 
     [Header("Mission")]
     [SerializeField] private TextMeshProUGUI mDayCountText;
@@ -149,7 +148,12 @@ public class MissionManager : SceneSingleton<MissionManager>
         // 기본 움직임 횟수 충전
         mBasicRewardList.Clear();
         mBasicRewardList.Add(GetRewardDataByNameGrade("MoveCount", 0));
+
         mBasicRewardList[0].RewardCount = 5;
+        if (PlayDataManager.IsExist)
+        {
+            mBasicRewardList[0].RewardCount = PlayDataManager.Instance.AdditoryMoveCount;
+        }
 
         if (mCurrentMissionData == null) { return; }
 
@@ -209,48 +213,47 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
     }
 
-    public void ResetGameInfoByDay()
-    {
-        mStageCount = 0;
-        //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
-    }
+    // 게임 리셋 관련 > 안쓸 가능성이 크다.
+    //public void ResetGameInfoByDay()
+    //{
+    //    mStageCount = 0;
+    //    //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
+    //    ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
+    //    ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
+    //    ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
+    //}
+    //public void ResetGameInfoByGameOver()
+    //{
+    //    mPartCount = 0;
+    //    mStageCount = 0;
+    //    //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
+    //    ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
+    //    ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
+    //    ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
+    //    MapDataInfoNotiArg data = new MapDataInfoNotiArg();
+    //    if (PlayDataManager.IsExist)
+    //    {
+    //        data.ConceptName = PlayDataManager.Instance.ConceptName;
+    //    }
+    //    data.MapName = string.Format(MAP_DATA_FILE_FORMAT, mPartCount);
+    //    if (data.ConceptName == "Tutorial")
+    //    {
+    //        data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mPartCount);
+    //    }
+    //    ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
+    //}
 
-    public void ResetGameInfoByGameOver()
-    {
-        mPartCount = 0;
-        mStageCount = 0;
-        //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
-
-        MapDataInfoNotiArg data = new MapDataInfoNotiArg();
-        if (PlayDataManager.IsExist)
-        {
-            data.ConceptName = PlayDataManager.Instance.ConceptName;
-        }
-        data.MapName = string.Format(MAP_DATA_FILE_FORMAT, mPartCount);
-        if (data.ConceptName == "Tutorial")
-        {
-            data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mPartCount);
-        }
-
-        ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
-    }
-    public void ResetGameInfoByMapData(MapData mapdata)
+    public void SetMoveAndItemCount(MapData mapdata)
     {
         TileMapManager.Instance.MoveCount = mapdata.moveCount;
-
+        if (PlayDataManager.IsExist)
+        {
+            TileMapManager.Instance.MoveCount = PlayDataManager.Instance.StartCount;
+        }
         //게임 시작을 체크하는 부분을 따로 정확하게 만들어야한다.
         if (mPartCount == 0)
         {
-            //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
-            ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
-            ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
-            ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
+            ItemManager.Instance.SetSkillCountByData();
         }
     }
     public void ClearAllMissionCollectEffect()
@@ -349,7 +352,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     /// </summary>
     public void CreateDayStageInfo()
     {
-        if(PlayDataManager.IsExist)
+        if (PlayDataManager.IsExist)
         {
             mChapterData = PlayDataManager.Instance.CurrentChapterData;
         }

@@ -106,7 +106,7 @@ public class MissionData : Pool<MissionData>
             ColorArr[bIdx] = temp;
         }
 
-        Debug.Log($"{ColorArr[0]} /{ColorArr[1]} /{ColorArr[2]} /{ColorArr[3]} /{ColorArr[4]}");
+        //Debug.Log($"{ColorArr[0]} /{ColorArr[1]} /{ColorArr[2]} /{ColorArr[3]} /{ColorArr[4]}");
     }
     private void CreateMissionInfoListByDataPreset(MissionDataPreset preset)
     {

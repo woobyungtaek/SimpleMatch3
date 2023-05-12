@@ -66,7 +66,7 @@ public class PlayDataManager : Singleton<PlayDataManager>
             }
         }
     }
-    public void InitBoosterEffect()
+    public void InitPlayData()
     {
         mStartCount = 0;
         AdditoryMoveCount = 0;

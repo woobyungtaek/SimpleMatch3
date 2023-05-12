@@ -43,6 +43,10 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
+    public int GetBoosterDataCount
+    {
+        get => mBoosterItemList.Count;
+    }
     public BoosterItemData GetBoosterItemByIndex(int index)
     {
         return mBoosterItemList[index];

@@ -1235,6 +1235,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         SetTileStateByMapDataInternal(mapData);
         CreateBlockByBlockStrInternal(mapData.blockStr, mapData.mapSize);
         DrawBackGroundInternal(mapData.mapSize);
+
     }
     public void AllStopCoroutine()
     {
