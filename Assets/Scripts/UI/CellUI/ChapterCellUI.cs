@@ -9,8 +9,6 @@ public class ChapterCellUI : RecycleCellUI
 
     public override void Init(int index)
     {
-        base.Init(index);
-
         mTestText.text = $"{index}";
     }
 }

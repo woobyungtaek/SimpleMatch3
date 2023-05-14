@@ -16,6 +16,7 @@ public class BoosterItemData
         }
         set
         {
+            mItemName = value;
             if (mEffectMethodList == null) { mEffectMethodList = new List<Action<float>>(); }
             if (mEffectValueList == null) { mEffectValueList = new List<float>(); }
             mEffectMethodList.Clear();

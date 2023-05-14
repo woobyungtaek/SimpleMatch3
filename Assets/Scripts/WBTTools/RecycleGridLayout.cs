@@ -51,6 +51,7 @@ public class RecycleGridLayout : MonoBehaviour
     // Set Info
     [Header("Data Info")]
     [SerializeField] private int mTotalDataCount;
+    public int TotalDataCount { set => mTotalDataCount = value; }
 
     [Header("Dir")]
     [SerializeField] private EGridDirection mGridDir;
@@ -73,7 +74,7 @@ public class RecycleGridLayout : MonoBehaviour
 
     // CellUI
     private int mViewLineCount;
-    private int mTotalCellCount;
+    private int mViewCellCount;
     private LinkedList<RecycleCellUI> mCellList = new LinkedList<RecycleCellUI>();
 
     // 계산되어야 하는 값
@@ -136,8 +137,8 @@ public class RecycleGridLayout : MonoBehaviour
 
         // 양쪽다 고려하는게아니라 움직일 방향에 맞춰서만 계산되면 됨
         mViewLineCount = (int)(rectLength / cellLength);
-        int totalViewLineCount = (mViewLineCount + mExtraLineCount * 2);
-        mTotalCellCount = totalViewLineCount * mLineCellCount;
+        int totalViewLineCount = (mViewLineCount + mExtraLineCount);
+        mViewCellCount = totalViewLineCount * mLineCellCount; // > 한번에 표시될 Cell의 개수
 
         mCurrentIdx = 0;
 
@@ -145,7 +146,7 @@ public class RecycleGridLayout : MonoBehaviour
         CreateCellUI_Pool();
 
         // 시작시 보여지기 원하는 인덱스를 넣으면된다.
-        ForceRefreshByDataIndex(0);
+        ForceRefreshByDataIndex(0); // > 얘도 고장났네... 고쳐야한다..
 
         //Debug.Log(mTotalCellCount);
     }
@@ -294,37 +295,12 @@ public class RecycleGridLayout : MonoBehaviour
     }
 
     // 셀 생성
-    private void CreateCellUI()
-    {
-        var iter = mCellList.Last;
-        while (iter != null)
-        {
-            Destroy(iter.Value.gameObject);
-            iter = iter.Previous;
-        }
-        mCellList.Clear();
-
-        RecycleCellUI inst;
-        for (int idx = -mExtraLineCount; idx < mTotalCellCount - mExtraLineCount; ++idx)
-        {
-            // 생성
-            inst = Instantiate(mCellPrefab, transform).GetComponent<RecycleCellUI>();
-
-            // 첫 위치 조정
-            var rectTrs = inst.transform as RectTransform;
-            rectTrs.sizeDelta = CellSize;
-
-            // 관리 셀에 추가
-            mCellList.AddLast(inst);
-            inst.gameObject.SetActive(idx >= 0 && idx < mTotalDataCount);
-        }
-    }
     private void CreateCellUI_Pool()
     {
         Clear();
 
         RecycleCellUI inst;
-        for (int idx = -mExtraLineCount; idx < mTotalCellCount - mExtraLineCount; ++idx)
+        for (int idx = -mExtraLineCount; idx < mViewCellCount - mExtraLineCount; ++idx)
         {
             // 생성
             inst = GameObjectPool.Instantiate<RecycleCellUI>(mCellPrefab, transform);
@@ -332,6 +308,9 @@ public class RecycleGridLayout : MonoBehaviour
             // 첫 위치 조정
             var rectTrs = inst.transform as RectTransform;
             rectTrs.sizeDelta = CellSize;
+            rectTrs.anchorMin = mChildRectTrs.anchorMin;
+            rectTrs.anchorMax  = mChildRectTrs.anchorMax;
+            rectTrs.pivot = mChildRectTrs.pivot;
 
             // 관리 셀에 추가
             mCellList.AddLast(inst);
@@ -396,7 +375,7 @@ public class RecycleGridLayout : MonoBehaviour
         mRePositionContentFunc?.Invoke();
 
         // CellUI들 위치 설정
-        int useDataIndex = dataIndex - (mLineCellCount * mExtraLineCount);
+        int useDataIndex = dataIndex;// - (mLineCellCount * mExtraLineCount);
         foreach (var cell in mCellList)
         {
             CalLineCellIdxByDataIndex(useDataIndex, out int lineIdx, out int cellIdx);
@@ -476,17 +455,22 @@ public class RecycleGridLayout : MonoBehaviour
 
         // 이동 방향은 현재 라인 번호에서 바뀐 라인 번호를 빼면 된다.
         int dir = changeLineIdx - mCurrentLineIdx;
-        mCurrentLineIdx += dir;
+
+        int dataIdx = 0;
 
         // 바뀐 라인의 끝부분 인덱스부터 갱신이 시작
-        int dataIdx = mLineCellCount * mCurrentLineIdx;
         if (dir < 0)
         {
-            dataIdx += (mLineCellCount - 1); // 줄의 마지막 부터
-            dataIdx += mExtraLineCount * mLineCellCount;
+            dataIdx = mCurrentLineIdx * mLineCellCount - 1;
+        }
+        else
+        {
+            dataIdx = mCurrentLineIdx * mLineCellCount + mViewCellCount;
         }
 
-        int loopCount = (mExtraLineCount + 1) * mLineCellCount;
+        mCurrentLineIdx += dir;
+
+        int loopCount = mExtraLineCount * mLineCellCount;
         // 한번 변경시 라인에 들어가는 수만큼 씩 갱신된다.
         for (int cnt = 0; cnt < loopCount; ++cnt)
         {

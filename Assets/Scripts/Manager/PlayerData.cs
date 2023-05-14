@@ -11,7 +11,6 @@ public enum EChapterLevel
 
 public static class PlayerData
 {
-    //??
     #region 챕터 해금
 
     // 난이도 별, 최대 31 Chapter 가능 ( 0 ~ 30 )
@@ -44,13 +43,20 @@ public static class PlayerData
 
     #region 부스터 아이템 인벤토리
 
-    private static List<int> mBoosterItemInventory = new List<int>();
+    // 아이템 이름 기반으로 개수가 저장 된다.
+    public static Dictionary<string, int> BoosterItemInventory = new Dictionary<string, int>();
+     
 
-    public static void GetBoosterItem(int itemIndex)
+    public static void AddBoosterItem(int itemIndex)
     {
         if(itemIndex >= DataManager.Instance.GetBoosterDataCount) { return; }
 
-        mBoosterItemInventory.Add(itemIndex);
+        var data = DataManager.Instance.GetBoosterItemByIndex(itemIndex);
+        if(!BoosterItemInventory.ContainsKey(data.ItemName))
+        {
+            BoosterItemInventory.Add(data.ItemName, 0);
+        }
+        BoosterItemInventory[data.ItemName] += 1;
     }
 
     #endregion

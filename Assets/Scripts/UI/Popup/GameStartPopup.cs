@@ -13,11 +13,15 @@ public class GameStartPopup : Popup
     [Header("Booster")]
     [SerializeField] private BoosterItemButton[] mBoosterButtons;
 
+    [SerializeField] private GameObject mBoosterInvenInnerPopup;
+    [SerializeField] private RecycleGridLayout mBoosterInvenGrid;
+    private List<string> mBoosterItemList = new List<string>();
+
     public override void Init()
     {
         base.Init();
 
-        mChapterGrid.Init();
+        //mChapterGrid.Init();
         mChapterNumText.text = $"{LobbySceneManager.Instance.SelectedChapterNum}";
 
         // 버튼들 초기화
@@ -26,6 +30,17 @@ public class GameStartPopup : Popup
             btn.Init();
             btn.onClick.AddListener(()=> OnBoosterItemButtonClicked(btn));
         }
+
+
+        PlayerData.BoosterItemInventory.Clear();
+        for(int cnt = 0; cnt < 100; ++cnt)
+        {
+            int rnd = Random.Range(0, DataManager.Instance.GetBoosterDataCount);
+            PlayerData.AddBoosterItem(rnd);
+        }
+
+        // 팝업이 뜰 때 부스터 아이템 List를 만들자
+        CreateBoosterItemListByPlayerInven();
     }
 
     public void OnChapterSelectButtonClicked(int dir)
@@ -48,17 +63,29 @@ public class GameStartPopup : Popup
         LobbySceneManager.Instance.ChapterStart();
     }
 
+    private void CreateBoosterItemListByPlayerInven()
+    {
+        mBoosterItemList.Clear();
+
+        var inven = PlayerData.BoosterItemInventory;
+
+        foreach(var data in inven)
+        {
+            int count = data.Value;
+            for(int cnt = 0; cnt < count; ++cnt)
+            {
+                mBoosterItemList.Add(data.Key);
+            }
+        }
+    }
+
     private void OnBoosterItemButtonClicked(BoosterItemButton btn)
     {
-        int count = DataManager.Instance.GetBoosterDataCount;
+        BoosterItemCellUI.ItemList = mBoosterItemList;
+        mBoosterInvenGrid.TotalDataCount = mBoosterItemList.Count;
 
-        int idx = btn.GetInvenIndex;
-        idx += 1;
-        idx %= count;
-        btn.SetButtonByIndex(idx);
+        mBoosterInvenGrid.Init();
 
-        // BoosterItem인벤토리가 떠야한다.
-        // View Booster Item Inventory
-        // 플레이어의 인벤토리 정보가 필요
+        mBoosterInvenInnerPopup.SetActive(true);
     }
 }
