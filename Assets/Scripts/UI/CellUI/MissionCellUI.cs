@@ -44,15 +44,15 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
         ObserverCenter.Instance.RemoveObserver(Message.RefreshMissionCellUI, CellRefreshByFakeCount);
     }
 
-    public void CollectMissionTarget()
+    public void CollectMissionTarget(int count)
     {
-        mMissionInfo.MissionCount -= 1;
+        mMissionInfo.MissionCount -= count;
     }
 
     private void CellRefreshByFakeCount(Notification noti)
     {
-        //null 발생했었음
-        //if (mMissionCountText == null) { return; }
+        // 더블 찬스 발동 시 어떻게 처리 할 것인가..
+
         if (mMissionInfo.MissionCount < mFakeCount)
         {
             mFakeCount -= 1;

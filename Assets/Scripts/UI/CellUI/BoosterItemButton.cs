@@ -9,34 +9,20 @@ public class BoosterItemButton : Button
     [Header("BoosterItem")]
     [SerializeField] private Image mItemImage;
     [SerializeField] private TextMeshProUGUI mItemNameText;
-    [SerializeField] private int mInventoryIndex;
 
-    public int GetInvenIndex
-    {
-        get => mInventoryIndex;
-    }
+    public string ItemName { get; set; }
 
     public void Init()
     {
-        mInventoryIndex = -1;
-        SetButtonByIndex(mInventoryIndex);
+        //아무것도 없는 상태로 만들어 줘야한다.
 
         onClick.RemoveAllListeners();
     }
 
-    public void SetButtonByIndex(int invenIdx)
+    public void SetButtonByIndex(string itemName)
     {
-        mInventoryIndex = invenIdx;
-        if (mInventoryIndex < 0)
-        {
-            mItemNameText.text = "Select Item";
-            return;
-        }
-        
+        ItemName = itemName;
         // 테스트용 데이터 번호로 사용하기
-        mItemNameText.text = $"{invenIdx}";
-
-        // 인벤토리로 부터 BoosterItem의 데이터 Index를 알아와서
-        // 데이터의 이름을 넣어줘야함
+        mItemNameText.text = itemName;
     }
 }

@@ -81,12 +81,29 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     private List<RewardData> mInstRandomRewardList = new List<RewardData>();
 
+
+    [Header("DoubleChance")]
+    [SerializeField] private float mDoubleChancePer;
+    private System.Func<System.Type, int> mDoubleChanceFunc;
+
+
     private void Awake()
     {
         mMissionDataListArr = DataManager.Instance.MissionDataListArr;
         mRewardDataList = DataManager.Instance.RewardDataList;
         CreateMissionCellUI();
+
+        mDoubleChanceFunc = null;
+        if(PlayDataManager.IsExist)
+        {
+            if(PlayDataManager.Instance.DoubleChancePer > 0f)
+            {
+                mDoubleChancePer = PlayDataManager.Instance.DoubleChancePer;
+                mDoubleChanceFunc = DoubleChanceFunc;
+            }
+        }
     }
+
 
     private void CreateMissionCellUI()
     {
@@ -118,7 +135,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
     }
 
-    private void CreateMissionCollectEffect(Vector3 start, Vector3 end, System.Type missionType, int color, Sprite targetSprite)
+    private void CreateMissionCollectEffect(Vector3 start, Vector3 end, System.Type missionType, int color, Sprite targetSprite, int count)
     {
         MissionCollectEffect instCollectEffect = GameObjectPool.Instantiate<MissionCollectEffect>(mCollectEffectPrefab);
         start.z = 0;
@@ -128,7 +145,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         {
             mAllCollectEffectList.Add(instCollectEffect.gameObject);
         }
-        instCollectEffect.SetEffectDataByData(start, end, targetSprite);
+        instCollectEffect.SetEffectDataByData(start, end, targetSprite, count);
         instCollectEffect.PlayEffect();
     }
 
@@ -424,17 +441,41 @@ public class MissionManager : SceneSingleton<MissionManager>
                 if (instMissionInfo.MissionColor != -1) { continue; }
             }
 
+            int collectCount = 1;
+            if(mDoubleChanceFunc != null)
+            {
+                collectCount = mDoubleChanceFunc.Invoke(missionType);
+            }
+
             //CreateMissionCollectEffect(effectPos, TileMapManager.Instance.RandCollectPos, missionType, color, missionSprite);
-            CreateMissionCollectEffect(effectPos, mMissionCellUIList[index].transform.position, missionType, color, missionSprite);
-            mMissionCellUIList[index].CollectMissionTarget();
+            CreateMissionCollectEffect(effectPos, mMissionCellUIList[index].transform.position, missionType, color, missionSprite, collectCount);
+            
+            mMissionCellUIList[index].CollectMissionTarget(collectCount);
 
             if (mMissionCellUIList[index].IsComplete)
             {
                 ObserverCenter.Instance.SendNotification(Message.RefreshMission);
             }
+
             return true;
         }
         return false;
+    }
+
+    private int DoubleChanceFunc(System.Type checkType)
+    {
+        if (checkType.BaseType == typeof(BombBlock))
+        {
+            // 1. 일단 여기서 하면 기본 틀을 해치지 않고 기능이 구현
+            // 2. 통합으로 관리할 수 있어서
+            float chance = Random.Range(0f, 100f);
+            if (chance <= mDoubleChancePer)
+            {
+                Debug.Log("DoubleChance Activate");
+                return 2;
+            }
+        }
+        return 1;
     }
 
     public MissionInfo GetMissionInfoByType(System.Type checkType)

@@ -5,15 +5,15 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
     private readonly string TUTO_INFO_DATA_FILE_NAME = "TutoInfoDataList";
-    private readonly string MISSION_DATA_FILE_NAME   = "MissionDataList";
-    private readonly string REWARD_DATA_FILE_NAME    = "RewardDataList";
-    private readonly string BOOSTER_DATA_FILE_NAME   = "BoosterItemList";
+    private readonly string MISSION_DATA_FILE_NAME = "MissionDataList";
+    private readonly string REWARD_DATA_FILE_NAME = "RewardDataList";
+    private readonly string BOOSTER_DATA_FILE_NAME = "BoosterItemList";
 
     public List<TutoInfoData> TutoInfoList
     {
         get
         {
-            if(mTutoInfoList == null)
+            if (mTutoInfoList == null)
             {
                 LoadTutoInfoList();
             }
@@ -47,13 +47,23 @@ public class DataManager : Singleton<DataManager>
     {
         get => mBoosterItemList.Count;
     }
+    public BoosterItemData GetBoosterItemByName(string name)
+    {
+        for (int idx = 0; idx < mBoosterItemList.Count; ++idx)
+        {
+            if(mBoosterItemList[idx].ItemName != name){ continue; }
+            return mBoosterItemList[idx];
+        }
+        return null;
+    }
     public BoosterItemData GetBoosterItemByIndex(int index)
     {
+        if(index < 0 || index >= mBoosterItemList.Count) { return null; }
         return mBoosterItemList[index];
     }
 
     private List<TutoInfoData> mTutoInfoList;
-    [SerializeField]private List<MissionDataPreset>[] mMissionDataListArr = new List<MissionDataPreset>[(int)EMissionLevel.Max];
+    [SerializeField] private List<MissionDataPreset>[] mMissionDataListArr = new List<MissionDataPreset>[(int)EMissionLevel.Max];
     private List<RewardData> mRewardDataList;
     private List<BoosterItemData> mBoosterItemList;
 

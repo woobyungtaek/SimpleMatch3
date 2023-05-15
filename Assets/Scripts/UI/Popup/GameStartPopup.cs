@@ -17,6 +17,8 @@ public class GameStartPopup : Popup
     [SerializeField] private RecycleGridLayout mBoosterInvenGrid;
     private List<string> mBoosterItemList = new List<string>();
 
+    private BoosterItemButton mCurrentActiveButton;
+
     public override void Init()
     {
         base.Init();
@@ -29,14 +31,6 @@ public class GameStartPopup : Popup
         {
             btn.Init();
             btn.onClick.AddListener(()=> OnBoosterItemButtonClicked(btn));
-        }
-
-
-        PlayerData.BoosterItemInventory.Clear();
-        for(int cnt = 0; cnt < 100; ++cnt)
-        {
-            int rnd = Random.Range(0, DataManager.Instance.GetBoosterDataCount);
-            PlayerData.AddBoosterItem(rnd);
         }
 
         // 팝업이 뜰 때 부스터 아이템 List를 만들자
@@ -57,7 +51,7 @@ public class GameStartPopup : Popup
         // Inventory Index로 개수를 빼준다.
         for(int cnt =0; cnt < mBoosterButtons.Length; ++cnt)
         {
-            LobbySceneManager.Instance.UseBoosterItemArr[cnt] = mBoosterButtons[cnt].GetInvenIndex;
+            LobbySceneManager.Instance.UseBoosterItemArr[cnt] = mBoosterButtons[cnt].ItemName;
         }
 
         LobbySceneManager.Instance.ChapterStart();
@@ -81,11 +75,24 @@ public class GameStartPopup : Popup
 
     private void OnBoosterItemButtonClicked(BoosterItemButton btn)
     {
-        BoosterItemCellUI.ItemList = mBoosterItemList;
-        mBoosterInvenGrid.TotalDataCount = mBoosterItemList.Count;
+        mCurrentActiveButton = btn;
 
+        BoosterItemCellUI.ItemList = mBoosterItemList;
+        BoosterItemCellUI.ButtonClickFunc = OnBoosterCellUIClicked;
+
+        mBoosterInvenGrid.TotalDataCount = mBoosterItemList.Count;
         mBoosterInvenGrid.Init();
 
         mBoosterInvenInnerPopup.SetActive(true);
+    }
+
+    private void OnBoosterCellUIClicked(int itemIndex)
+    {
+        if(mCurrentActiveButton == null) { return; }
+
+        mCurrentActiveButton.SetButtonByIndex(mBoosterItemList[itemIndex]);
+        mCurrentActiveButton = null;
+
+        mBoosterInvenInnerPopup.SetActive(false);
     }
 }

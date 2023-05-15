@@ -200,7 +200,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 50
   m_TargetDisplay: 0
@@ -1789,7 +1789,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 100
   m_TargetDisplay: 0
@@ -4550,6 +4550,7 @@ MonoBehaviour:
   mRewardDataList: []
   mBasicRewardList: []
   mSelectRewardList: []
+  mDoubleChancePer: 0
 --- !u!1 &2009906488
 GameObject:
   m_ObjectHideFlags: 0

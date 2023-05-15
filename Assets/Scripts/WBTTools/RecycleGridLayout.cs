@@ -153,11 +153,11 @@ public class RecycleGridLayout : MonoBehaviour
 
     public void Clear()
     {
-        var iter = mCellList.Last;
+        var iter = mCellList.First;
         while (iter != null)
         {
             GameObjectPool.ReturnObject(iter.Value.gameObject);
-            iter = iter.Previous;
+            iter = iter.Next;
         }
         mCellList.Clear();
     }
@@ -369,6 +369,7 @@ public class RecycleGridLayout : MonoBehaviour
     // 스크롤뷰 갱신 - 즉시 표시
     public void ForceRefreshByDataIndex(int dataIndex)
     {
+        mCurrentLineIdx = dataIndex / mLineCellCount;
         mCurrentIdx = dataIndex;
 
         // Content 위치 설정
@@ -507,7 +508,7 @@ public class RecycleGridLayout : MonoBehaviour
 
             // cell 갱신
             cellUI.Init(dataIdx);
-            cellUI.gameObject.SetActive(!(dataIdx < 0 || dataIdx > mTotalDataCount));
+            cellUI.gameObject.SetActive(!(dataIdx < 0 || dataIdx >= mTotalDataCount));
             dataIdx += dir;
         }
         mCurrentLineIdx = changeLineIdx;

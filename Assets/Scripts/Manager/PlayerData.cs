@@ -40,13 +40,25 @@ public static class PlayerData
 
     #endregion
 
+    #region 재화
+
+    private static int mGold;
+
+    public static void GetGold(int value, float additory = 0f)
+    {
+        int gold = (int)(value * (100f + additory));
+        if(gold <= 0) { gold = 1; }
+
+        mGold += gold;
+    }
+
+    #endregion
 
     #region 부스터 아이템 인벤토리
 
     // 아이템 이름 기반으로 개수가 저장 된다.
     public static Dictionary<string, int> BoosterItemInventory = new Dictionary<string, int>();
-     
-
+    
     public static void AddBoosterItem(int itemIndex)
     {
         if(itemIndex >= DataManager.Instance.GetBoosterDataCount) { return; }

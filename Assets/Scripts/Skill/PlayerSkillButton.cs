@@ -16,6 +16,15 @@ public class PlayerSkillButton : MonoBehaviour
 
     public void SetPlayerSkill(PlayerSkill skill)
     {
+        if(PlayDataManager.IsExist)
+        {
+            if(PlayDataManager.Instance.IsLockItem)
+            {
+                mSkillButton.interactable = false;
+                return;
+            }
+        }
+
         mSkillButton.onClick.RemoveAllListeners();
         mSkillButton.onClick.AddListener(OnButtonClicked);
 

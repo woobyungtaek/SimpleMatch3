@@ -26,7 +26,19 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     [SerializeField] private ChapterData[] mChapterDataArr = new ChapterData[2];
 
 
-    public int[] UseBoosterItemArr = new int[3];
+    public string[] UseBoosterItemArr = new string[3];
+
+    private void Start()
+    {
+        if(PlayerData.BoosterItemInventory.Count == 0)
+        {
+            for (int cnt = 0; cnt < 5; ++cnt)
+            {
+                int rnd = Random.Range(0, DataManager.Instance.GetBoosterDataCount);
+                PlayerData.AddBoosterItem(rnd);
+            }
+        }
+    }
 
     public void LoadGameScene()
     {
@@ -77,11 +89,12 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         // 현재 설정된 Booster의 내용을 적용한다.
         for(int cnt = 0; cnt < UseBoosterItemArr.Length; ++cnt)
         {
-            int index = UseBoosterItemArr[cnt];
-            if (index < 0) { continue; }
+            var data = DataManager.Instance.GetBoosterItemByName(UseBoosterItemArr[cnt]);
+            if(data == null) { continue; }
+            if(PlayerData.BoosterItemInventory[data.ItemName] <= 0) { continue; }
 
-            var data = DataManager.Instance.GetBoosterItemByIndex(index);
             data.InvokeAllEffect();
+            PlayerData.BoosterItemInventory[data.ItemName] -= 1;
         }
 
         LoadGameScene();

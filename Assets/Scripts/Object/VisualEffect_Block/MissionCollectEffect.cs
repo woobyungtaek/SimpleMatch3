@@ -26,12 +26,12 @@ public class MissionCollectEffect : MonoBehaviour
     private float mDuration = 1f;
     private Matrix4x4   mCGMatrix = new Matrix4x4();
 
-
-
     [SerializeField]
     private AnimationCurve mAniCurve = new AnimationCurve();
     [SerializeField]
     private AnimationCurve mSclaeCurve = new AnimationCurve();
+
+    private int mCollectCount;
 
     public void Awake()
     {
@@ -39,8 +39,12 @@ public class MissionCollectEffect : MonoBehaviour
         mYieldEffectDuration = new WaitForSeconds(mDuration);
     }
 
-    public void SetEffectDataByData(Vector3 startPos, Vector3 targetPos, Sprite spriteOrNull = null)
+    public void SetEffectDataByData(Vector3 startPos, Vector3 targetPos, Sprite spriteOrNull = null, int count = 1)
     {
+        mCollectCount = count;
+
+        // Count가 1보다 크면 따로 뭔가 표시 된다거나 하면 될듯
+
         mStartPos = startPos;
         transform.position = mStartPos;
         mTargetPos = targetPos;
@@ -79,7 +83,10 @@ public class MissionCollectEffect : MonoBehaviour
         }
         transform.position = mTargetPos;
 
-        ObserverCenter.Instance.SendNotification(this, Message.RefreshMissionCellUI);
+        for(int cnt = 0; cnt < mCollectCount; ++cnt)
+        {
+            ObserverCenter.Instance.SendNotification(this, Message.RefreshMissionCellUI);
+        }
         GameObjectPool.ReturnObject(gameObject);
     }
 
