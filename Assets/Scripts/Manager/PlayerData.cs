@@ -44,13 +44,28 @@ public static class PlayerData
 
     private static int mGold;
 
-    public static void GetGold(int value, float additory = 0f)
+    public static void GetGold(int value)
     {
+        // Ãß°¡ È¹µæ·ü Àû¿ë
+        float additory = 0f;
+        if (PlayDataManager.IsExist)
+        {
+            additory = PlayDataManager.Instance.AdditoryGoldPer;
+        }
+
         int gold = (int)(value * (100f + additory));
-        if(gold <= 0) { gold = 1; }
+        if (gold <= 0) { gold = 1; }
 
         mGold += gold;
+
+        Debug.Log($"Current Gold : {mGold}");
     }
+
+    #endregion
+
+    #region È°µ¿·Â
+
+    public static int ContinueMoveCount = 5;
 
     #endregion
 

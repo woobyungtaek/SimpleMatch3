@@ -245,6 +245,7 @@ MonoBehaviour:
     Start: {x: 0, y: 0, z: 0}
     End: {x: 0, y: 0, z: 0}
     Duration: 0
+  mAdButtonText: {fileID: 3566479007955766503}
 --- !u!1 &1602777353939305421
 GameObject:
   m_ObjectHideFlags: 0

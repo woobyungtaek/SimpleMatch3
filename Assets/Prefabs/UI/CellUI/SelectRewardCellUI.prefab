@@ -856,6 +856,8 @@ MonoBehaviour:
     Grade: 0
     RewardCount: 0
     RewardType: 
+  mAdditoryMark: {fileID: 0}
+  mAdditoryText: {fileID: 0}
 --- !u!222 &772948193591879481
 CanvasRenderer:
   m_ObjectHideFlags: 0

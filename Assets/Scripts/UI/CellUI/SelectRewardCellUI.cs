@@ -29,6 +29,7 @@ public class SelectRewardCellUI : MonoBehaviour
         mItemDescText.text = Localization.GetString($"{mRewardData.SpriteName}_Desc");
         mRewardCountText.text = string.Format(CountStr, mRewardData.RewardCount);
     }
+
     public void OnSelectButtonClicked()
     {
         EventSelectReward(this);

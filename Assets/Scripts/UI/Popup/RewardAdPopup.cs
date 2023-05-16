@@ -1,12 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 using GoogleMobileAds.Api;
 
 public class RewardAdPopup : Popup
 {
-    // 광고 보기 팝업임
+    [Header("Reward")]
+    [SerializeField] private TextMeshProUGUI mAdButtonText;
+
+    private int mMoveCount;
+
+    public override void Init()
+    {
+        int mMoveCount = 5;
+        if (PlayDataManager.IsExist)
+        {
+            mMoveCount = PlayDataManager.Instance.ContinueMoveCount;
+        }
+
+        mAdButtonText.text = $"광고보고 이어하기\nMove Count + {mMoveCount}";
+        base.Init();
+    }
 
     // 광고 보기 버튼 > 
     public void OnShowRewardAdButtonClicked()
@@ -17,7 +33,7 @@ public class RewardAdPopup : Popup
     private void ContinueRewardFunc(Reward reward)
     {
         //이어하기 시 MoveCount 추가
-        TileMapManager.Instance.MoveCount += 5;
+        TileMapManager.Instance.MoveCount += mMoveCount;
 
         // 게임 재개 해야함
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.ReturnSwap);

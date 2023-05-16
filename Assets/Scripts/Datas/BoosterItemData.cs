@@ -81,7 +81,7 @@ public static class BoosterEffectBook
     {
         Debug.Log($"ContinueCount  {value}");
         if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.ContinueCount += (int)value;
+        PlayDataManager.Instance.ContinueMoveCount += (int)value;
     }
     public static void StartItem_ColorChange(float value)
     {

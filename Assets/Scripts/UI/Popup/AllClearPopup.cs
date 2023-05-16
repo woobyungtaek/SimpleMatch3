@@ -10,6 +10,8 @@ public class AllClearPopup : Popup
     }
     public void OnOkButtonClicked()
     {
+        PlayerData.GetGold(ItemManager.Instance.InstGold);
+
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
         ClosePopup();
     }

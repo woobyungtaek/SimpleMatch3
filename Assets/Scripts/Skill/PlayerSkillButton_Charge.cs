@@ -41,6 +41,10 @@ public class PlayerSkillButton_Charge : PlayerSkillButton
         mChargeImage.fillAmount = mFillAmount;
 
         SetPlayerSkill(skill);
+
+        // 충전형 스킬은 아이템 잠금에 해당하지 않는다.
+        mSkillButton.interactable = true;
+        mLockImage.gameObject.SetActive(!mSkillButton.interactable);
     }
 
 

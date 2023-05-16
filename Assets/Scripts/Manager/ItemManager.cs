@@ -14,6 +14,10 @@ public class ItemManager : SceneSingleton<ItemManager>
     [Header("Main Skill")]
     [SerializeField] private PlayerSkillButton_Charge mMainSkillButton;
 
+    [Header("Goods")]
+    [SerializeField] private int mGold_Inst;
+    public int InstGold { get => mGold_Inst; }
+
     private void Start()
     {
         Init();
@@ -36,6 +40,7 @@ public class ItemManager : SceneSingleton<ItemManager>
         mMainSkillButton.SkillCount = 0;
     }
 
+    // 아이템(스킬)
     public void SetSkillCountByData()
     {
         int count_0 = 0;
@@ -76,5 +81,11 @@ public class ItemManager : SceneSingleton<ItemManager>
     {
         if (mMainSkillButton.SkillCount > 0) { return; }
         mMainSkillButton.FillCurrent += 5f;
+    }
+
+    // 재화 (inst)
+    public void AddGold(int value)
+    {
+        mGold_Inst += value;
     }
 }

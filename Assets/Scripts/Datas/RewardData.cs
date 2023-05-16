@@ -5,25 +5,65 @@ using UnityEngine;
 [System.Serializable]
 public class RewardData
 {
-    public System.Reflection.MethodInfo RewardMethodInfo
+    public int      Index;
+    public string   RewardName;
+    public string   SpriteName;
+    public int      Grade;
+    public string   RewardType;
+
+    private string mMethodName;
+
+    private int mRewardCount;
+    private System.Action<RewardData> mRewardFunc;
+
+    private System.Func<int> mRewardCountFunc;
+
+    public string MethodName
     {
-        get
+        get => mMethodName;
+        set
         {
-            if(mRewardMethodInfo == null)
-            {
-                mRewardMethodInfo = RewardMethodBook.GetRewardMethodInfo(MethodName);
-            }
-            return mRewardMethodInfo;
+            mMethodName = value;
+
+            var info = RewardMethodBook.GetRewardMethodInfo(mMethodName);
+            mRewardFunc = (System.Action<RewardData>)System.Delegate.CreateDelegate(typeof(System.Action<RewardData>), info);
         }
     }
 
-    public int      Index;
-    public string   RewardName;
-    public string   MethodName;
-    public string   SpriteName;
-    public int      Grade;
-    public int      RewardCount;
-    public string   RewardType;
+    public int RewardCount
+    {
+        get
+        {
+            if(mRewardCountFunc== null)
+            {
+                if(mRewardCount != 0)
+                {
+                    mRewardCountFunc = RewardCountByData;
+                }
+                else
+                {
+                    var info = RewardMethodBook.GetRewardMethodInfo($"{mMethodName}_CountFunc");
+                    mRewardCountFunc = (System.Func<int>)System.Delegate.CreateDelegate(typeof(System.Func<int>), info);
+                }
+            }
 
-    private System.Reflection.MethodInfo mRewardMethodInfo;
+            return mRewardCountFunc.Invoke();
+        }
+        set
+        {
+            mRewardCount = value;
+        }
+    }
+
+    public void ExcuteRewardFunc()
+    {
+        mRewardFunc?.Invoke(this);
+    }
+
+    private int RewardCountByData()
+    {
+        // 기본 상태의 반환 함수
+        // 따로 처리되는 애들은 RewardMethodBook에 있다.
+        return mRewardCount;
+    }
 }

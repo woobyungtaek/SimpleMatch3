@@ -42,7 +42,7 @@ public class PlayDataManager : Singleton<PlayDataManager>
 
     private int mStartCount;
     public int AdditoryMoveCount;
-    public int ContinueCount;
+    public int ContinueMoveCount;
     public int ColorChangeCount;
     public int BlockSwapCount;
     public int RandomBombBoxCount;
@@ -70,7 +70,7 @@ public class PlayDataManager : Singleton<PlayDataManager>
     {
         mStartCount = 0;
         AdditoryMoveCount = 0;
-        ContinueCount = 0;
+        ContinueMoveCount = PlayerData.ContinueMoveCount;
         ColorChangeCount = 0;
         BlockSwapCount = 0;
         RandomBombBoxCount = 0;
@@ -83,5 +83,5 @@ public class PlayDataManager : Singleton<PlayDataManager>
     }
 
     #endregion
-
+    
 }

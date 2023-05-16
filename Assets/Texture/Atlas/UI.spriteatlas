@@ -44,6 +44,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: aaf299b439e424549a6e135d1c60c73c, type: 3}
+    - {fileID: -8152718321238593233, guid: d446f584af8d516428ea193bfdeffdde, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -67,6 +68,7 @@ SpriteAtlas:
   - {fileID: -715149787376277989, guid: 8e3fee33a935fbe42b991cd74d7b3374, type: 3}
   - {fileID: -2724558838527232326, guid: 8e3fee33a935fbe42b991cd74d7b3374, type: 3}
   - {fileID: 21300000, guid: 9c6ed8440033dce4f845b12e7979091d, type: 3}
+  - {fileID: -8152718321238593233, guid: d446f584af8d516428ea193bfdeffdde, type: 3}
   - {fileID: 21300000, guid: f7bfe8962110c6f4e83d0716bfb9d8b7, type: 3}
   - {fileID: 21300000, guid: d35073f6aa54825478516931903ccc16, type: 3}
   - {fileID: -5934381359393288594, guid: 0d852c182d2165e45879d059ec67eb86, type: 3}
@@ -136,6 +138,7 @@ SpriteAtlas:
   - ItemSelectPopupUI_1
   - ItemSelectPopupUI_0
   - Cross_ui
+  - Gold
   - Cross_ui_2
   - ConvUI
   - GameInfoUI_2

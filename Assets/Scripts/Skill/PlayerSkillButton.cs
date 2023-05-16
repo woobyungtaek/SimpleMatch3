@@ -8,8 +8,9 @@ public class PlayerSkillButton : MonoBehaviour
 {
     public static PlayerSkill CurrentActiveSkill;
 
-    [SerializeField] private Button mSkillButton;
+    [SerializeField] protected Button mSkillButton;
     [SerializeField] private Image mItemImage;
+    [SerializeField] protected Image mLockImage;
     [SerializeField] private TextMeshProUGUI mItemCountText;
 
     [SerializeField] private PlayerSkill mCurrentSkill;
@@ -24,6 +25,7 @@ public class PlayerSkillButton : MonoBehaviour
                 return;
             }
         }
+        mLockImage.gameObject.SetActive(!mSkillButton.interactable);
 
         mSkillButton.onClick.RemoveAllListeners();
         mSkillButton.onClick.AddListener(OnButtonClicked);

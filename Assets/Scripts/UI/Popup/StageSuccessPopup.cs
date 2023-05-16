@@ -14,7 +14,6 @@ public class StageSuccessPopup : Popup
     [SerializeField] private GridLayoutGroup mSelectRewardCellGrid;
     [SerializeField] private List<GameObject> mSelectUiObjectList = new List<GameObject>();
     private List<SelectRewardCellUI> mSelectRewardCellList = new List<SelectRewardCellUI>();
-    private object[] mRewardParam = new object[1];
 
     private void CreateSelectRewardMissionCellUI(List<RewardData> selectRewardList)
     {
@@ -67,8 +66,7 @@ public class StageSuccessPopup : Popup
         if (mSelectRewardCellList.Count > 0)
         {
             if (mSelectedReward == null) { return; }
-            mRewardParam[0] = mSelectedReward;
-            mSelectedReward.RewardMethodInfo.Invoke(null, mRewardParam);
+            mSelectedReward.ExcuteRewardFunc();
         }
         ClearSelectRewardCellList();
         MissionManager.Instance.TakeBasicReward();

@@ -10,11 +10,22 @@ public static class RewardMethodBook
         return typeof(RewardMethodBook).GetMethod(methodName);
     }
 
+
+    #region Effect Func
+
     public static void MoveIncrease(RewardData data)
     {
-        //Debug.Log("move increase");
+
         TileMapManager.Instance.MoveCount += data.RewardCount;
     }
+
+    public static void GoldIncrease(RewardData data)
+    {
+        // 난이도에 따라 차등 지급
+
+        ItemManager.Instance.AddGold(data.RewardCount);
+    }
+
     public static void HammerIncrease(RewardData data)
     {
         //Debug.Log("Hammer Increase");
@@ -36,4 +47,27 @@ public static class RewardMethodBook
         //SDebug.Log("RandBombBox");
         ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), data.RewardCount);
     }
+
+    #endregion
+
+    #region Count Func
+
+    public static int MoveIncrease_CountFunc()
+    {
+        //Debug.Log("move increase");
+        int count = 5;
+        if (PlayDataManager.IsExist)
+        {
+            count = PlayDataManager.Instance.AdditoryMoveCount;
+        }
+        return count;
+    }
+
+    public static int GoldIncrease_CountFunc()
+    {
+        int level = (int)MissionManager.Instance.CurrentMissionLevel;
+        return level * level * 2 + 5;
+    }
+
+    #endregion
 }

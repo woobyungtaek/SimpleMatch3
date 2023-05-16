@@ -39,6 +39,11 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
     }
 
+    public EMissionLevel CurrentMissionLevel
+    {
+        get => mCurrentMissionData.Level;
+    }
+
     [Header("Reward")]
     [SerializeField] private Transform mRewardCellUITransform;
     [SerializeField] private GameObject mRewardCellUIPrefab;
@@ -91,6 +96,16 @@ public class MissionManager : SceneSingleton<MissionManager>
     {
         mMissionDataListArr = DataManager.Instance.MissionDataListArr;
         mRewardDataList = DataManager.Instance.RewardDataList;
+
+        mBasicRewardList.Clear();
+        for(int idx = 0; idx<mRewardDataList.Count; ++idx)
+        {
+            if(mRewardDataList[idx].RewardType == "Basic")
+            {
+                mBasicRewardList.Add(mRewardDataList[idx]);
+            }
+        }
+
         CreateMissionCellUI();
 
         mDoubleChanceFunc = null;
@@ -163,14 +178,14 @@ public class MissionManager : SceneSingleton<MissionManager>
     public void CreateStageClearRewardDataList()
     {
         // 기본 움직임 횟수 충전
-        mBasicRewardList.Clear();
-        mBasicRewardList.Add(GetRewardDataByNameGrade("MoveCount", 0));
+        //mBasicRewardList.Clear();
+        //mBasicRewardList.Add(GetRewardDataByNameGrade("MoveCount", 0));
 
-        mBasicRewardList[0].RewardCount = 5;
-        if (PlayDataManager.IsExist)
-        {
-            mBasicRewardList[0].RewardCount = PlayDataManager.Instance.AdditoryMoveCount;
-        }
+        //mBasicRewardList[0].RewardCount = 5;
+        //if (PlayDataManager.IsExist)
+        //{
+        //    mBasicRewardList[0].RewardCount = PlayDataManager.Instance.AdditoryMoveCount;
+        //}
 
         if (mCurrentMissionData == null) { return; }
 
@@ -202,6 +217,7 @@ public class MissionManager : SceneSingleton<MissionManager>
             selectItemCount = 0;
         }
 
+        // 등급, 선택 횟수, 보여지는 개수
         CreateSelectRewardList(grade, selectItemCount, 2);
     }
     private void CreateSelectRewardList(int grade, int selectCount, int provisionCount)
@@ -348,7 +364,9 @@ public class MissionManager : SceneSingleton<MissionManager>
     }
     public void TakeBasicReward()
     {
-        if (!IsLastStageInPart)
+        // 이건 매번 호출 되는 함수
+
+        //if (!IsLastStageInPart)
         {
             // 기본 보상 획득(무빙 추가)
             foreach (var basicReward in mBasicRewardList)
