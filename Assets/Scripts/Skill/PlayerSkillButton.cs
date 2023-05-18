@@ -22,7 +22,6 @@ public class PlayerSkillButton : MonoBehaviour
             if(PlayDataManager.Instance.IsLockItem)
             {
                 mSkillButton.interactable = false;
-                return;
             }
         }
         mLockImage.gameObject.SetActive(!mSkillButton.interactable);

@@ -8,6 +8,7 @@ public class DataManager : Singleton<DataManager>
     private readonly string MISSION_DATA_FILE_NAME = "MissionDataList";
     private readonly string REWARD_DATA_FILE_NAME = "RewardDataList";
     private readonly string BOOSTER_DATA_FILE_NAME = "BoosterItemList";
+    private readonly string DECOITEM_DATA_FILE_NAME = "DecoItemList";
 
     public List<TutoInfoData> TutoInfoList
     {
@@ -62,6 +63,10 @@ public class DataManager : Singleton<DataManager>
         return mBoosterItemList[index];
     }
 
+    // Out Game
+    [SerializeField] private List<DecoItemData> mDecoItemList;
+
+    // In Game
     private List<TutoInfoData> mTutoInfoList;
     [SerializeField] private List<MissionDataPreset>[] mMissionDataListArr = new List<MissionDataPreset>[(int)EMissionLevel.Max];
     private List<RewardData> mRewardDataList;
@@ -70,6 +75,12 @@ public class DataManager : Singleton<DataManager>
     [RuntimeInitializeOnLoadMethod]
     private static void init()
     {
+        // 콜렉션 정보가 먼저 설정되어야함
+        CollectionManager.Init();
+
+        // Collectable 데이터 로드
+        Instance.LoadDecoItemList();
+
         //Instance.LoadTutoInfoList();
         Instance.LoadMissionDataPreset();
         Instance.LoadRewardDataList();
@@ -77,6 +88,15 @@ public class DataManager : Singleton<DataManager>
     }
 
     // Out Game
+    public void LoadDecoItemList()
+    {
+        mDecoItemList = Utility.LoadCSVFile<DecoItemData>(DECOITEM_DATA_FILE_NAME);
+        foreach(var data in mDecoItemList)
+        {
+            data.InitData();
+        }
+    }
+
 
     // In Game
     public void LoadTutoInfoList()

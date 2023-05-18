@@ -165,19 +165,25 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
     {
         //공통 실행
         bool bLastStage = MissionManager.Instance.IsLastStageInPart;
-        if (MissionManager.Instance.IsLastPart && bLastStage)
+
+        #region AllClear
+
+        bool bLastPart = MissionManager.Instance.IsLastPart;
+        if (bLastPart && bLastStage)
         {
             yield return GameConfig.yieldGameEndDuration;
             yield return null;
 
-            //MissionManager.Instance.ResetGameInfoByGameOver();
             PopupManager.Instance.CreatePopupByName("AllClearPopup");
            yield break;
         }
+
+        #endregion
+
         MissionManager.Instance.SetNextStageInfo();
 
-
         #region DayClear
+
         if (bLastStage)
         {
             yield return GameConfig.yieldGameEndDuration;
@@ -189,6 +195,7 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
             yield return null;
             ObserverCenter.Instance.SendNotification(Message.CharacterEnter);
         }
+
         #endregion
     }
 

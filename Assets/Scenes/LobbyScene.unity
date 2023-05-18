@@ -863,6 +863,7 @@ GameObject:
   - component: {fileID: 943760919}
   - component: {fileID: 943760921}
   - component: {fileID: 943760920}
+  - component: {fileID: 943760922}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -987,6 +988,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 943760918}
   m_CullTransparentMesh: 1
+--- !u!114 &943760922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943760918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713dfb6b34c913f498b809d73245e014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mKey: PlayerData.Gold_MVC
+  mDataType: 0
+  mFormat: '{0}'
 --- !u!1 &984335160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,9 +1040,11 @@ MonoBehaviour:
   mChapterGimmickArr:
   - {fileID: 11400000, guid: 8d015f51cb70c5e419e01e0b63ab789e, type: 2}
   - {fileID: 11400000, guid: a0eb8eb684dde23459862748912afdcd, type: 2}
+  - {fileID: 11400000, guid: 8d015f51cb70c5e419e01e0b63ab789e, type: 2}
   mChapterDataArr:
   - {fileID: 11400000, guid: 6f773d10bf0857442bd4ac853dddbf39, type: 2}
   - {fileID: 11400000, guid: cc4ecbd4129ec0647866f40021b5ab58, type: 2}
+  - {fileID: 11400000, guid: 622727bdae091434585c3bcb3b54ec46, type: 2}
   UseBoosterItemArr:
   - 
   - 

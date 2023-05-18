@@ -148,11 +148,9 @@ MonoBehaviour:
   mSelectedReward:
     Index: 0
     RewardName: 
-    MethodName: 
     SpriteName: 
     Grade: 0
-    RewardCount: 0
-    RewardType: 
+    RewardType: 0
   mSelectCellUIPrefab: {fileID: 8844628853957622977, guid: 62cdf6432f17de345a5d34aa40deac1a,
     type: 3}
   mSelectRewardCellGrid: {fileID: 3670374521335953615}
@@ -189,7 +187,7 @@ RectTransform:
   m_Father: {fileID: 6091851114635594}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.2}
+  m_AnchorMin: {x: 0, y: 0.094}
   m_AnchorMax: {x: 1, y: 0.8}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -214,10 +212,10 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 570, y: 220}
-  m_Spacing: {x: 0, y: 20}
+  m_CellSize: {x: 570, y: 210}
+  m_Spacing: {x: 0, y: 10}
   m_Constraint: 2
-  m_ConstraintCount: 3
+  m_ConstraintCount: 99
 --- !u!1 &5438642489352022983
 GameObject:
   m_ObjectHideFlags: 0

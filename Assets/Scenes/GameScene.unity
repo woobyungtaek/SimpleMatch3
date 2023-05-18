@@ -1089,6 +1089,7 @@ MonoBehaviour:
     type: 3}
   mButtonUITransform: {fileID: 510702207}
   mMainSkillButton: {fileID: 867762521135467907}
+  mGold_Inst: 0
 --- !u!1 &637799290
 GameObject:
   m_ObjectHideFlags: 0
@@ -4539,8 +4540,6 @@ MonoBehaviour:
   mPartCount: 0
   mStageCount: 0
   mChapterData: {fileID: 11400000, guid: 6f773d10bf0857442bd4ac853dddbf39, type: 2}
-  mDayCountText: {fileID: 877968915833617774}
-  mOrderCountText: {fileID: 877968916716206705}
   mMissionCellGridTransform: {fileID: 1712113280}
   mCollectEffectPrefab: {fileID: 5876639643000421130, guid: 8cf0f1cb6b431d745931a6ca2a11590f,
     type: 3}
@@ -4884,7 +4883,7 @@ GameObject:
   - component: {fileID: 2519070251003056645}
   - component: {fileID: 8809711515961055268}
   m_Layer: 5
-  m_Name: OrderIconImage
+  m_Name: StageIconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4902,7 +4901,7 @@ GameObject:
   - component: {fileID: 2519070250275067160}
   - component: {fileID: 8809711515753652025}
   m_Layer: 5
-  m_Name: DayIconImage
+  m_Name: PartIconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5255,8 +5254,9 @@ GameObject:
   - component: {fileID: 9214291943555205648}
   - component: {fileID: 1765313497736337209}
   - component: {fileID: 877968915833617774}
+  - component: {fileID: 877968915833617775}
   m_Layer: 5
-  m_Name: DayCountText
+  m_Name: PartCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5352,6 +5352,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &877968915833617775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877968915833617773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713dfb6b34c913f498b809d73245e014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mKey: MissionManager.mPart
+  mDataType: 0
+  mFormat: '{0}'
 --- !u!1 &877968916716206704
 GameObject:
   m_ObjectHideFlags: 0
@@ -5363,8 +5378,9 @@ GameObject:
   - component: {fileID: 9214291944437894413}
   - component: {fileID: 1765313497394712612}
   - component: {fileID: 877968916716206705}
+  - component: {fileID: 877968916716206706}
   m_Layer: 5
-  m_Name: OrderCountText
+  m_Name: StageCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5460,6 +5476,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &877968916716206706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877968916716206704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713dfb6b34c913f498b809d73245e014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mKey: MissionManager.mRemainStage
+  mDataType: 0
+  mFormat: '{0}'
 --- !u!222 &1026045350113612014
 CanvasRenderer:
   m_ObjectHideFlags: 0

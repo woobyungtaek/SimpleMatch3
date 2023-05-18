@@ -28,7 +28,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         get
         {
             //현재 스테이지가 Day의 가장 마지막 스테이지 인지 확인합니다.
-            return (mStageCount + 1) >= mChapterData.GetStageCount(mPartCount);
+            return mStageCount >= mChapterData.GetStageCount(mPartCount) - 1;
         }
     }
     public bool IsLastPart
@@ -38,6 +38,7 @@ public class MissionManager : SceneSingleton<MissionManager>
             return (mPartCount + 1) >= mChapterData.PartCount;
         }
     }
+
 
     public EMissionLevel CurrentMissionLevel
     {
@@ -55,10 +56,29 @@ public class MissionManager : SceneSingleton<MissionManager>
     [SerializeField] private int mStageCount = 0;
     [SerializeField] private ChapterData mChapterData;
 
-    [Header("Mission")]
-    [SerializeField] private TextMeshProUGUI mDayCountText;
-    [SerializeField] private TextMeshProUGUI mOrderCountText;
+    private MVC_Data<int> mRemainStage = new MVC_Data<int>("MissionManager.mRemainStage");
+    private MVC_Data<int> mPart = new MVC_Data<int>("MissionManager.mPart");
+    private int StageCount
+    {
+        get => mStageCount;
+        set
+        {
+            mStageCount = value;
+            mRemainStage.Value = mChapterData.GetStageCount(mPartCount) - mStageCount;
+        }
+    }
+    private int PartCount
+    {
+        get => mPartCount;
+        set
+        {
+            mPartCount = value;
+            mPart.Value = mPartCount + 1;
+        }
+    }
 
+
+    [Header("Mission")]
     [SerializeField]
     private Transform mMissionCellGridTransform;
 
@@ -100,7 +120,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         mBasicRewardList.Clear();
         for(int idx = 0; idx<mRewardDataList.Count; ++idx)
         {
-            if(mRewardDataList[idx].RewardType == "Basic")
+            if(mRewardDataList[idx].RewardType ==  ERewardType.Basic)
             {
                 mBasicRewardList.Add(mRewardDataList[idx]);
             }
@@ -117,6 +137,7 @@ public class MissionManager : SceneSingleton<MissionManager>
                 mDoubleChanceFunc = DoubleChanceFunc;
             }
         }
+
     }
 
 
@@ -177,16 +198,6 @@ public class MissionManager : SceneSingleton<MissionManager>
     }
     public void CreateStageClearRewardDataList()
     {
-        // 기본 움직임 횟수 충전
-        //mBasicRewardList.Clear();
-        //mBasicRewardList.Add(GetRewardDataByNameGrade("MoveCount", 0));
-
-        //mBasicRewardList[0].RewardCount = 5;
-        //if (PlayDataManager.IsExist)
-        //{
-        //    mBasicRewardList[0].RewardCount = PlayDataManager.Instance.AdditoryMoveCount;
-        //}
-
         if (mCurrentMissionData == null) { return; }
 
         int grade;
@@ -216,9 +227,9 @@ public class MissionManager : SceneSingleton<MissionManager>
         {
             selectItemCount = 0;
         }
-
+                
         // 등급, 선택 횟수, 보여지는 개수
-        CreateSelectRewardList(grade, selectItemCount, 2);
+        CreateSelectRewardList(grade, selectItemCount, PlayerData.SelectRewardCount);
     }
     private void CreateSelectRewardList(int grade, int selectCount, int provisionCount)
     {
@@ -229,7 +240,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         int loopCount = mRewardDataList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (!mRewardDataList[index].RewardType.Equals("Select")) { continue; }
+            if (!(mRewardDataList[index].RewardType == ERewardType.Select)) { continue; }
             if (mRewardDataList[index].Grade != grade) { continue; }//현재 등급의 보상만 추가 한다.
             mInstRandomRewardList.Add(mRewardDataList[index]);
         }
@@ -309,15 +320,16 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public void SetNextStageInfo()
     {
-        mStageCount += 1;
+        StageCount += 1;
+
         if (mStageCount >= mChapterData.GetStageCount(mPartCount))
         {
-            mStageCount = 0;
-            mPartCount += 1;
+            PartCount += 1;
             if (mPartCount >= mChapterData.PartCount)
             {
-                mPartCount = 0;
+                PartCount = 0;
             }
+            StageCount = 0;
         }
     }
 
@@ -392,6 +404,9 @@ public class MissionManager : SceneSingleton<MissionManager>
             mChapterData = PlayDataManager.Instance.CurrentChapterData;
         }
 
+        StageCount = mStageCount;
+        PartCount = mPartCount;
+
         mDayMissionDataList.Clear();
 
         foreach (var stageLevel in mChapterData.MissionLevelList[mPartCount].list)
@@ -408,7 +423,6 @@ public class MissionManager : SceneSingleton<MissionManager>
     public void StartStage()
     {
         RefreshMissionCellUI();
-        RefreshDayOrderUI();
 
         if (PuzzleManager.Instance.CurrentState == EGameState.StageSuccess)
         {
@@ -416,11 +430,6 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
     }
 
-    public void RefreshDayOrderUI()
-    {
-        mDayCountText.text = $"{mPartCount + 1}";
-        mOrderCountText.text = $"{mChapterData.GetStageCount(mPartCount) - mStageCount}";
-    }
 
     public void RefreshMissionCellUI()
     {

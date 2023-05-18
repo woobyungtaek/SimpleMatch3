@@ -82,11 +82,6 @@ public class GameSceneManager : MonoBehaviour
             TutorialManager.Instance.SetTutorialData(mTutoData);
             TutorialManager.Instance.StartTutorial();
         }
-        else
-        {
-            missionManager.RefreshDayOrderUI();
-            //MissionManager.Instance.StartStage();
-        }
 
         StartCoroutine(DelayStartByFadeOutEffect());
     }

@@ -1,4 +1,8 @@
 Key,English,Korean
+Icon_Move_Name,MoveCount,활동력
+Icon_Move_Desc,Get MoveCount,활동력을 획득합니다.
+Gold_Name,Gold,금화
+Gold_Desc,Get Gold,금화를 획득합니다.
 SkillIcons_1_Name,Random Box,랜덤 물약
 SkillIcons_2_Name,Block Swap,위치 변화
 SkillIcons_3_Name,Color Change,색상 변화

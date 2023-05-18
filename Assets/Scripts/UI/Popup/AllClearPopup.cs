@@ -4,20 +4,10 @@ using UnityEngine;
 
 public class AllClearPopup : Popup
 {
-    public void OnCancelButtonClicked()
-    {
-        OnOkButtonClicked();
-    }
-    public void OnOkButtonClicked()
-    {
-        PlayerData.GetGold(ItemManager.Instance.InstGold);
-
-        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Loading);
-        ClosePopup();
-    }
     public void OnQuitGameButtonClicked()
     {
         ClosePopup();
+        PlayerData.GetGold(ItemManager.Instance.InstGold);
         SceneLoader.Instance.LoadSceneByName("LobbyScene");
         //Application.Quit();
     }

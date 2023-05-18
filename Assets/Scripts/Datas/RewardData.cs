@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum ERewardType
+{
+    Basic,
+    Select
+}
 [System.Serializable]
 public class RewardData
 {
@@ -9,7 +15,7 @@ public class RewardData
     public string   RewardName;
     public string   SpriteName;
     public int      Grade;
-    public string   RewardType;
+    public ERewardType RewardType;
 
     private string mMethodName;
 

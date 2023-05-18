@@ -40,6 +40,15 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         }
     }
 
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) { PlayerData.GetGold(1); }    
+        if (Input.GetKeyDown(KeyCode.O)) { PlayerData.GetGold(-1); }    
+    }
+
+#endif
+
     public void LoadGameScene()
     {
         SceneLoader.Instance.LoadSceneByName("GameScene");

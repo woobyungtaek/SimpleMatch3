@@ -42,7 +42,7 @@ public static class PlayerData
 
     #region 재화
 
-    private static int mGold;
+    public static MVC_Data<int> mGold_MVC = new MVC_Data<int>("PlayerData.Gold_MVC");
 
     public static void GetGold(int value)
     {
@@ -52,14 +52,20 @@ public static class PlayerData
         {
             additory = PlayDataManager.Instance.AdditoryGoldPer;
         }
+        additory /= 100f;
 
-        int gold = (int)(value * (100f + additory));
-        if (gold <= 0) { gold = 1; }
+        int gold = (int)(value * (1f + additory));
 
-        mGold += gold;
+        mGold_MVC.Value += gold;
 
-        Debug.Log($"Current Gold : {mGold}");
+        Debug.Log($"Current Gold : {mGold_MVC.Value}");
     }
+
+    #endregion
+
+    #region 보상
+
+    public static int SelectRewardCount = 3;
 
     #endregion
 
