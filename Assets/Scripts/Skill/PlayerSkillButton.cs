@@ -17,9 +17,9 @@ public class PlayerSkillButton : MonoBehaviour
 
     public void SetPlayerSkill(PlayerSkill skill)
     {
-        if(PlayDataManager.IsExist)
+        if(InGameUseDataManager.IsExist)
         {
-            if(PlayDataManager.Instance.IsLockItem)
+            if(InGameUseDataManager.Instance.IsLockItem)
             {
                 mSkillButton.interactable = false;
             }

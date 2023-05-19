@@ -48,9 +48,9 @@ public static class PlayerData
     {
         // 추가 획득률 적용
         float additory = 0f;
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            additory = PlayDataManager.Instance.AdditoryGoldPer;
+            additory = InGameUseDataManager.Instance.AdditoryGoldPer;
         }
         additory /= 100f;
 
@@ -63,15 +63,79 @@ public static class PlayerData
 
     #endregion
 
-    #region 보상
+    #region 도감 적용 전 고정 스탯
+
+    private  static readonly int MOVECOUNT_PARTSTART    = 10;
+    private  static readonly int MOVECOUNT_STAGECLEAR   = 5;
+    private  static readonly int MOVECOUNT_CONTINUE     = 5;
+    
+    #endregion
+
+    #region 도감 능력치가 적용 된 스탯
+
+    public static int MoveCount_PartStart;
+    public static int MoveCount_StageClear;
+    public static int MoveCount_Continue = 5;
+
+    public static int ItemCount_ColorChange;
+    public static int ItemCount_BlockSwap;
+    public static int ItemCount_RandomBombBox;
 
     public static int SelectRewardCount = 3;
 
     #endregion
 
-    #region 활동력
+    #region 도감
 
-    public static int ContinueMoveCount = 5;
+    /// <summary>
+    /// 콜렉션의 효과를 적용합니다.
+    /// </summary>
+    public static void ApplyCollectionStat()
+    {
+        // 기본 상태로 돌리기
+        MoveCount_PartStart = MOVECOUNT_PARTSTART;
+        MoveCount_StageClear = MOVECOUNT_STAGECLEAR;
+        MoveCount_Continue = MOVECOUNT_CONTINUE;
+
+        ItemCount_ColorChange = 0;
+        ItemCount_BlockSwap = 0;
+        ItemCount_RandomBombBox = 0;
+
+        // 콜렉션 해금 정보에 따라 능력치 추가
+        foreach(var collection in mCollectionSaveDataDict)
+        {
+            CollectionManager.ExcuteCollectionEffect(collection.Key, collection.Value);
+        }
+    }
+
+    /// <summary>
+    /// 저장된 콜렉션 데이터
+    /// </summary>
+    private static Dictionary<string, int> mCollectionSaveDataDict = new Dictionary<string, int>();
+
+    /// <summary>
+    /// 획득 시 해당 아이템 잠금 해제
+    /// </summary>
+    /// <param name="collectionName"> 도감 이름, 아이템이 가지고 있음 </param>
+    /// <param name="index"> 도감 내 인덱스, 아이템이 가지고 있음 </param>
+    public static void AddCollectionByIndex(string collectionName,int index)
+    {
+        if (!mCollectionSaveDataDict.ContainsKey(collectionName)) 
+        {
+            mCollectionSaveDataDict.Add(collectionName, 0);
+        }
+        mCollectionSaveDataDict[collectionName] = mCollectionSaveDataDict[collectionName] | (1 << index);
+    }
+
+    public static void TestAddCollection(string name, int value)
+    {
+        if (!mCollectionSaveDataDict.ContainsKey(name))
+        {
+            mCollectionSaveDataDict.Add(name, 0);
+        }
+        mCollectionSaveDataDict[name] = (1 << value);
+        Debug.Log($"{name} / {mCollectionSaveDataDict[name]}");
+    }
 
     #endregion
 

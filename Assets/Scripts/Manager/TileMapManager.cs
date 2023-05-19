@@ -183,9 +183,9 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
     private void SetMapGimmick()
     {
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            mMapGimmickInfo = PlayDataManager.Instance.ChapterMapGimmickInfo;
+            mMapGimmickInfo = InGameUseDataManager.Instance.ChapterMapGimmickInfo;
             mMapGimmickInfo.Init();
             return;
         }

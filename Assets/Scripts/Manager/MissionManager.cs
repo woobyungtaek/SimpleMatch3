@@ -129,11 +129,11 @@ public class MissionManager : SceneSingleton<MissionManager>
         CreateMissionCellUI();
 
         mDoubleChanceFunc = null;
-        if(PlayDataManager.IsExist)
+        if(InGameUseDataManager.IsExist)
         {
-            if(PlayDataManager.Instance.DoubleChancePer > 0f)
+            if(InGameUseDataManager.Instance.DoubleChancePer > 0f)
             {
-                mDoubleChancePer = PlayDataManager.Instance.DoubleChancePer;
+                mDoubleChancePer = InGameUseDataManager.Instance.DoubleChancePer;
                 mDoubleChanceFunc = DoubleChanceFunc;
             }
         }
@@ -290,9 +290,9 @@ public class MissionManager : SceneSingleton<MissionManager>
     public void SetMoveAndItemCount(MapData mapdata)
     {
         TileMapManager.Instance.MoveCount = mapdata.moveCount;
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            TileMapManager.Instance.MoveCount = PlayDataManager.Instance.StartCount;
+            TileMapManager.Instance.MoveCount = InGameUseDataManager.Instance.StartCount;
         }
         //게임 시작을 체크하는 부분을 따로 정확하게 만들어야한다.
         if (mPartCount == 0)
@@ -399,9 +399,9 @@ public class MissionManager : SceneSingleton<MissionManager>
     /// </summary>
     public void CreateDayStageInfo()
     {
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            mChapterData = PlayDataManager.Instance.CurrentChapterData;
+            mChapterData = InGameUseDataManager.Instance.CurrentChapterData;
         }
 
         StageCount = mStageCount;

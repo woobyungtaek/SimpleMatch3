@@ -47,11 +47,11 @@ public class ItemManager : SceneSingleton<ItemManager>
         int count_1 = 0;
         int count_2 = 0;
 
-        if(PlayDataManager.IsExist)
+        if(InGameUseDataManager.IsExist)
         {
-            count_0 = PlayDataManager.Instance.RandomBombBoxCount;
-            count_1 = PlayDataManager.Instance.BlockSwapCount;
-            count_2 = PlayDataManager.Instance.ColorChangeCount;
+            count_0 = InGameUseDataManager.Instance.ItemCount_RandomBombBox;
+            count_1 = InGameUseDataManager.Instance.ItemCount_BlockSwap;
+            count_2 = InGameUseDataManager.Instance.ItemCount_ColorChange;
         }
 
         AddSkillCount(typeof(RandomBoxSkill), count_0);

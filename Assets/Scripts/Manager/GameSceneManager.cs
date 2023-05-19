@@ -53,10 +53,10 @@ public class GameSceneManager : MonoBehaviour
         Random.InitState((int)System.DateTime.Now.Ticks);
 
         Time.timeScale = 1;
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            mConceptName = PlayDataManager.Instance.ConceptName;
-            mMapName = PlayDataManager.Instance.MapName;
+            mConceptName = InGameUseDataManager.Instance.ConceptName;
+            mMapName = InGameUseDataManager.Instance.MapName;
         }
 
         var tileMapManager = TileMapManager.Instance;
@@ -100,13 +100,13 @@ public class GameSceneManager : MonoBehaviour
     {
         MapDataInfoNotiArg data = noti.Data as MapDataInfoNotiArg;
 
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
             if (!string.IsNullOrEmpty(data.ConceptName))
             {
-                PlayDataManager.Instance.ConceptName = data.ConceptName;
+                InGameUseDataManager.Instance.ConceptName = data.ConceptName;
             }
-            PlayDataManager.Instance.MapName = data.MapName;
+            InGameUseDataManager.Instance.MapName = data.MapName;
         }
         if (!string.IsNullOrEmpty(data.ConceptName))
         {

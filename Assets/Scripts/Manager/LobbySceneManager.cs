@@ -44,7 +44,8 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P)) { PlayerData.GetGold(1); }    
-        if (Input.GetKeyDown(KeyCode.O)) { PlayerData.GetGold(-1); }    
+        if (Input.GetKeyDown(KeyCode.O)) { PlayerData.GetGold(-1); }
+        if (Input.GetKeyDown(KeyCode.L)) { CollectionManager.TestUnlockCollection(); }
     }
 
 #endif
@@ -83,18 +84,14 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     }
     public void ChapterStart()
     {
+        InGameUseDataManager.Instance.ConceptName = "Concept_0";
+        InGameUseDataManager.Instance.MapName = "DayMap_0";
 
-        PlayDataManager.Instance.ConceptName = "Concept_0";
-        PlayDataManager.Instance.MapName = "DayMap_0";
+        InGameUseDataManager.Instance.ChapterMapGimmickInfo = mChapterGimmickArr[mSelectedChapterNum];
+        InGameUseDataManager.Instance.CurrentChapterData = mChapterDataArr[mSelectedChapterNum];
 
-        PlayDataManager.Instance.ChapterMapGimmickInfo = mChapterGimmickArr[mSelectedChapterNum];
-        PlayDataManager.Instance.CurrentChapterData = mChapterDataArr[mSelectedChapterNum];
-
-        PlayDataManager.Instance.InitPlayData();
+        InGameUseDataManager.Instance.InitInGameUseData();
         
-        // 플레이어의 값 중 적용해야할덧 먼저 적용
-        SetPlayDataByPlayerInfo();
-
         // 현재 설정된 Booster의 내용을 적용한다.
         for(int cnt = 0; cnt < UseBoosterItemArr.Length; ++cnt)
         {
@@ -107,21 +104,5 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         }
 
         LoadGameScene();
-    }
-
-    private void SetPlayDataByPlayerInfo()
-    {
-        // 저장된 데이터가 적용된다.
-
-        // StartCount
-        PlayDataManager.Instance.StartCount += 10;
-
-        // AdditoryMoveCount
-        PlayDataManager.Instance.AdditoryMoveCount += 4;
-
-        // ContinueCount
-        // ColorChangeCount
-        // BlockSwapCount
-        // RandomBombBoxCount
     }
 }

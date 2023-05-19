@@ -15,9 +15,9 @@ public class RewardAdPopup : Popup
     public override void Init()
     {
         int mMoveCount = 5;
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            mMoveCount = PlayDataManager.Instance.ContinueMoveCount;
+            mMoveCount = InGameUseDataManager.Instance.MoveCount_Continue;
         }
 
         mAdButtonText.text = $"광고보고 이어하기\nMove Count + {mMoveCount}";

@@ -56,9 +56,9 @@ public static class RewardMethodBook
     {
         //Debug.Log("move increase");
         int count = 5;
-        if (PlayDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            count = PlayDataManager.Instance.AdditoryMoveCount;
+            count = InGameUseDataManager.Instance.MoveCount_StageClear;
         }
         return count;
     }

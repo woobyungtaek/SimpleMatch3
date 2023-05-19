@@ -68,62 +68,62 @@ public static class BoosterEffectBook
     public static void AdditoryMove_Start(float value)
     {
         Debug.Log($"AdditoryMove_Start  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.StartCount += (int)value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.StartCount += (int)value;
     }
     public static void AdditoryMove_StageClear(float value)
     {
         Debug.Log($"AdditoryMove_StageClear  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.AdditoryMoveCount += (int)value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.MoveCount_StageClear += (int)value;
     }
     public static void ContinueCount(float value)
     {
         Debug.Log($"ContinueCount  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.ContinueMoveCount += (int)value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.MoveCount_Continue += (int)value;
     }
     public static void StartItem_ColorChange(float value)
     {
         Debug.Log($"StartItem_ColorChange  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.ColorChangeCount += (int)value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.ItemCount_ColorChange += (int)value;
     }
     public static void StartItem_BlockSwap(float value)
     {
         Debug.Log($"StartItem_BlockSwap  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.BlockSwapCount += (int)value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.ItemCount_BlockSwap += (int)value;
     }
     public static void StartItem_RandomBombBox(float value)
     {
         Debug.Log($"StartItem_RandomBombBox  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.RandomBombBoxCount += (int)value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.ItemCount_RandomBombBox += (int)value;
     }
     public static void AdditoryRewardItem(float value)
     {
         Debug.Log($"AdditoryRewardItem  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.DoubleChancePer += value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.DoubleChancePer += value;
     }
     public static void DoubleChance(float value)
     {
         Debug.Log($"DoubleChance  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.DoubleChancePer += value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.DoubleChancePer += value;
     }
     public static void AdditoryGoldPer(float value)
     {
         Debug.Log($"AdditoryGoldPer  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.AdditoryGoldPer += value;
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.AdditoryGoldPer += value;
     }
     public static void LockItems(float value)
     {
         Debug.Log($"LockItems  {value}");
-        if (!PlayDataManager.IsExist) { return; }
-        PlayDataManager.Instance.IsLockItem = System.Convert.ToBoolean(value);
+        if (!InGameUseDataManager.IsExist) { return; }
+        InGameUseDataManager.Instance.IsLockItem = System.Convert.ToBoolean(value);
     }
 
 
