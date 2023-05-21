@@ -34,10 +34,10 @@ public class ChapterDataEditor : EditorWindow
     private List<PartEditData> mPartEditList = new List<PartEditData>();
 
     [MenuItem("DataEditor/ChapterDataEdit")]
-    public static void Init()
+    public static void Init_ChapterDataEditor()
     {
-        ChapterDataEditor googleDocument = (ChapterDataEditor)GetWindow(typeof(ChapterDataEditor));
-        googleDocument.Show();
+        ChapterDataEditor chapterDataEditor = (ChapterDataEditor)GetWindow(typeof(ChapterDataEditor));
+        chapterDataEditor.Show();
 
     }
 
