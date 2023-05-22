@@ -15,3 +15,16 @@ public class Vector2Comparer : IEqualityComparer<Vector2>
         return obj.GetHashCode();
     }
 }
+
+public class IntComparer : IEqualityComparer<int>
+{
+    public bool Equals(int x, int y)
+    {
+        return x == y;
+    }
+
+    public int GetHashCode(int obj)
+    {
+        return obj.GetHashCode();
+    }
+}

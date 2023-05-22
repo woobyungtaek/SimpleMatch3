@@ -105,4 +105,12 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
         LoadGameScene();
     }
+
+
+    // 도감 관련
+    public void OnCollectionViewButtonClicked()
+    {
+        PopupManager.Instance.CreatePopupByName("CollectionViewPopup");
+    }
+
 }

@@ -66,7 +66,7 @@ public static class PlayerData
     #region 도감 적용 전 고정 스탯
 
     private  static readonly int MOVECOUNT_PARTSTART    = 10;
-    private  static readonly int MOVECOUNT_STAGECLEAR   = 5;
+    private  static readonly int MOVECOUNT_STAGECLEAR   = 3;
     private  static readonly int MOVECOUNT_CONTINUE     = 5;
     
     #endregion
@@ -75,7 +75,7 @@ public static class PlayerData
 
     public static int MoveCount_PartStart;
     public static int MoveCount_StageClear;
-    public static int MoveCount_Continue = 5;
+    public static int MoveCount_Continue;
 
     public static int ItemCount_ColorChange;
     public static int ItemCount_BlockSwap;
@@ -111,30 +111,30 @@ public static class PlayerData
     /// <summary>
     /// 저장된 콜렉션 데이터
     /// </summary>
-    private static Dictionary<string, int> mCollectionSaveDataDict = new Dictionary<string, int>();
+    private static Dictionary<int, int> mCollectionSaveDataDict = new Dictionary<int, int>(new IntComparer());
 
     /// <summary>
     /// 획득 시 해당 아이템 잠금 해제
     /// </summary>
     /// <param name="collectionName"> 도감 이름, 아이템이 가지고 있음 </param>
     /// <param name="index"> 도감 내 인덱스, 아이템이 가지고 있음 </param>
-    public static void AddCollectionByIndex(string collectionName,int index)
+    public static void AddCollectionByIndex(int collectionIndex,int index)
     {
-        if (!mCollectionSaveDataDict.ContainsKey(collectionName)) 
+        if (!mCollectionSaveDataDict.ContainsKey(collectionIndex)) 
         {
-            mCollectionSaveDataDict.Add(collectionName, 0);
+            mCollectionSaveDataDict.Add(collectionIndex, 0);
         }
-        mCollectionSaveDataDict[collectionName] = mCollectionSaveDataDict[collectionName] | (1 << index);
+        mCollectionSaveDataDict[collectionIndex] = mCollectionSaveDataDict[collectionIndex] | (1 << index);
     }
 
-    public static void TestAddCollection(string name, int value)
+    public static void TestAddCollection(int collectionIndex, int value)
     {
-        if (!mCollectionSaveDataDict.ContainsKey(name))
+        if (!mCollectionSaveDataDict.ContainsKey(collectionIndex))
         {
-            mCollectionSaveDataDict.Add(name, 0);
+            mCollectionSaveDataDict.Add(collectionIndex, 0);
         }
-        mCollectionSaveDataDict[name] = (1 << value);
-        Debug.Log($"{name} / {mCollectionSaveDataDict[name]}");
+        mCollectionSaveDataDict[collectionIndex] = (1 << value);
+        Debug.Log($"{mCollectionSaveDataDict[collectionIndex]} / {mCollectionSaveDataDict[collectionIndex]}");
     }
 
     #endregion
