@@ -14,7 +14,7 @@ public class RewardAdPopup : Popup
 
     public override void Init()
     {
-        int mMoveCount = 5;
+        mMoveCount = 5;
         if (InGameUseDataManager.IsExist)
         {
             mMoveCount = InGameUseDataManager.Instance.MoveCount_Continue;

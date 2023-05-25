@@ -117,6 +117,10 @@ public class RecycleGridLayout : MonoBehaviour
 
         // 공통으로 쓰일 값들 계산        
         mLineCount = mTotalDataCount / mLineCellCount; // 전체 라인수 계산
+        if(mTotalDataCount % mLineCellCount != 0)
+        {
+            mLineCount += 1;
+        }
         mCellSize = CellSize + Spacing;
 
         Setting_ContentSize();// Content 사이즈 계산

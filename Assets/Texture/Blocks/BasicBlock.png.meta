@@ -108,7 +108,6 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -212,111 +211,6 @@ TextureImporter:
   spriteSheet:
     serializedVersion: 2
     sprites:
-    - serializedVersion: 2
-      name: NormalBlock_0
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 131
-        width: 25
-        height: 26
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 951c73f1ccb9529b0800000000000000
-      internalID: -5105503301555207847
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NormalBlock_1
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 131
-        width: 26
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 55bf89e64c0532ce0800000000000000
-      internalID: -1431211451974354091
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NormalBlock_2
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 131
-        width: 22
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 873d122d299676b50800000000000000
-      internalID: 6586349059364213624
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NormalBlock_3
-      rect:
-        serializedVersion: 2
-        x: 100
-        y: 131
-        width: 25
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 33945437d6edfd230800000000000000
-      internalID: 3665893183369595187
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NormalBlock_4
-      rect:
-        serializedVersion: 2
-        x: 131
-        y: 131
-        width: 26
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c024c5ca5de3ac590800000000000000
-      internalID: -7653235529322053108
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     - serializedVersion: 2
       name: VerticalBombBlock_0
       rect:
@@ -810,35 +704,6 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      AroundBombBlock_0: -5944743278583391973
-      AroundBombBlock_1: 5277073011860571681
-      AroundBombBlock_2: -3077010677095575379
-      AroundBombBlock_3: 2876425705220389974
-      AroundBombBlock_4: 7110734979693137073
-      ColorExplosionBlock: 5448124094025809334
-      ColorExplosionBlock_0: 1502301090302230716
-      ColorExplosionBlock_1: -4294178637298049310
-      HomingExplosionBlock_0: -1746241471011797361
-      HomingExplosionBlock_1: 5739823870517371427
-      HomingExplosionBlock_2: -5942323310438270083
-      HomingExplosionBlock_3: -2909260099060321293
-      HomingExplosionBlock_4: 4229224651240144850
-      HorizontalBombBlock_0: 7681542623750436763
-      HorizontalBombBlock_1: -640151632423964689
-      HorizontalBombBlock_2: -4070125333608054650
-      HorizontalBombBlock_3: -997364571583834132
-      HorizontalBombBlock_4: 8606894278792355763
-      NormalBlock_0: -5105503301555207847
-      NormalBlock_1: -1431211451974354091
-      NormalBlock_2: 6586349059364213624
-      NormalBlock_3: 3665893183369595187
-      NormalBlock_4: -7653235529322053108
-      VerticalBombBlock_0: 8826945667641154271
-      VerticalBombBlock_1: -5065506375744796084
-      VerticalBombBlock_2: -4182547997122294876
-      VerticalBombBlock_3: 6106522152396350941
-      VerticalBombBlock_4: 4434528979735717645
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

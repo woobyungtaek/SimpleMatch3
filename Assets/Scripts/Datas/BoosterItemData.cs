@@ -8,6 +8,8 @@ public class BoosterItemData
 {
     public int Index;
 
+    public int Grade;
+
     public string ItemName
     {
         get
@@ -21,6 +23,12 @@ public class BoosterItemData
             if (mEffectValueList == null) { mEffectValueList = new List<float>(); }
             mEffectMethodList.Clear();
             mEffectValueList.Clear();
+
+            mUseCount = 0;
+            if (PlayerPrefs.HasKey(mItemName))
+            {
+                mUseCount = PlayerPrefs.GetInt(mItemName);
+            }
         }
     }
 
@@ -45,12 +53,16 @@ public class BoosterItemData
         }
     }
 
+    public int UseCount { get => mUseCount; }
+
     private string mItemName;
     private List<Action<float>> mEffectMethodList;
     private List<float> mEffectValueList;
 
+    private int mUseCount;
     public void InvokeAllEffect()
     {
+        mUseCount++;
         for (int idx = 0; idx < mEffectMethodList.Count; ++idx)
         {
             mEffectMethodList[idx].Invoke(mEffectValueList[idx]);

@@ -28,17 +28,6 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
     public string[] UseBoosterItemArr = new string[3];
 
-    private void Start()
-    {
-        if(PlayerData.BoosterItemInventory.Count == 0)
-        {
-            for (int cnt = 0; cnt < 5; ++cnt)
-            {
-                int rnd = Random.Range(0, DataManager.Instance.GetBoosterDataCount);
-                PlayerData.AddBoosterItem(rnd);
-            }
-        }
-    }
 
 #if UNITY_EDITOR
     private void Update()
@@ -111,6 +100,12 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     public void OnCollectionViewButtonClicked()
     {
         PopupManager.Instance.CreatePopupByName("CollectionViewPopup");
+    }
+
+    // 상점 관련
+    public void OnShopButtonClicked()
+    {
+        PopupManager.Instance.CreatePopupByName("ShopPopup");
     }
 
 }

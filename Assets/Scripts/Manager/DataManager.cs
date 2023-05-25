@@ -44,6 +44,30 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
+
+    // Out Game
+    [SerializeField] private List<DecoItemData> mDecoItemList;
+    public int GetDecoItemDataCount
+    {
+        get => mDecoItemList.Count;
+    }
+    public DecoItemData GetDecoItemByIndex(int index)
+    {
+        if (index < 0 || index >= mDecoItemList.Count) { return null; }
+        return mDecoItemList[index];
+    }
+    public void GetGradeDataList_Deco(int grade, ref List<DecoItemData> list)
+    {
+        list.Clear();
+
+        foreach (var data in mDecoItemList)
+        {
+            if (data.Grade == grade) { list.Add(data); }
+        }
+    }
+
+
+    private List<BoosterItemData> mBoosterItemList;
     public int GetBoosterDataCount
     {
         get => mBoosterItemList.Count;
@@ -52,25 +76,33 @@ public class DataManager : Singleton<DataManager>
     {
         for (int idx = 0; idx < mBoosterItemList.Count; ++idx)
         {
-            if(mBoosterItemList[idx].ItemName != name){ continue; }
+            if (mBoosterItemList[idx].ItemName != name) { continue; }
             return mBoosterItemList[idx];
         }
         return null;
     }
     public BoosterItemData GetBoosterItemByIndex(int index)
     {
-        if(index < 0 || index >= mBoosterItemList.Count) { return null; }
+        if (index < 0 || index >= mBoosterItemList.Count) { return null; }
         return mBoosterItemList[index];
     }
 
-    // Out Game
-    [SerializeField] private List<DecoItemData> mDecoItemList;
+    public void GetGradeDataList_Booster(int grade, ref List<BoosterItemData> list)
+    {
+        list.Clear();
+
+        foreach(var data in mBoosterItemList)
+        {
+            if(data.Grade == grade) { list.Add(data); }
+        }
+    }
 
     // In Game
     private List<TutoInfoData> mTutoInfoList;
     [SerializeField] private List<MissionDataPreset>[] mMissionDataListArr = new List<MissionDataPreset>[(int)EMissionLevel.Max];
     private List<RewardData> mRewardDataList;
-    private List<BoosterItemData> mBoosterItemList;
+
+
 
     [RuntimeInitializeOnLoadMethod]
     private static void init()
@@ -95,6 +127,10 @@ public class DataManager : Singleton<DataManager>
         {
             data.InitData();
         }
+    }
+    public void LoadBoosterItmeList()
+    {
+        mBoosterItemList = Utility.LoadCSVFile<BoosterItemData>(BOOSTER_DATA_FILE_NAME);
     }
 
 
@@ -122,8 +158,4 @@ public class DataManager : Singleton<DataManager>
         mRewardDataList = Utility.LoadCSVFile<RewardData>(REWARD_DATA_FILE_NAME);
     }
 
-    public void LoadBoosterItmeList()
-    {
-        mBoosterItemList = Utility.LoadCSVFile<BoosterItemData>(BOOSTER_DATA_FILE_NAME);
-    }
 }

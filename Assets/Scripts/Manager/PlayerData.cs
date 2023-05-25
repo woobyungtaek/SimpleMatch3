@@ -75,7 +75,7 @@ public static class PlayerData
 
     public static int MoveCount_PartStart;
     public static int MoveCount_StageClear;
-    public static int MoveCount_Continue;
+    public static int MoveCount_Continue = MOVECOUNT_CONTINUE;
 
     public static int ItemCount_ColorChange;
     public static int ItemCount_BlockSwap;
@@ -127,13 +127,24 @@ public static class PlayerData
         mCollectionSaveDataDict[collectionIndex] = mCollectionSaveDataDict[collectionIndex] | (1 << index);
     }
 
+    /// <summary>
+    /// 저장 된 도감의 상태를 확인
+    /// </summary>
+    /// <param name="index">도감 번호</param>
+    /// <returns></returns>
+    public static int GetCollectionSaveValue(int index)
+    {
+        if (!mCollectionSaveDataDict.ContainsKey(index)) { return 0; }
+        return mCollectionSaveDataDict[index];
+    }
+
     public static void TestAddCollection(int collectionIndex, int value)
     {
         if (!mCollectionSaveDataDict.ContainsKey(collectionIndex))
         {
             mCollectionSaveDataDict.Add(collectionIndex, 0);
         }
-        mCollectionSaveDataDict[collectionIndex] = (1 << value);
+        mCollectionSaveDataDict[collectionIndex] = (1 << value) - 1;
         Debug.Log($"{mCollectionSaveDataDict[collectionIndex]} / {mCollectionSaveDataDict[collectionIndex]}");
     }
 
@@ -141,9 +152,11 @@ public static class PlayerData
 
     #region 부스터 아이템 인벤토리
 
+    // 아이템 이름 기반으로 사용횟수가 저장된다.(가챠에 쓰인다)
+    // 우선 PlayerPrefabs에
+
     // 아이템 이름 기반으로 개수가 저장 된다.
     public static Dictionary<string, int> BoosterItemInventory = new Dictionary<string, int>();
-    
     public static void AddBoosterItem(int itemIndex)
     {
         if(itemIndex >= DataManager.Instance.GetBoosterDataCount) { return; }
@@ -154,6 +167,46 @@ public static class PlayerData
             BoosterItemInventory.Add(data.ItemName, 0);
         }
         BoosterItemInventory[data.ItemName] += 1;
+
+        Debug.Log($"Get Booster Item : {data.ItemName}");
+    }
+
+    #endregion
+
+    #region 데코 아이템 인벤토리
+
+    public static Dictionary<string, int> DecoItemInventory = new Dictionary<string, int>();
+
+    public static void AddDecoItem(int itemIndex)
+    {
+        if(itemIndex >= DataManager.Instance.GetDecoItemDataCount) { return; }
+
+        var data = DataManager.Instance.GetDecoItemByIndex(itemIndex);
+        if (!DecoItemInventory.ContainsKey(data.ItemName))
+        {
+            DecoItemInventory.Add(data.ItemName, 0);
+        }
+        int count = DecoItemInventory[data.ItemName] + 1;
+        if(count>= 10)
+        {
+            count = 10;
+        }
+        DecoItemInventory[data.ItemName]  = count;
+        AddCollectionByIndex(data.CollectionInfoIndex, data.CollectionIndex);
+        Debug.Log($"AddDecoItem : {data.ItemName}");
+    }
+
+    public static int GetAvrgCount_Deco()
+    {
+        if(DecoItemInventory.Count == 0) { return 0; }
+
+        int total = 0;
+        foreach(int count in DecoItemInventory.Values)
+        {
+            total += count;
+        }
+
+        return total / DecoItemInventory.Count;       
     }
 
     #endregion

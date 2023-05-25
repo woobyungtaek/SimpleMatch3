@@ -50,6 +50,11 @@ public class AdsManager : Singleton<AdsManager>
     }
 
     #region º¸»óÇü ±¤°í
+    public bool IsRewardAdReady
+    {
+        get => mRewardedAd.CanShowAd();
+    }
+
     private void CreateRewardAd()
     {
         if (mRewardedAd != null)
@@ -95,6 +100,7 @@ public class AdsManager : Singleton<AdsManager>
         mRewardedAd.Destroy();
         mRewardedAd = null;
     }
+
 
     private void ReloadReqedAd_Close()
     {
