@@ -7,8 +7,9 @@ public class AllClearPopup : Popup
     public void OnQuitGameButtonClicked()
     {
         ClosePopup();
-        PlayerData.GetGold(ItemManager.Instance.InstGold);
+
+        PlayerData.AddGold(ItemManager.Instance.InstGold);
+
         SceneLoader.Instance.LoadSceneByName("LobbyScene");
-        //Application.Quit();
     }
 }

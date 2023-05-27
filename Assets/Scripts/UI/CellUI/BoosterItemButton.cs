@@ -19,10 +19,17 @@ public class BoosterItemButton : Button
         onClick.RemoveAllListeners();
     }
 
-    public void SetButtonByIndex(string itemName)
+    public void SetButtonByName(string itemName)
     {
         ItemName = itemName;
-        // 테스트용 데이터 번호로 사용하기
-        mItemNameText.text = itemName;
+
+        if (string.IsNullOrEmpty(itemName))
+        {
+            mItemNameText.text = "Item\nSelect";
+        }
+        else
+        {
+            mItemNameText.text = itemName;
+        }
     }
 }

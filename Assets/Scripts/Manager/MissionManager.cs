@@ -8,6 +8,7 @@ public class MissionManager : SceneSingleton<MissionManager>
 {
     private readonly string MAP_DATA_FILE_FORMAT = "DayMap_{0}";
     private readonly string TUTO_MAP_FILE_FORMAT = "TutorialMap_{0}";
+    private readonly WaitForSeconds REWARD_CREATE_DELAY = new WaitForSeconds(0.5f);
 
     public bool IsMissionClear
     {
@@ -376,18 +377,31 @@ public class MissionManager : SceneSingleton<MissionManager>
     }
     public void TakeBasicReward()
     {
-        // 이건 매번 호출 되는 함수
+        //// 이건 매번 호출 되는 함수
+        ////if (!IsLastStageInPart)
+        //{
+        //    // 기본 보상 획득(무빙 추가)
+        //    foreach (var basicReward in mBasicRewardList)
+        //    {
+        //        // 획득 이팩트를 만들어 보여준다.
+        //        RewardCellUI inst =
+        //            GameObjectPool.Instantiate<RewardCellUI>(mRewardCellUIPrefab, mRewardCellUITransform);
+        //        inst.InitCellUI(basicReward);
+        //    }
+        //}
+        //ObserverCenter.Instance.SendNotification(Message.CharacterOut);
 
-        //if (!IsLastStageInPart)
+        StartCoroutine(DelayCreateRewardEffect());
+    }
+    private System.Collections.IEnumerator DelayCreateRewardEffect()
+    {        
+        foreach (var basicReward in mBasicRewardList)
         {
-            // 기본 보상 획득(무빙 추가)
-            foreach (var basicReward in mBasicRewardList)
-            {
-                // 획득 이팩트를 만들어 보여준다.
-                RewardCellUI inst =
-                    GameObjectPool.Instantiate<RewardCellUI>(mRewardCellUIPrefab, mRewardCellUITransform);
-                inst.InitCellUI(basicReward);
-            }
+            // 획득 이팩트를 만들어 보여준다.
+            RewardCellUI inst =
+                GameObjectPool.Instantiate<RewardCellUI>(mRewardCellUIPrefab, mRewardCellUITransform);
+            inst.InitCellUI(basicReward);
+            yield return REWARD_CREATE_DELAY;
         }
         ObserverCenter.Instance.SendNotification(Message.CharacterOut);
     }

@@ -30,10 +30,13 @@ public class GameSceneManager : MonoBehaviour
 
     private void Awake()
     {
-#if UNITY_ANDROID || UNITY_IOS
-        AdsManager.Instance.Init();
-#endif
 
+#if UNITY_ANDROID || UNITY_IOS
+        if (!AdsManager.IsExist)
+        {
+            AdsManager.Instance.Init();
+        }
+#endif
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         ObserverCenter.Instance.AddObserver(ExecuteChagneMapDataInfoByNoti, Message.ChangeMapInfo);

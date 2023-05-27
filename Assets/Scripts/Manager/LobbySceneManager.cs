@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.SceneManagement;
 
-public class LobbySceneManager : SceneSingleton<LobbySceneManager>
+public class LobbySceneManager : Singleton<LobbySceneManager>
 {
     public int SelectedChapterNum
     {
@@ -28,13 +28,24 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
     public string[] UseBoosterItemArr = new string[3];
 
+    private void Awake()
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        if (!AdsManager.IsExist)
+        {
+            AdsManager.Instance.Init();
+        }
+#endif
+    }
+
 
 #if UNITY_EDITOR
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) { PlayerData.GetGold(1); }    
-        if (Input.GetKeyDown(KeyCode.O)) { PlayerData.GetGold(-1); }
+        if (Input.GetKeyDown(KeyCode.P)) { PlayerData.AddGold(100); }    
+        if (Input.GetKeyDown(KeyCode.O)) { PlayerData.AddGold(-100); }
         if (Input.GetKeyDown(KeyCode.L)) { CollectionManager.TestUnlockCollection(); }
+        if (Input.GetKeyDown(KeyCode.K)) { PlayerPrefs.DeleteAll(); }
     }
 
 #endif

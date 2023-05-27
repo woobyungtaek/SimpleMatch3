@@ -42,9 +42,11 @@ public static class PlayerData
 
     #region ÀçÈ­
 
-    public static MVC_Data<int> mGold_MVC = new MVC_Data<int>("PlayerData.Gold_MVC");
+    private static MVC_Data<int> mGold_MVC = new MVC_Data<int>("PlayerData.Gold_MVC");
 
-    public static void GetGold(int value)
+    public static int CurrentGold { get => mGold_MVC.Value; }
+
+    public static void AddGold(int value)
     {
         // Ãß°¡ È¹µæ·ü Àû¿ë
         float additory = 0f;
@@ -60,6 +62,12 @@ public static class PlayerData
 
         Debug.Log($"Current Gold : {mGold_MVC.Value}");
     }
+
+    public static void UseGold(int useGold)
+    {
+        mGold_MVC.Value -= useGold;
+    }
+
 
     #endregion
 

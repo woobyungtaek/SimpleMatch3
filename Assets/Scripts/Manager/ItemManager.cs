@@ -15,8 +15,9 @@ public class ItemManager : SceneSingleton<ItemManager>
     [SerializeField] private PlayerSkillButton_Charge mMainSkillButton;
 
     [Header("Goods")]
-    [SerializeField] private int mGold_Inst;
-    public int InstGold { get => mGold_Inst; }
+    private MVC_Data<int> mInstGold = new MVC_Data<int>("ItemManager.InstGold");
+    public int InstGold { get => mInstGold.Value; }
+
 
     private void Start()
     {
@@ -86,6 +87,6 @@ public class ItemManager : SceneSingleton<ItemManager>
     // 재화 (inst)
     public void AddGold(int value)
     {
-        mGold_Inst += value;
+        mInstGold.Value += value;
     }
 }

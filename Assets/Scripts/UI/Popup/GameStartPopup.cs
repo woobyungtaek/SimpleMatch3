@@ -43,6 +43,12 @@ public class GameStartPopup : Popup
         mChapterNumText.text = $"{LobbySceneManager.Instance.SelectedChapterNum}";
     }
 
+    public void OnCloseButtonClicked()
+    {
+        mChapterGrid.Clear();
+        ClosePopup();
+    }
+
     public void OnStartButtonClicked()
     {
         ClosePopup();
@@ -75,6 +81,14 @@ public class GameStartPopup : Popup
 
     private void OnBoosterItemButtonClicked(BoosterItemButton btn)
     {
+        if(mBoosterInvenInnerPopup.activeInHierarchy)
+        {
+            mCurrentActiveButton.SetButtonByName(null);
+            mCurrentActiveButton = null;
+            mBoosterInvenInnerPopup.SetActive(false);
+            return;
+        }
+
         mCurrentActiveButton = btn;
 
         BoosterItemCellUI.ItemList = mBoosterItemList;
@@ -90,7 +104,7 @@ public class GameStartPopup : Popup
     {
         if(mCurrentActiveButton == null) { return; }
 
-        mCurrentActiveButton.SetButtonByIndex(mBoosterItemList[itemIndex]);
+        mCurrentActiveButton.SetButtonByName(mBoosterItemList[itemIndex]);
         mCurrentActiveButton = null;
 
         mBoosterInvenInnerPopup.SetActive(false);

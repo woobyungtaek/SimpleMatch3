@@ -52,7 +52,12 @@ public class AdsManager : Singleton<AdsManager>
     #region 보상형 광고
     public bool IsRewardAdReady
     {
-        get => mRewardedAd.CanShowAd();
+        get
+        {
+            if(mRewardedAd == null) { return false; }
+            return mRewardedAd.CanShowAd();
+        }
+
     }
 
     private void CreateRewardAd()
@@ -77,7 +82,7 @@ public class AdsManager : Singleton<AdsManager>
             });
     }
 
-    public void ShowRewardAd(System.Action<Reward> mRewardFunc)
+    public void ShowRewardAd(System.Action<Reward> rewardFunc, System.Action closeFunc = null)
     {
         if (mRewardedAd == null)
         {
@@ -93,10 +98,14 @@ public class AdsManager : Singleton<AdsManager>
 
         // 광고 종료 후 새 광고 로드를 위해 이벤트 추가
         mRewardedAd.OnAdFullScreenContentClosed += ReloadReqedAd_Close;
+        if (closeFunc != null)
+        {
+            mRewardedAd.OnAdFullScreenContentClosed += closeFunc;
+        }
         mRewardedAd.OnAdFullScreenContentFailed += ReloadReqedAd_Fail;
 
         // 현재 광고 재생 및 제거
-        mRewardedAd.Show(mRewardFunc);
+        mRewardedAd.Show(rewardFunc);
         mRewardedAd.Destroy();
         mRewardedAd = null;
     }
