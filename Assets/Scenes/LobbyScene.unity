@@ -1450,10 +1450,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5abab4e66b366764ea225f62d82c18a7, type: 2}
   - {fileID: 11400000, guid: 306b5c342c9c1e3449c5750f6e921a0e, type: 2}
   - {fileID: 11400000, guid: ea3c372b106028f418a1a7595707a22c, type: 2}
-  UseBoosterItemArr:
-  - 
-  - 
-  - 
 --- !u!4 &984335162
 Transform:
   m_ObjectHideFlags: 0
