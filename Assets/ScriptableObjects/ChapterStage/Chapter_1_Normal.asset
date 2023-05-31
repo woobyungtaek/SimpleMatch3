@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2d78777bd8248438ed918ebe15980d, type: 3}
   m_Name: Chapter_1_Normal
   m_EditorClassIdentifier: 
+  AllClearGold: 200
   MissionLevelList:
   - list: 0000000001000000000000000100000002000000
   - list: 0000000001000000000000000100000002000000010000000100000003000000

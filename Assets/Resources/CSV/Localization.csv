@@ -12,3 +12,19 @@ SkillIcons_3_Desc,Select Potion. Same Color Potions Change Random Color,선택�
 SkillUseDesc_Hammer,Select One Block,획득할 <color=blue>1개</color>의 블럭을 선택하세요.
 SkillUseDesc_Swap,Select Two Block,위치를 변경할 <color=blue>2개</color>의 블럭을 선택하세요.
 SkillUseDesc_ColorChange,Select One Block,선택한 블록과 <color=blue>같은 색상의 블럭</color>들이 <color=red>무작위 다른 색상</color>으로 변경됩니다.
+AddMoveCount_PartStart,Increase PartStart MoveCount,파트 시작 시 획득 활동력 증가
+AddMoveCount_StageClear,Increase StageClear MoveCount,손님이 주는 활동력 보상 증가
+AddMoveCount_Continue,Increase Continue MoveCount,이어하기 시 획득 활동력 증가
+AddItemCount_ColorChange,[ColorChange] item get at chapter start ,게임 시작 시 블록 색 변경 아이템 획득
+AddItemCount_BlockSwap,[Block Swap] item get at chapter start ,게임 시작 시 블록 위치 변경 아이템 획득
+AddItemCount_RandomBombBox,[RandomBomb Box]item get at chapter start,게임 시작 시 무작위 폭탄 박스 아이템 획득
+AddGoldPercent,Increase gold reward in chapter clear,챕터 클리어 시 획득 골드량 증가
+AdditoryMove_Start,Increase PartStart MoveCount,파트 시작 시 획득 활동력 증가
+AdditoryMove_StageClear,Increase StageClear MoveCount,손님이 주는 활동력 보상 증가
+ContinueCount,Increase Continue MoveCount,이어하기 시 획득 활동력 증가
+StartItem_ColorChange,[ColorChange] item get at chapter start ,게임 시작 시 [블록 색 변경] 아이템 획득
+StartItem_BlockSwap,[Block Swap] item get at chapter start ,게임 시작 시 [블록 위치 변경] 아이템 획득
+StartItem_RandomBombBox,[RandomBomb Box]item get at chapter start,게임 시작 시 [무작위 폭탄 박스] 아이템 획득
+DoubleChance,get bomb block twice,"특수 재료 획득 시, 낮은 확률로 두번 획득합니다."
+LockItems,can't use items,아이템을 사용할 수 없습니다.
+AdditoryGoldPer,Increase gold reward in chapter clear,챕터 클리어 시 획득 골드량 증가

@@ -26,16 +26,22 @@ public class LobbySceneManager : Singleton<LobbySceneManager>
     [SerializeField] private ChapterData[] mChapterDataArr = new ChapterData[2];
 
 
-    public string[] UseBoosterItemArr = new string[3];
+    public BoosterItemData[] UseBoosterItemArr = new BoosterItemData[3];
 
-    private void Awake()
+    private void Start()
     {
+
 #if UNITY_ANDROID || UNITY_IOS
         if (!AdsManager.IsExist)
         {
             AdsManager.Instance.Init();
         }
 #endif
+
+        // 플레이어 정보 로드
+        PlayerData.LoadCurrentGold();
+        PlayerData.LoadCollectionData();
+        PlayerData.LoadBoosterInventory();
     }
 
 
@@ -95,13 +101,16 @@ public class LobbySceneManager : Singleton<LobbySceneManager>
         // 현재 설정된 Booster의 내용을 적용한다.
         for(int cnt = 0; cnt < UseBoosterItemArr.Length; ++cnt)
         {
-            var data = DataManager.Instance.GetBoosterItemByName(UseBoosterItemArr[cnt]);
-            if(data == null) { continue; }
-            if(PlayerData.BoosterItemInventory[data.ItemName] <= 0) { continue; }
+            var data = UseBoosterItemArr[cnt];
+            if (data == null) { continue; }
+
+            Debug.Log($"Data Index : {data.Index}");
+            if(PlayerData.BoosterItemInventory[data.Index] <= 0) { continue; }
 
             data.InvokeAllEffect();
-            PlayerData.BoosterItemInventory[data.ItemName] -= 1;
+            PlayerData.BoosterItemInventory[data.Index] -= 1;
         }
+        PlayerData.SaveBoosterInventory();
 
         LoadGameScene();
     }

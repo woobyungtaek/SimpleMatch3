@@ -48,7 +48,15 @@ public static class PlayerData
 
     public static void AddGold(int value)
     {
-        // 추가 획득률 적용
+        mGold_MVC.Value += value;
+        SaveCurrentGold();
+
+        Debug.Log($"Current Gold : {mGold_MVC.Value}");
+    }
+    public static int CalResultGold(int value)
+    {
+        // 추가 획득률 r계산
+
         float additory = 0f;
         if (InGameUseDataManager.IsExist)
         {
@@ -57,17 +65,28 @@ public static class PlayerData
         additory /= 100f;
 
         int gold = (int)(value * (1f + additory));
-
-        mGold_MVC.Value += gold;
-
-        Debug.Log($"Current Gold : {mGold_MVC.Value}");
+        return gold;
     }
 
     public static void UseGold(int useGold)
     {
         mGold_MVC.Value -= useGold;
+        SaveCurrentGold();
     }
 
+    private static void SaveCurrentGold()
+    {
+        // 우선 PlayerPref에...
+        PlayerPrefs.SetInt("PlayerGold", mGold_MVC.Value);
+    }
+
+    public static void LoadCurrentGold()
+    {
+        if(PlayerPrefs.HasKey("PlayerGold"))
+        {
+            mGold_MVC.Value = PlayerPrefs.GetInt("PlayerGold");
+        }
+    }
 
     #endregion
 
@@ -133,6 +152,7 @@ public static class PlayerData
             mCollectionSaveDataDict.Add(collectionIndex, 0);
         }
         mCollectionSaveDataDict[collectionIndex] = mCollectionSaveDataDict[collectionIndex] | (1 << index);
+        SaveCollectionData();
     }
 
     /// <summary>
@@ -146,6 +166,54 @@ public static class PlayerData
         return mCollectionSaveDataDict[index];
     }
 
+    /// <summary>
+    /// 도감 해금 데이터 파일 저장 / 바꿔야함
+    /// </summary>
+    public static void SaveCollectionData()
+    {
+        // JsonUtility를 사용하려면 저장용 구조체 생성 후 List > 저장 해야함
+        // & Dictionary안됨
+
+        System.Text.StringBuilder strBuilder = new System.Text.StringBuilder();
+
+        // 따로 Pasing을 해서 저장
+        foreach (var pair in mCollectionSaveDataDict)
+        {
+            uint value = 0;
+            value = (uint)pair.Key << 4; // index
+            value |= (uint)pair.Value; // count
+
+            strBuilder.Append($"{value},");
+        }
+        Debug.Log(strBuilder.ToString());
+        PlayerPrefs.SetString("CollectionSaveStr", strBuilder.ToString());
+    }
+
+    /// <summary>
+    /// 도금 해금 데이터 파일 불러오기 / 바꿔야함
+    /// </summary>
+    public static void LoadCollectionData()
+    {
+        if(mCollectionSaveDataDict.Count > 0) { return; }
+        // 불러와서 데이터 셋
+        if (!PlayerPrefs.HasKey("CollectionSaveStr")) { return; }
+        var dataArr = PlayerPrefs.GetString("CollectionSaveStr").Split(',');
+
+        foreach (var strValue in dataArr)
+        {
+            if (string.IsNullOrEmpty(strValue)) { return; }
+
+            uint value;
+            if(!uint.TryParse(strValue, out value)) { continue; }
+
+            int infoIndex = (int)(value >> 4);
+            int index = (int)(value & 15);
+
+            mCollectionSaveDataDict.Add(infoIndex, index);
+        }
+    }
+
+#if UNITY_EDITOR
     public static void TestAddCollection(int collectionIndex, int value)
     {
         if (!mCollectionSaveDataDict.ContainsKey(collectionIndex))
@@ -155,28 +223,68 @@ public static class PlayerData
         mCollectionSaveDataDict[collectionIndex] = (1 << value) - 1;
         Debug.Log($"{mCollectionSaveDataDict[collectionIndex]} / {mCollectionSaveDataDict[collectionIndex]}");
     }
+#endif
 
-    #endregion
+#endregion
 
     #region 부스터 아이템 인벤토리
 
     // 아이템 이름 기반으로 사용횟수가 저장된다.(가챠에 쓰인다)
-    // 우선 PlayerPrefabs에
+    // 우선 PlayerPref에 string으로 저장 바꿔야함
 
     // 아이템 이름 기반으로 개수가 저장 된다.
-    public static Dictionary<string, int> BoosterItemInventory = new Dictionary<string, int>();
+    public static Dictionary<int, int> BoosterItemInventory = new Dictionary<int, int>(new IntComparer());
     public static void AddBoosterItem(int itemIndex)
     {
         if(itemIndex >= DataManager.Instance.GetBoosterDataCount) { return; }
 
-        var data = DataManager.Instance.GetBoosterItemByIndex(itemIndex);
-        if(!BoosterItemInventory.ContainsKey(data.ItemName))
+        if(!BoosterItemInventory.ContainsKey(itemIndex))
         {
-            BoosterItemInventory.Add(data.ItemName, 0);
+            BoosterItemInventory.Add(itemIndex, 0);
         }
-        BoosterItemInventory[data.ItemName] += 1;
+        BoosterItemInventory[itemIndex] += 1;
 
-        Debug.Log($"Get Booster Item : {data.ItemName}");
+        Debug.Log($"Get Booster Item : {itemIndex}");
+        SaveBoosterInventory();
+    }
+
+    public static void SaveBoosterInventory()
+    {
+        // uint에 16밀고 16당겨서
+
+        System.Text.StringBuilder strBuilder = new System.Text.StringBuilder();
+
+        // 따로 Pasing을 해서 저장
+        foreach (var pair in BoosterItemInventory)
+        {
+            uint value = 0;
+            value = (uint)pair.Key << 16; // index
+            value |= (uint)pair.Value; // count
+
+            strBuilder.Append($"{value},");
+        }
+        Debug.Log(strBuilder.ToString());
+        PlayerPrefs.SetString("BoosterInvenStr", strBuilder.ToString());
+    }
+    public static void LoadBoosterInventory()
+    {
+        if(BoosterItemInventory.Count > 0) { return; }
+        // 불러와서 데이터 셋
+        if (!PlayerPrefs.HasKey("BoosterInvenStr")) { return; }
+        var dataArr = PlayerPrefs.GetString("BoosterInvenStr").Split(',');
+
+        foreach (var strValue in dataArr)
+        {
+            if (string.IsNullOrEmpty(strValue)) { return; }
+
+            uint value;
+            if (!uint.TryParse(strValue, out value)) { continue; }
+
+            int index = (int)(value >> 16);
+            int count = (int)(value & 65535);
+
+            BoosterItemInventory.Add(index, count);
+        }
     }
 
     #endregion

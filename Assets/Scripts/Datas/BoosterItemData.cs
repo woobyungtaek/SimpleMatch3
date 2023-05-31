@@ -6,6 +6,9 @@ using System.Reflection;
 
 public class BoosterItemData
 {
+    private static readonly string EFFECT_FORMAT = "{0}[{1}]\n";
+    private static readonly System.Text.StringBuilder mStrBuilder = new System.Text.StringBuilder();
+
     public int Index;
 
     public int Grade;
@@ -54,6 +57,22 @@ public class BoosterItemData
     }
 
     public int UseCount { get => mUseCount; }
+
+    public string EffectDesc
+    {
+        get
+        {
+            mStrBuilder.Clear();
+
+            for(int cnt = 0; cnt < mEffectMethodList.Count; ++cnt)
+            {
+                Localization.GetString(mEffectMethodList[0].Method.Name);
+                mStrBuilder.AppendFormat(EFFECT_FORMAT, Localization.GetString(mEffectMethodList[cnt].Method.Name), mEffectValueList[cnt]);
+            }
+
+            return mStrBuilder.ToString();
+        }
+    }
 
     private string mItemName;
     private List<Action<float>> mEffectMethodList;

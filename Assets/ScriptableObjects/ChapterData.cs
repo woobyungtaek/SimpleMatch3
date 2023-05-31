@@ -8,6 +8,7 @@ public class ChapterData : ScriptableObject
     public int PartCount { get => MissionLevelList.Count; }
     public int GetStageCount(int partIdx) { return MissionLevelList[partIdx].Count; }
 
+    public int AllClearGold;
 
     [SerializeField] public List<PartData> MissionLevelList = new List<PartData>(3);
 }

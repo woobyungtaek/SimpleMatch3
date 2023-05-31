@@ -10,7 +10,7 @@ public class BoosterItemButton : Button
     [SerializeField] private Image mItemImage;
     [SerializeField] private TextMeshProUGUI mItemNameText;
 
-    public string ItemName { get; set; }
+    public BoosterItemData CurrentData { get; set; }
 
     public void Init()
     {
@@ -19,17 +19,22 @@ public class BoosterItemButton : Button
         onClick.RemoveAllListeners();
     }
 
-    public void SetButtonByName(string itemName)
+    public void SetButtonByItemIndex(BoosterItemData data)
     {
-        ItemName = itemName;
+        CurrentData = data;
 
-        if (string.IsNullOrEmpty(itemName))
+        if (CurrentData == null)
         {
             mItemNameText.text = "Item\nSelect";
         }
         else
         {
-            mItemNameText.text = itemName;
+            Debug.Log($"Data Index_set {CurrentData.Index}");
+            mItemNameText.text = CurrentData.ItemName;
         }
+    }
+    public void SetButtonText(string str)
+    {
+        mItemNameText.text = str;
     }
 }
