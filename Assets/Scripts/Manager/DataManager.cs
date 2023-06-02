@@ -46,7 +46,7 @@ public class DataManager : Singleton<DataManager>
 
 
     // Out Game
-    [SerializeField] private List<DecoItemData> mDecoItemList;
+    private List<DecoItemData> mDecoItemList;
     public int GetDecoItemDataCount
     {
         get => mDecoItemList.Count;
@@ -102,8 +102,6 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] private List<MissionDataPreset>[] mMissionDataListArr = new List<MissionDataPreset>[(int)EMissionLevel.Max];
     private List<RewardData> mRewardDataList;
 
-
-
     [RuntimeInitializeOnLoadMethod]
     private static void init()
     {
@@ -132,7 +130,6 @@ public class DataManager : Singleton<DataManager>
     {
         mBoosterItemList = Utility.LoadCSVFile<BoosterItemData>(BOOSTER_DATA_FILE_NAME);
     }
-
 
     // In Game
     public void LoadTutoInfoList()

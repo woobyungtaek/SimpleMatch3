@@ -7,7 +7,8 @@ using UnityEngine;
 // 22-01-29 : string, object 형태의 풀로 변경, 문자열로 반환 기능 추가
 public static class ObjectPool
 {
-    static Dictionary<string, Queue<object>> tQueueDict = new Dictionary<string, Queue<object>>();
+    private static Dictionary<string, Queue<object>> tQueueDict = new Dictionary<string, Queue<object>>();
+    public static int GetCount { get => tQueueDict.Count; }
 
     public static T GetInst<T>() where T : class, IReUseObject, new()
     {
@@ -101,6 +102,14 @@ public static class ObjectPool
         }
         //이전에 Disposble필요?
         tQueueDict[key].Clear();
+    }
+    public static void ClearAll()
+    {
+        foreach(var queue in tQueueDict.Values)
+        {
+            queue.Clear();
+        }
+        tQueueDict.Clear();
     }
 }
 

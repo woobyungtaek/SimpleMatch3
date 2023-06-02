@@ -26,7 +26,31 @@ SpriteAtlas:
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
       m_TextureFormat: -1
-      m_TextureCompression: 0
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 48
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: iPhone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 48
+      m_TextureCompression: 1
       m_CompressionQuality: 50
       m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
@@ -50,14 +74,6 @@ SpriteAtlas:
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: -572546286621787759, guid: 9ee5ac12a4702b14fa1bd6fa016542ae, type: 3}
-  - {fileID: -6189436674828859580, guid: 9ee5ac12a4702b14fa1bd6fa016542ae, type: 3}
-  - {fileID: 3717141939764608912, guid: 9ee5ac12a4702b14fa1bd6fa016542ae, type: 3}
-  - {fileID: -7753905672384200325, guid: 9ee5ac12a4702b14fa1bd6fa016542ae, type: 3}
-  - {fileID: -8005293021482646621, guid: 9ee5ac12a4702b14fa1bd6fa016542ae, type: 3}
-  - {fileID: 2558411768434102867, guid: 9ee5ac12a4702b14fa1bd6fa016542ae, type: 3}
-  - {fileID: 6361621249778466445, guid: 9ee5ac12a4702b14fa1bd6fa016542ae, type: 3}
-  - {fileID: 21300000, guid: a3c8e203728d3884ebe25eebae8c1f81, type: 3}
   - {fileID: -5521721722075263890, guid: 8e3fee33a935fbe42b991cd74d7b3374, type: 3}
   - {fileID: -8809312301495474284, guid: 8e3fee33a935fbe42b991cd74d7b3374, type: 3}
   - {fileID: -4185411765606549154, guid: 8e3fee33a935fbe42b991cd74d7b3374, type: 3}
@@ -68,10 +84,7 @@ SpriteAtlas:
   - {fileID: -715149787376277989, guid: 8e3fee33a935fbe42b991cd74d7b3374, type: 3}
   - {fileID: -2724558838527232326, guid: 8e3fee33a935fbe42b991cd74d7b3374, type: 3}
   - {fileID: 21300000, guid: aaf69563caad03c419cd39c391a09ae7, type: 3}
-  - {fileID: 21300000, guid: 9c6ed8440033dce4f845b12e7979091d, type: 3}
   - {fileID: -8152718321238593233, guid: d446f584af8d516428ea193bfdeffdde, type: 3}
-  - {fileID: 21300000, guid: f7bfe8962110c6f4e83d0716bfb9d8b7, type: 3}
-  - {fileID: 21300000, guid: d35073f6aa54825478516931903ccc16, type: 3}
   - {fileID: 21300000, guid: 3029ad17ec491c543afeb1eb1dbb1b77, type: 3}
   - {fileID: -5934381359393288594, guid: 0d852c182d2165e45879d059ec67eb86, type: 3}
   - {fileID: 4539350407491890081, guid: 0d852c182d2165e45879d059ec67eb86, type: 3}
@@ -98,36 +111,11 @@ SpriteAtlas:
   - {fileID: 4842217128055123451, guid: 93e7e1e818d9e2244bb1512177e15612, type: 3}
   - {fileID: -5644733484573295511, guid: 93e7e1e818d9e2244bb1512177e15612, type: 3}
   - {fileID: 2671640505214291226, guid: 93e7e1e818d9e2244bb1512177e15612, type: 3}
-  - {fileID: 4164238739187407303, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: -6047584892315878761, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: -2397804221067093016, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: -5893983420868912581, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: -547035003230806532, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: 507860030526511944, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: -3448200348491190947, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: -9004611726126167676, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: 7467624859126428677, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
-  - {fileID: 242506756008974940, guid: 0c764a1980e7f2e4e9ad17ad12fc7302, type: 3}
   - {fileID: 21300000, guid: 34411b1a96a23674f947dd2e81bf121a, type: 3}
-  - {fileID: 21300000, guid: d89f8a2a9af95a74b978535ef5248ff8, type: 3}
-  - {fileID: 396920002328186316, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -4034052482211926698, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: 646631761287619913, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
-  - {fileID: -1225259161459057899, guid: 1e35e73aba9257845a5a7fd6b178bcff, type: 3}
   - {fileID: 3276300416788595456, guid: 73c0056a6a78b544eb5cba0205417d61, type: 3}
   - {fileID: 21300000, guid: 548cf2fc4604cb24eb08bedfc315f73b, type: 3}
-  - {fileID: 21300000, guid: be8edd4d670dcd34886baf01d9951718, type: 3}
   - {fileID: 21300000, guid: bf93554fef268d64fabbcd755914e6b0, type: 3}
-  - {fileID: -7810306426998302437, guid: bfc4666fd0690be46a47f8bb8d78c284, type: 3}
   m_PackedSpriteNamesToIndex:
-  - BattleEquipCellUI_0
-  - BattleEquipCellUI_1
-  - BattleEquipCellUI_2
-  - BattleEquipCellUI_3
-  - BattleEquipCellUI_4
-  - BattleEquipCellUI_5
-  - BattleEquipCellUI_6
-  - DayOrderBack1
   - ItemSelectPopupUI_8
   - ItemSelectPopupUI_7
   - ItemSelectPopupUI_6
@@ -138,10 +126,7 @@ SpriteAtlas:
   - ItemSelectPopupUI_1
   - ItemSelectPopupUI_0
   - SkillIcons_2
-  - Cross_ui
   - Gold
-  - Cross_ui_2
-  - ConvUI
   - SkillIcons_0
   - GameInfoUI_2
   - GameInfoUI_3
@@ -168,27 +153,10 @@ SpriteAtlas:
   - PopupUI_3
   - PopupUI_8
   - PopupUI_9
-  - MapUi_Test_1
-  - MapUi_Test_0
-  - MapUi_Test_3
-  - MapUi_Test_2
-  - MapUi_Test_5
-  - MapUi_Test_4
-  - MapUi_Test_7
-  - MapUi_Test_6
-  - MapUi_Test_9
-  - MapUi_Test_8
   - PointHand
-  - CountUI
-  - Icon_Move
-  - Pint_Color_UI_0
-  - Pint_Color_UI_1
-  - Pint_Color_UI_2
   - SkillIcons_1
   - SkillIcons_3
-  - UnderBarBawckground
   - PointArrow
-  - DayOrderBack2_0
   m_RenderDataMap: {}
   m_Tag: UI
   m_IsVariant: 0

@@ -32,6 +32,16 @@ public class GameObjectPool : MonoBehaviour
             }
         }
         gameObjectPoolQueueDict.Clear();
+
+        foreach (var dict in typeObjectPoolDict.Values)
+        {
+            foreach (var obj in dict.Values)
+            {
+                if (obj == null) { continue; }
+                Destroy(obj);
+            }
+        }
+        typeObjectPoolDict.Clear();
     }
 
     public static GameObject Instantiate(GameObject prefab, Transform parentOrNull = null)

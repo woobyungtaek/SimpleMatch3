@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.SceneManagement;
 
-public class LobbySceneManager : Singleton<LobbySceneManager>
+public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 {
     public int SelectedChapterNum
     {
@@ -30,12 +30,17 @@ public class LobbySceneManager : Singleton<LobbySceneManager>
 
     private void Start()
     {
-
 #if UNITY_ANDROID || UNITY_IOS
+
+        if (!IAPManager.IsExist)
+        {
+            IAPManager.Instance.InitUnityIAP();
+        }
         if (!AdsManager.IsExist)
         {
             AdsManager.Instance.Init();
         }
+
 #endif
 
         // 플레이어 정보 로드
@@ -52,6 +57,8 @@ public class LobbySceneManager : Singleton<LobbySceneManager>
         if (Input.GetKeyDown(KeyCode.O)) { PlayerData.AddGold(-100); }
         if (Input.GetKeyDown(KeyCode.L)) { CollectionManager.TestUnlockCollection(); }
         if (Input.GetKeyDown(KeyCode.K)) { PlayerPrefs.DeleteAll(); }
+        if (Input.GetKeyDown(KeyCode.M)) { Debug.Log($"{ObjectPool.GetCount}");  }
+        
     }
 
 #endif

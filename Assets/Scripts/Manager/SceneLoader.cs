@@ -58,6 +58,9 @@ public class SceneLoader : Singleton<SceneLoader>
     }
     private IEnumerator LoadScene(string sceneName)
     {
+        ObjectPool.ClearAll();
+        GameObjectPool.ClearPool();
+
         mLoadingBar.value = 0;
         mLoadingBar.gameObject.SetActive(true);
 
