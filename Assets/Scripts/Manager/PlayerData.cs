@@ -42,10 +42,9 @@ public static class PlayerData
 
     #region 재화
 
+    // 골드
     private static MVC_Data<int> mGold_MVC = new MVC_Data<int>("PlayerData.Gold_MVC");
-
     public static int CurrentGold { get => mGold_MVC.Value; }
-
     public static void AddGold(int value)
     {
         mGold_MVC.Value += value;
@@ -53,10 +52,13 @@ public static class PlayerData
 
         Debug.Log($"Current Gold : {mGold_MVC.Value}");
     }
+    public static void UseGold(int useGold)
+    {
+        mGold_MVC.Value -= useGold;
+        SaveCurrentGold();
+    }
     public static int CalResultGold(int value)
     {
-        // 추가 획득률 r계산
-
         float additory = 0f;
         if (InGameUseDataManager.IsExist)
         {
@@ -67,19 +69,11 @@ public static class PlayerData
         int gold = (int)(value * (1f + additory));
         return gold;
     }
-
-    public static void UseGold(int useGold)
-    {
-        mGold_MVC.Value -= useGold;
-        SaveCurrentGold();
-    }
-
     private static void SaveCurrentGold()
     {
         // 우선 PlayerPref에...
         PlayerPrefs.SetInt("PlayerGold", mGold_MVC.Value);
     }
-
     public static void LoadCurrentGold()
     {
         if(PlayerPrefs.HasKey("PlayerGold"))
@@ -88,6 +82,37 @@ public static class PlayerData
         }
     }
 
+    // 유료 재화
+    private static MVC_Data<int> mGem_MVC = new MVC_Data<int>("PlayerData.Gem_MVC");
+    public static int CurrentGem { get => mGem_MVC.Value; }
+    public static void AddGem(int value)
+    {
+        mGem_MVC.Value += value;
+        SaveCurrentGem();
+        Debug.Log($"Current Gold : {mGem_MVC.Value}");
+    }
+    public static bool UseGem(int value)
+    {
+        if(CurrentGem >= value)
+        {
+            mGem_MVC.Value -= value;
+            SaveCurrentGem();
+            return true;
+        }
+        return false;
+    }
+    private static void SaveCurrentGem()
+    {
+        // 우선 PlayerPref에...
+        PlayerPrefs.SetInt("PlayerGem", mGem_MVC.Value);
+    }
+    public static void LoadCurrentGem()
+    {
+        if (PlayerPrefs.HasKey("PlayerGem"))
+        {
+            mGem_MVC.Value = PlayerPrefs.GetInt("PlayerGem");
+        }
+    }
     #endregion
 
     #region 도감 적용 전 고정 스탯

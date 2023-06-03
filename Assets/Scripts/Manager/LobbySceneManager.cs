@@ -11,22 +11,23 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         set
         {
             mSelectedChapterNum = value;
-            if(mSelectedChapterNum < 0) { mSelectedChapterNum = 0; }
-            if(mSelectedChapterNum >= mChapterGimmickArr.Length) { mSelectedChapterNum = mChapterGimmickArr.Length - 1; }
+            if (mSelectedChapterNum < 0) { mSelectedChapterNum = 0; }
+            if (mSelectedChapterNum >= mChapterGimmickArr.Length) { mSelectedChapterNum = mChapterGimmickArr.Length - 1; }
         }
     }
-    [SerializeField]private int mSelectedChapterNum;
-    
+    [SerializeField] private int mSelectedChapterNum;
+
     [SerializeField] private GameObject mTutoStageGrid;
     [SerializeField] private GameObject mTutoStageButtonPrefab;
     [SerializeField] private List<TutorialStageCellUI> mTutoStageButtonList = new List<TutorialStageCellUI>();
 
-    [Header("Chapter")] 
+    [Header("Chapter")]
     [SerializeField] private MapGimmickInfo[] mChapterGimmickArr = new MapGimmickInfo[2];
     [SerializeField] private ChapterData[] mChapterDataArr = new ChapterData[2];
 
 
     public BoosterItemData[] UseBoosterItemArr = new BoosterItemData[3];
+
 
     private void Start()
     {
@@ -45,6 +46,7 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
         // 플레이어 정보 로드
         PlayerData.LoadCurrentGold();
+        PlayerData.LoadCurrentGem();
         PlayerData.LoadCollectionData();
         PlayerData.LoadBoosterInventory();
     }
@@ -53,12 +55,10 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 #if UNITY_EDITOR
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) { PlayerData.AddGold(100); }    
+        if (Input.GetKeyDown(KeyCode.P)) { PlayerData.AddGold(100); }
         if (Input.GetKeyDown(KeyCode.O)) { PlayerData.AddGold(-100); }
         if (Input.GetKeyDown(KeyCode.L)) { CollectionManager.TestUnlockCollection(); }
         if (Input.GetKeyDown(KeyCode.K)) { PlayerPrefs.DeleteAll(); }
-        if (Input.GetKeyDown(KeyCode.M)) { Debug.Log($"{ObjectPool.GetCount}");  }
-        
     }
 
 #endif
@@ -72,9 +72,9 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     public void OnTutorialButtonClicked()
     {
         List<TutoInfoData> instList = DataManager.Instance.TutoInfoList;
-               
+
         int loopCount = mTutoStageButtonList.Count;
-        for(int index =0; index< loopCount; index++)
+        for (int index = 0; index < loopCount; index++)
         {
             GameObjectPool.ReturnObject(mTutoStageButtonList[index].gameObject);
         }
@@ -82,7 +82,7 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
 
         loopCount = instList.Count;
-        for (int index= 0; index< loopCount; index++)
+        for (int index = 0; index < loopCount; index++)
         {
             mTutoStageButtonList.Add(GameObjectPool.Instantiate<TutorialStageCellUI>(mTutoStageButtonPrefab, mTutoStageGrid.transform));
             mTutoStageButtonList[index].transform.SetAsLastSibling();
@@ -104,15 +104,15 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         InGameUseDataManager.Instance.CurrentChapterData = mChapterDataArr[mSelectedChapterNum];
 
         InGameUseDataManager.Instance.InitInGameUseData();
-        
+
         // 현재 설정된 Booster의 내용을 적용한다.
-        for(int cnt = 0; cnt < UseBoosterItemArr.Length; ++cnt)
+        for (int cnt = 0; cnt < UseBoosterItemArr.Length; ++cnt)
         {
             var data = UseBoosterItemArr[cnt];
             if (data == null) { continue; }
 
             Debug.Log($"Data Index : {data.Index}");
-            if(PlayerData.BoosterItemInventory[data.Index] <= 0) { continue; }
+            if (PlayerData.BoosterItemInventory[data.Index] <= 0) { continue; }
 
             data.InvokeAllEffect();
             PlayerData.BoosterItemInventory[data.Index] -= 1;

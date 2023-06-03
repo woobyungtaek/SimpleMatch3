@@ -843,7 +843,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 #if UNITY_ANDROID || UNITY_IOS
 
             // 시청 가능한 광고 횟수
-            PopupManager.Instance.CreatePopupByName("RewardAdPopup");
+            PopupManager.Instance.CreatePopupByName("ContinuePopup");
             yield break;
 
 #endif
