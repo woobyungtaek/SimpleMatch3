@@ -15,7 +15,7 @@ SpriteAtlas:
       compressionQuality: 50
       maxTextureSize: 2048
       textureCompression: 0
-      filterMode: 0
+      filterMode: 1
       generateMipMaps: 0
       readable: 0
       crunchedCompression: 0
@@ -37,12 +37,12 @@ SpriteAtlas:
       m_BuildTarget: Android
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
-      m_TextureFormat: 48
+      m_TextureFormat: 50
       m_TextureCompression: 1
-      m_CompressionQuality: 50
+      m_CompressionQuality: 100
       m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
-      m_Overridden: 0
+      m_Overridden: 1
       m_AndroidETC2FallbackOverride: 0
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     - serializedVersion: 3
@@ -73,7 +73,6 @@ SpriteAtlas:
     - {fileID: -2437450469419141408, guid: dc43d8f018807654a965e095934f1587, type: 3}
     - {fileID: 2800000, guid: ce9e5b820bc579643bada5c30e6c6b28, type: 3}
     - {fileID: 2800000, guid: 357317c9bb70eff43bc693f7574e3469, type: 3}
-    - {fileID: 2800000, guid: 054c1187d64d0be4e92feab587e18a4b, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -96,11 +95,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 81475306aeab7d14aaa3794a9733b219, type: 3}
   - {fileID: 21300000, guid: 7cd12a7673fe36d46a4b5c681e4e3b67, type: 3}
   - {fileID: 21300000, guid: 489d637722296f142ae3377d5b52b4b2, type: 3}
-  - {fileID: -3262151865966944020, guid: 054c1187d64d0be4e92feab587e18a4b, type: 3}
-  - {fileID: 1885283029704482280, guid: 054c1187d64d0be4e92feab587e18a4b, type: 3}
-  - {fileID: -213854140325054445, guid: 054c1187d64d0be4e92feab587e18a4b, type: 3}
-  - {fileID: -2528702281999207143, guid: 054c1187d64d0be4e92feab587e18a4b, type: 3}
-  - {fileID: 2385538680036684875, guid: 054c1187d64d0be4e92feab587e18a4b, type: 3}
   - {fileID: 21300000, guid: d5d8c3c8bb8312a48a8a4807a1bfbe86, type: 3}
   - {fileID: 21300000, guid: 7405b3695225e2649867ecea4311ba8e, type: 3}
   - {fileID: 21300000, guid: 8f077b79b34dbdf439cdb99292edf408, type: 3}
@@ -108,7 +102,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2c9a8e1a39a93684ca5facfd7c873f13, type: 3}
   - {fileID: 21300000, guid: 17bd546a6730a0244ab795a2c92e2f50, type: 3}
   - {fileID: 21300000, guid: 33f6858a65edee346ac1405a0634d92d, type: 3}
-  - {fileID: -5649470061204452833, guid: 9ae0a64b42bd2a941b201ddf6168eaef, type: 3}
+  - {fileID: 21300000, guid: 9ae0a64b42bd2a941b201ddf6168eaef, type: 3}
   - {fileID: 21300000, guid: 9c8fbd8c15d966f4d8c8acc1570062ed, type: 3}
   - {fileID: 21300000, guid: 358171acf1b9aa146836673f25d14fba, type: 3}
   - {fileID: 21300000, guid: 8106538db39822042918c18320c65d46, type: 3}
@@ -138,11 +132,6 @@ SpriteAtlas:
   - HorizontalBombBlock_3
   - SelectBlockEffect
   - WindowFrame
-  - GameBackObject_0
-  - GameBackObject_1
-  - GameBackObject_2
-  - GameBackObject_3
-  - GameBackObject_4
   - HomingExplosionBlock_1
   - HomingExplosionBlock_0
   - HorizontalBombBlock_4
@@ -150,7 +139,7 @@ SpriteAtlas:
   - AroundBombBlock_0
   - Shelf
   - AroundBombBlock_3
-  - Pot_0
+  - Pot
   - HorizontalBombBlock_0
   - NormalBlock_0
   - HomingExplosionBlock_3

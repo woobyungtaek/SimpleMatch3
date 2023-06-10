@@ -288,7 +288,6 @@ public static class PlayerData
 
             strBuilder.Append($"{value},");
         }
-        Debug.Log(strBuilder.ToString());
         PlayerPrefs.SetString("BoosterInvenStr", strBuilder.ToString());
     }
     public static void LoadBoosterInventory()
@@ -349,6 +348,15 @@ public static class PlayerData
 
         return total / DecoItemInventory.Count;       
     }
+
+    #endregion
+
+    #region 레벨(카탈로그)
+
+    private static MVC_Data<int> mCurrentLV = new MVC_Data<int>("PlayerData.CurrentLV");
+    public static MVC_Data<float> CurrentEXP = new MVC_Data<float>("PlayerData.CurrentEXP");
+
+    //필요 경험치를 어디서 계산하고 넘겨줄 것인가...
 
     #endregion
 }

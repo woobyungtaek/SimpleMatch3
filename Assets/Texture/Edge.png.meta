@@ -168,7 +168,6 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -247,14 +246,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 50
     textureCompression: 1
-    compressionQuality: 50
+    compressionQuality: 100
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -1290,55 +1289,6 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Edge_0000_0000: 21300092
-      Edge_0000_0001: 21300076
-      Edge_0000_0010: 21300074
-      Edge_0000_0011: 21300082
-      Edge_0000_0100: 21300072
-      Edge_0000_0101: 21300090
-      Edge_0000_0110: 21300080
-      Edge_0000_0111: 21300070
-      Edge_0000_1000: 21300078
-      Edge_0000_1001: 21300084
-      Edge_0000_1010: 21300088
-      Edge_0000_1011: 21300064
-      Edge_0000_1100: 21300086
-      Edge_0000_1101: 21300066
-      Edge_0000_1110: 21300068
-      Edge_0000_1111: 21300062
-      Edge_0001_00xx: 21300032
-      Edge_0001_01xx: 21300048
-      Edge_0001_10xx: 21300056
-      Edge_0001_11xx: 21300040
-      Edge_0010_0xx0: 21300034
-      Edge_0010_0xx1: 21300058
-      Edge_0010_1xx0: 21300050
-      Edge_0010_1xx1: 21300042
-      Edge_0011_0xxx: 21300014
-      Edge_0011_1xxx: 21300024
-      Edge_0100_xx00: 21300036
-      Edge_0100_xx01: 21300052
-      Edge_0100_xx10: 21300060
-      Edge_0100_xx11: 21300044
-      Edge_0101_xxxx: 21300028
-      Edge_0110_xxx0: 21300012
-      Edge_0110_xxx1: 21300022
-      Edge_0111_xxxx: 21300006
-      Edge_1000_x00x: 21300030
-      Edge_1000_x01x: 21300046
-      Edge_1000_x10x: 21300054
-      Edge_1000_x11x: 21300038
-      Edge_1001_x0xx: 21300016
-      Edge_1001_x1xx: 21300026
-      Edge_1010_xxxx: 21300018
-      Edge_1011_xxxx: 21300008
-      Edge_1100_xx0x: 21300010
-      Edge_1100_xx1x: 21300020
-      Edge_1101_xxxx: 21300002
-      Edge_1110_xxxx: 21300004
-      Edge_1111_xxxx: 21300000
-      Square: 2838681010091129302
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
