@@ -18,6 +18,8 @@ public class ItemManager : SceneSingleton<ItemManager>
     private MVC_Data<int> mInstGold = new MVC_Data<int>("ItemManager.InstGold");
     public int InstGold { get => mInstGold.Value; }
 
+    private int mInstExp;
+    public int InstExp { get => mInstExp; }
 
     private void Start()
     {
@@ -88,5 +90,10 @@ public class ItemManager : SceneSingleton<ItemManager>
     public void AddGold(int value)
     {
         mInstGold.Value += value;
+    }
+    public void AddExp(EMissionLevel level)
+    {
+        // level에 따라 계산하기
+        mInstExp += 4;
     }
 }

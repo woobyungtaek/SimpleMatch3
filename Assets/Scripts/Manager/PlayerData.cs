@@ -18,7 +18,7 @@ public static class PlayerData
 
     public static void ChapterUnlock(EChapterLevel level, int chapter)
     {
-        if( chapter >= sizeof(int)) { return; }
+        if (chapter >= sizeof(int)) { return; }
 
         int current = mUnlockChapterArr[(int)level];
         int unlock = 1 << chapter;
@@ -76,7 +76,7 @@ public static class PlayerData
     }
     public static void LoadCurrentGold()
     {
-        if(PlayerPrefs.HasKey("PlayerGold"))
+        if (PlayerPrefs.HasKey("PlayerGold"))
         {
             mGold_MVC.Value = PlayerPrefs.GetInt("PlayerGold");
         }
@@ -93,7 +93,7 @@ public static class PlayerData
     }
     public static bool UseGem(int value)
     {
-        if(CurrentGem >= value)
+        if (CurrentGem >= value)
         {
             mGem_MVC.Value -= value;
             SaveCurrentGem();
@@ -117,10 +117,10 @@ public static class PlayerData
 
     #region 도감 적용 전 고정 스탯
 
-    private  static readonly int MOVECOUNT_PARTSTART    = 10;
-    private  static readonly int MOVECOUNT_STAGECLEAR   = 3;
-    private  static readonly int MOVECOUNT_CONTINUE     = 5;
-    
+    private static readonly int MOVECOUNT_PARTSTART = 10;
+    private static readonly int MOVECOUNT_STAGECLEAR = 3;
+    private static readonly int MOVECOUNT_CONTINUE = 5;
+
     #endregion
 
     #region 도감 능력치가 적용 된 스탯
@@ -154,7 +154,7 @@ public static class PlayerData
         ItemCount_RandomBombBox = 0;
 
         // 콜렉션 해금 정보에 따라 능력치 추가
-        foreach(var collection in mCollectionSaveDataDict)
+        foreach (var collection in mCollectionSaveDataDict)
         {
             CollectionManager.ExcuteCollectionEffect(collection.Key, collection.Value);
         }
@@ -170,9 +170,9 @@ public static class PlayerData
     /// </summary>
     /// <param name="collectionName"> 도감 이름, 아이템이 가지고 있음 </param>
     /// <param name="index"> 도감 내 인덱스, 아이템이 가지고 있음 </param>
-    public static void AddCollectionByIndex(int collectionIndex,int index)
+    public static void AddCollectionByIndex(int collectionIndex, int index)
     {
-        if (!mCollectionSaveDataDict.ContainsKey(collectionIndex)) 
+        if (!mCollectionSaveDataDict.ContainsKey(collectionIndex))
         {
             mCollectionSaveDataDict.Add(collectionIndex, 0);
         }
@@ -219,7 +219,7 @@ public static class PlayerData
     /// </summary>
     public static void LoadCollectionData()
     {
-        if(mCollectionSaveDataDict.Count > 0) { return; }
+        if (mCollectionSaveDataDict.Count > 0) { return; }
         // 불러와서 데이터 셋
         if (!PlayerPrefs.HasKey("CollectionSaveStr")) { return; }
         var dataArr = PlayerPrefs.GetString("CollectionSaveStr").Split(',');
@@ -229,7 +229,7 @@ public static class PlayerData
             if (string.IsNullOrEmpty(strValue)) { return; }
 
             uint value;
-            if(!uint.TryParse(strValue, out value)) { continue; }
+            if (!uint.TryParse(strValue, out value)) { continue; }
 
             int infoIndex = (int)(value >> 4);
             int index = (int)(value & 15);
@@ -250,7 +250,7 @@ public static class PlayerData
     }
 #endif
 
-#endregion
+    #endregion
 
     #region 부스터 아이템 인벤토리
 
@@ -261,9 +261,9 @@ public static class PlayerData
     public static Dictionary<int, int> BoosterItemInventory = new Dictionary<int, int>(new IntComparer());
     public static void AddBoosterItem(int itemIndex)
     {
-        if(itemIndex >= DataManager.Instance.GetBoosterDataCount) { return; }
+        if (itemIndex >= DataManager.Instance.GetBoosterDataCount) { return; }
 
-        if(!BoosterItemInventory.ContainsKey(itemIndex))
+        if (!BoosterItemInventory.ContainsKey(itemIndex))
         {
             BoosterItemInventory.Add(itemIndex, 0);
         }
@@ -292,7 +292,7 @@ public static class PlayerData
     }
     public static void LoadBoosterInventory()
     {
-        if(BoosterItemInventory.Count > 0) { return; }
+        if (BoosterItemInventory.Count > 0) { return; }
         // 불러와서 데이터 셋
         if (!PlayerPrefs.HasKey("BoosterInvenStr")) { return; }
         var dataArr = PlayerPrefs.GetString("BoosterInvenStr").Split(',');
@@ -319,7 +319,7 @@ public static class PlayerData
 
     public static void AddDecoItem(int itemIndex)
     {
-        if(itemIndex >= DataManager.Instance.GetDecoItemDataCount) { return; }
+        if (itemIndex >= DataManager.Instance.GetDecoItemDataCount) { return; }
 
         var data = DataManager.Instance.GetDecoItemByIndex(itemIndex);
         if (!DecoItemInventory.ContainsKey(data.ItemName))
@@ -327,36 +327,91 @@ public static class PlayerData
             DecoItemInventory.Add(data.ItemName, 0);
         }
         int count = DecoItemInventory[data.ItemName] + 1;
-        if(count>= 10)
+        if (count >= 10)
         {
             count = 10;
         }
-        DecoItemInventory[data.ItemName]  = count;
+        DecoItemInventory[data.ItemName] = count;
         AddCollectionByIndex(data.CollectionInfoIndex, data.CollectionIndex);
         Debug.Log($"AddDecoItem : {data.ItemName}");
     }
 
     public static int GetAvrgCount_Deco()
     {
-        if(DecoItemInventory.Count == 0) { return 0; }
+        if (DecoItemInventory.Count == 0) { return 0; }
 
         int total = 0;
-        foreach(int count in DecoItemInventory.Values)
+        foreach (int count in DecoItemInventory.Values)
         {
             total += count;
         }
 
-        return total / DecoItemInventory.Count;       
+        return total / DecoItemInventory.Count;
     }
 
     #endregion
 
     #region 레벨(카탈로그)
 
-    private static MVC_Data<int> mCurrentLV = new MVC_Data<int>("PlayerData.CurrentLV");
-    public static MVC_Data<float> CurrentEXP = new MVC_Data<float>("PlayerData.CurrentEXP");
+    private static MVC_Data<int> mCurrentLv = new MVC_Data<int>("PlayerData.CurrentLv");
+    private static MVC_Data<int> mCurrentExp = new MVC_Data<int>("PlayerData.CurrentExp");
 
-    //필요 경험치를 어디서 계산하고 넘겨줄 것인가...
+    public static int CurrentLv
+    {
+        get => mCurrentLv.Value;
+    }
+    public static void AddLv(int value)
+    {
+        mCurrentLv.Value += value;
+        SaveLv();
+    }
+
+    public static void AddExp(int value)
+    {
+        int totalExp = mCurrentExp.Value + value;
+
+        // 이부분 문제임, total이 1렙업당 변할예정이기 때문에
+        int total = 50;
+        // 레벨업 
+        int lvUp = totalExp / total;
+        // 남은 경험치
+        int remainExp = totalExp % total;
+
+        mCurrentExp.Value = remainExp;
+        if (lvUp > 0)
+        {
+            AddLv(lvUp);
+        }
+
+        SaveExp();
+    }
+    public static int CurrentExp
+    {
+        get => mCurrentExp.Value;
+    }
+
+    private static void SaveLv()
+    {
+        PlayerPrefs.SetInt("PlayerLv", mCurrentLv.Value);
+    }
+    public static void LoadLv()
+    {
+        if (PlayerPrefs.HasKey("PlayerLv"))
+        {
+            mCurrentLv.Value = PlayerPrefs.GetInt("PlayerLv");
+        }
+    }
+    private static void SaveExp()
+    {
+        PlayerPrefs.SetInt("PlayerExp", mCurrentExp.Value);
+    }
+    public static void LoadExp()
+    {
+        if (PlayerPrefs.HasKey("PlayerExp"))
+        {
+            mCurrentExp.Value = PlayerPrefs.GetInt("PlayerExp");
+        }
+    }
 
     #endregion
 }

@@ -403,6 +403,10 @@ public class MissionManager : SceneSingleton<MissionManager>
             inst.InitCellUI(basicReward);
             yield return REWARD_CREATE_DELAY;
         }
+
+        //EXP는 따로 처리 (UI를 안만들어도 되므로)
+        ItemManager.Instance.AddExp(CurrentMissionLevel);
+
         ObserverCenter.Instance.SendNotification(Message.CharacterOut);
     }
 

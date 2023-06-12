@@ -29,7 +29,7 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     public BoosterItemData[] UseBoosterItemArr = new BoosterItemData[3];
 
 
-    private void Start()
+    private void Awake()
     {
 #if UNITY_ANDROID || UNITY_IOS
 
@@ -47,6 +47,8 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         // 플레이어 정보 로드
         PlayerData.LoadCurrentGold();
         PlayerData.LoadCurrentGem();
+        PlayerData.LoadExp();
+        PlayerData.LoadLv();
         PlayerData.LoadCollectionData();
         PlayerData.LoadBoosterInventory();
     }

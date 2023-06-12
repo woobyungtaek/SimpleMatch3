@@ -15,14 +15,12 @@ public static class RewardMethodBook
 
     public static void MoveIncrease(RewardData data)
     {
-
         TileMapManager.Instance.MoveCount += data.RewardCount;
     }
 
     public static void GoldIncrease(RewardData data)
     {
         // 난이도에 따라 차등 지급
-
         ItemManager.Instance.AddGold(data.RewardCount);
     }
 

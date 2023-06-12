@@ -15,6 +15,7 @@ public class AdsManager : Singleton<AdsManager>
     private RewardedAd mRewardedAd;
 
 #if UNITY_ANDROID
+    //private string mRewardAdUnitId = "ca-app-pub-3940256099942544/5354046379";
     private string mRewardAdUnitId = "ca-app-pub-4158526353894227/1047021968";
     private string mBannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
 #elif UNITY_IOS
