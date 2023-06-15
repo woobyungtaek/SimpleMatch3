@@ -11,6 +11,7 @@ public class MoveCountUI : MonoBehaviour
     [SerializeField]
     private Image MoveCountImage;
 
+
     private void Start()
     {
         ObserverCenter.Instance.AddObserver(ExcuteRefreshMoveCountByNoti, Message.RefreshMoveCount);

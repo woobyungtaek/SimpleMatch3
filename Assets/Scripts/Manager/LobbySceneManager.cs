@@ -59,8 +59,8 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     {
         if (Input.GetKeyDown(KeyCode.P)) { PlayerData.AddGold(100); }
         if (Input.GetKeyDown(KeyCode.O)) { PlayerData.AddGold(-100); }
-        if (Input.GetKeyDown(KeyCode.L)) { CollectionManager.TestUnlockCollection(); }
         if (Input.GetKeyDown(KeyCode.K)) { PlayerPrefs.DeleteAll(); }
+        if (Input.GetKeyDown(KeyCode.G)) { PlayerData.AddExp(20); }
     }
 
 #endif

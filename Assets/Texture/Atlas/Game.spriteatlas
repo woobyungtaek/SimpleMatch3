@@ -87,6 +87,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e099b5421af2f0c4c95512e9ebdbb4e7, type: 3}
   - {fileID: 21300000, guid: ce9e5b820bc579643bada5c30e6c6b28, type: 3}
   - {fileID: 21300000, guid: 3ad1ec03355da6144a3e458566515588, type: 3}
+  - {fileID: 21300000, guid: b0e06e03d43299a439ec73c7ba73a637, type: 3}
   - {fileID: 21300000, guid: 68846c23b2b8a2e4f9c4dd83e11ea131, type: 3}
   - {fileID: 21300000, guid: 349cdd440fba1084bbed84be8415e9fb, type: 3}
   - {fileID: 21300000, guid: 26cf7a3539959d047a151621087a6544, type: 3}
@@ -124,6 +125,7 @@ SpriteAtlas:
   - VerticalBombBlock_3
   - AroundBombEffect
   - NormalBlock_2
+  - Wall
   - NormalBlock_3
   - HomingExplosionBlock_4
   - NormalBlock_1

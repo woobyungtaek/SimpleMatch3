@@ -68,27 +68,44 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 9a49ddf981d180049a3c5b70639b98ec, type: 3}
+    - {fileID: -8152718321238593233, guid: d446f584af8d516428ea193bfdeffdde, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 9ec3b520b1b55c64c9cc558a36ca2a83, type: 3}
   - {fileID: 21300000, guid: ce8c89b080c72404c9cf89ea7340d798, type: 3}
   - {fileID: 21300000, guid: b6235401efc9df946ac9fb2353916bc8, type: 3}
   - {fileID: 21300000, guid: 0485aba18154cfb42b2de599e6f4a231, type: 3}
+  - {fileID: 21300000, guid: 400224d2c42e14b40a213dad57b5599c, type: 3}
+  - {fileID: 21300000, guid: a98d5963a58bd724087331b108d3e33d, type: 3}
+  - {fileID: 21300000, guid: 098e5c04dac89e943a21ee9fdbb138b4, type: 3}
+  - {fileID: 21300000, guid: 428156648f90b674e9c77e3e8dfd1484, type: 3}
+  - {fileID: -8152718321238593233, guid: d446f584af8d516428ea193bfdeffdde, type: 3}
   - {fileID: 21300000, guid: c6195c351b863f94fa631fd43af70ae4, type: 3}
   - {fileID: 2747690628134850419, guid: cf02247584d04a24f8945c3ecb1de48a, type: 3}
-  - {fileID: 21300000, guid: 73a9ef68dcf0c484aa2525e30c1b4f3c, type: 3}
+  - {fileID: 21300000, guid: b9d7939623c36974da619dd698bfc770, type: 3}
+  - {fileID: 21300000, guid: 13f98ce68a34caf4aa12b065e2d0e1f4, type: 3}
+  - {fileID: 21300000, guid: ccce27895a70ce14d85b4a36b848ac71, type: 3}
   - {fileID: 21300000, guid: d98efaace0db59b47898efd972bcbf48, type: 3}
   - {fileID: 21300000, guid: f3da89fd08208864cb85c0a74c5e181d, type: 3}
   - {fileID: 21300000, guid: 88be888f8856dc144badab0224ac4436, type: 3}
   m_PackedSpriteNamesToIndex:
+  - PartIcon_3
   - UnderBar
   - StageIcon
   - SkillButtonCount
+  - SkillIcons_2
+  - SkillIcons_0
+  - Icon_Move
+  - SkillIcons_1
+  - Gold
   - TopBarUI
   - Hexagon Flat-Top
-  - PartIcon
+  - SkillIcons_3
+  - PartIcon_2
+  - PartIcon_1
   - SkillButton
   - BigSkillButton
   - SettingButton

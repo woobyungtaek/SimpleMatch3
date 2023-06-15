@@ -153,11 +153,18 @@ public static class PlayerData
         ItemCount_BlockSwap = 0;
         ItemCount_RandomBombBox = 0;
 
+        Debug.Log("----------------Collection-----------------");
+        var dataManager = DataManager.Instance;
         // 콜렉션 해금 정보에 따라 능력치 추가
         foreach (var collection in mCollectionSaveDataDict)
         {
-            CollectionManager.ExcuteCollectionEffect(collection.Key, collection.Value);
+            dataManager.ExcuteCollectionEffect(collection.Key, collection.Value);
         }
+
+        Debug.Log("----------------Level-----------------");
+        // 레벨 정보에 따라 능력치 추가
+        // 현재 레벨까지 데이터에서 Effect를 가져와서 Excute
+        dataManager.ExcuteLevelEffect(CurrentLv);
     }
 
     /// <summary>
@@ -201,7 +208,7 @@ public static class PlayerData
 
         System.Text.StringBuilder strBuilder = new System.Text.StringBuilder();
 
-        // 따로 Pasing을 해서 저장
+        // 따로 Parsing을 해서 저장
         foreach (var pair in mCollectionSaveDataDict)
         {
             uint value = 0;
@@ -363,25 +370,41 @@ public static class PlayerData
     public static void AddLv(int value)
     {
         mCurrentLv.Value += value;
+        if(CurrentLv > DataManager.Instance.MaxLevel)
+        {
+            mCurrentLv.Value = DataManager.Instance.MaxLevel;
+        }
+
         SaveLv();
     }
 
     public static void AddExp(int value)
     {
+        int currentLv = CurrentLv;
         int totalExp = mCurrentExp.Value + value;
 
         // 이부분 문제임, total이 1렙업당 변할예정이기 때문에
-        int total = 50;
+        int total = 110;
+        if(currentLv <= 7)
+        {
+            total = (currentLv * 10) + 30;
+        }
+
         // 레벨업 
         int lvUp = totalExp / total;
         // 남은 경험치
         int remainExp = totalExp % total;
 
-        mCurrentExp.Value = remainExp;
         if (lvUp > 0)
         {
             AddLv(lvUp);
+            if (CurrentLv >= 14)
+            {
+                mCurrentLv.Value = 14;
+                remainExp = 0;
+            }
         }
+        mCurrentExp.Value = remainExp;
 
         SaveExp();
     }
