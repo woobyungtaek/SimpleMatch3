@@ -140,6 +140,13 @@ public class AllClearPopup : Popup
         PlayerData.AddGold(mResultGold);
         PlayerData.AddExp(mResultExp);
 
+        if (InGameUseDataManager.IsExist)
+        {
+            int chapter = InGameUseDataManager.Instance.ChapterNumber;
+            chapter += 1;
+            PlayerData.UnlockChapter(chapter);
+        }
+
         SceneLoader.Instance.LoadSceneByName("LobbyScene");
     }
 

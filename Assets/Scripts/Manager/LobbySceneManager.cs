@@ -7,12 +7,16 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 {
     public int SelectedChapterNum
     {
-        get { return mSelectedChapterNum; }
+        get 
+        {
+            return mSelectedChapterNum; 
+        }
         set
         {
             mSelectedChapterNum = value;
             if (mSelectedChapterNum < 0) { mSelectedChapterNum = 0; }
             if (mSelectedChapterNum >= mChapterGimmickArr.Length) { mSelectedChapterNum = mChapterGimmickArr.Length - 1; }
+            PlayerPrefs.SetInt("LastPlayChapterNum", mSelectedChapterNum);
         }
     }
     [SerializeField] private int mSelectedChapterNum;
@@ -24,6 +28,7 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     [Header("Chapter")]
     [SerializeField] private MapGimmickInfo[] mChapterGimmickArr = new MapGimmickInfo[2];
     [SerializeField] private ChapterData[] mChapterDataArr = new ChapterData[2];
+    public int GetChapterCount { get => mChapterGimmickArr.Length; }
 
 
     public BoosterItemData[] UseBoosterItemArr = new BoosterItemData[3];
@@ -44,7 +49,13 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
 #endif
 
+        if (PlayerPrefs.HasKey("LastPlayChapterNum"))
+        {
+            SelectedChapterNum  = PlayerPrefs.GetInt("LastPlayChapterNum");
+        }
+
         // 플레이어 정보 로드
+        PlayerData.LoadCurrentChapter();
         PlayerData.LoadCurrentGold();
         PlayerData.LoadCurrentGem();
         PlayerData.LoadExp();
@@ -104,6 +115,8 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
         InGameUseDataManager.Instance.ChapterMapGimmickInfo = mChapterGimmickArr[mSelectedChapterNum];
         InGameUseDataManager.Instance.CurrentChapterData = mChapterDataArr[mSelectedChapterNum];
+
+        InGameUseDataManager.Instance.ChapterNumber = mSelectedChapterNum;
 
         InGameUseDataManager.Instance.InitInGameUseData();
 

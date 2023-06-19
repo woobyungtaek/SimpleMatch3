@@ -22,12 +22,15 @@ public class GameStartPopup : Popup
 
     private BoosterItemButton mCurrentActiveButton;
 
+    private int mSelectChapter;
+
     public override void Init()
     {
         base.Init();
 
         //mChapterGrid.Init();
-        mChapterNumText.text = $"{LobbySceneManager.Instance.SelectedChapterNum}";
+        mSelectChapter = LobbySceneManager.Instance.SelectedChapterNum;
+        mChapterNumText.text = $"{mSelectChapter}";
 
         // 버튼들 초기화
         foreach (var btn in mBoosterButtons)
@@ -42,8 +45,21 @@ public class GameStartPopup : Popup
 
     public void OnChapterSelectButtonClicked(int dir)
     {
-        LobbySceneManager.Instance.SelectedChapterNum += dir;
-        mChapterNumText.text = $"{LobbySceneManager.Instance.SelectedChapterNum}";
+        mSelectChapter += dir;
+        if (mSelectChapter >= LobbySceneManager.Instance.GetChapterCount)
+        {
+            mSelectChapter = LobbySceneManager.Instance.GetChapterCount - 1;
+            return;
+        }
+        if (mSelectChapter < 0) { mSelectChapter = 0; return; }
+        if (!PlayerData.IsUnlockChapter(mSelectChapter))
+        {
+            mChapterNumText.text = $"Lock\n{mSelectChapter}";
+        }
+        else
+        {
+            mChapterNumText.text = $"{mSelectChapter}";
+        }
     }
 
     public void OnCloseButtonClicked()
@@ -56,8 +72,14 @@ public class GameStartPopup : Popup
 
     public void OnStartButtonClicked()
     {
+        if (!PlayerData.IsUnlockChapter(mSelectChapter))
+        {
+            return;
+        }
+
         ClosePopup();
 
+        LobbySceneManager.Instance.SelectedChapterNum = mSelectChapter;
         // Inventory Index로 Data 획득, Data의 Index를 넘겨준다.
         // Inventory Index로 개수를 빼준다.
         for (int cnt = 0; cnt < mBoosterButtons.Length; ++cnt)

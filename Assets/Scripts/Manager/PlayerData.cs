@@ -13,30 +13,59 @@ public static class PlayerData
 {
     #region 챕터 해금
 
-    // 난이도 별, 최대 31 Chapter 가능 ( 0 ~ 30 )
-    private static int[] mUnlockChapterArr = new int[(int)EChapterLevel.Max];
+    private static int mCurrentChapter;
+    
+    public static int CurrentChapter { get => mCurrentChapter; }
 
-    public static void ChapterUnlock(EChapterLevel level, int chapter)
+    public static void UnlockChapter(int chapter)
     {
-        if (chapter >= sizeof(int)) { return; }
+        if(chapter <= mCurrentChapter) { return; }
+        if(chapter - 1 != mCurrentChapter) { return; }
 
-        int current = mUnlockChapterArr[(int)level];
-        int unlock = 1 << chapter;
-
-        mUnlockChapterArr[(int)level] = current | unlock;
+        mCurrentChapter = chapter;
+        SaveCurrentChapter();
     }
 
-    public static bool IsUnlockChapter(EChapterLevel level, int chapter)
+    public static bool IsUnlockChapter(int chapter)
     {
-        if (chapter >= sizeof(int)) { return false; }
-
-        int current = mUnlockChapterArr[(int)level];
-        int check = 1 << chapter;
-
-        int result = current & check;
-
-        return result != 0;
+        return chapter <= mCurrentChapter;
     }
+
+    private static void SaveCurrentChapter()
+    {
+        // 우선 PlayerPref에...
+        PlayerPrefs.SetInt("CurrentChapter", mCurrentChapter);
+    }
+    public static void LoadCurrentChapter()
+    {
+        if (PlayerPrefs.HasKey("CurrentChapter"))
+        {
+            mCurrentChapter = PlayerPrefs.GetInt("CurrentChapter");
+        }
+    }
+
+    //// 난이도 별, 최대 31 Chapter 가능 ( 0 ~ 30 )
+    //private static int[] mUnlockChapterArr = new int[(int)EChapterLevel.Max];
+    //public static void ChapterUnlock(EChapterLevel level, int chapter)
+    //{
+    //    if (chapter >= sizeof(int)) { return; }
+
+    //    int current = mUnlockChapterArr[(int)level];
+    //    int unlock = 1 << chapter;
+
+    //    mUnlockChapterArr[(int)level] = current | unlock;
+    //}
+    //public static bool IsUnlockChapter(EChapterLevel level, int chapter)
+    //{
+    //    if (chapter >= sizeof(int)) { return false; }
+
+    //    int current = mUnlockChapterArr[(int)level];
+    //    int check = 1 << chapter;
+
+    //    int result = current & check;
+
+    //    return result != 0;
+    //}
 
     #endregion
 
