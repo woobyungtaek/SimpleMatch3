@@ -4668,7 +4668,7 @@ MonoBehaviour:
     type: 3}
   mPartCount: 0
   mStageCount: 0
-  mChapterData: {fileID: 11400000, guid: 6f773d10bf0857442bd4ac853dddbf39, type: 2}
+  mChapterData: {fileID: 11400000, guid: 570348544117ca240bf238d71f346f58, type: 2}
   mMissionCellGridTransform: {fileID: 1712113280}
   mCollectEffectPrefab: {fileID: 5876639643000421130, guid: 8cf0f1cb6b431d745931a6ca2a11590f,
     type: 3}

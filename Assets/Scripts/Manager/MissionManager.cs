@@ -290,11 +290,22 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     public void SetMoveAndItemCount(MapData mapdata)
     {
-        TileMapManager.Instance.MoveCount = mapdata.moveCount;
         if (InGameUseDataManager.IsExist)
         {
-            TileMapManager.Instance.MoveCount = InGameUseDataManager.Instance.StartCount;
+            // 테스트용 / 수집한 카운트가 더 높으면 초기화 안함
+            int currentCount = TileMapManager.Instance.MoveCount;
+            int settingCount = InGameUseDataManager.Instance.StartCount;
+            int result = currentCount >= settingCount ? currentCount : settingCount;
+            Debug.Log($"MoveCount Init : {currentCount} / {settingCount} / {result}");
+            TileMapManager.Instance.MoveCount = result;
+
+            //TileMapManager.Instance.MoveCount = InGameUseDataManager.Instance.StartCount;
         }
+        else
+        {
+            TileMapManager.Instance.MoveCount = mapdata.moveCount;
+        }
+
         //게임 시작을 체크하는 부분을 따로 정확하게 만들어야한다.
         if (mPartCount == 0)
         {

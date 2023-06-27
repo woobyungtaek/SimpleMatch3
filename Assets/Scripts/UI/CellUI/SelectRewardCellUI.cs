@@ -18,21 +18,28 @@ public class SelectRewardCellUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mItemDescText;
     [SerializeField] private RewardData mRewardData;
 
+
     public delegate void SelectRewardEvent(SelectRewardCellUI cellIUI);
     public SelectRewardEvent EventSelectReward;
 
-    public void InitCellUI(RewardData rewardData)
+    public virtual void InitCellUI(RewardData rewardData)
     {
         mRewardData = rewardData;
         mRewardImage.sprite = SpriteManager.Instance.GetUISpriteByName(mRewardData.SpriteName);
         mItemNameText.text = Localization.GetString($"{mRewardData.SpriteName}_Name");
         mItemDescText.text = Localization.GetString($"{mRewardData.SpriteName}_Desc");
-        mRewardCountText.text = string.Format(CountStr, mRewardData.RewardCount);
+
+        RefreshRewardCountText();
     }
 
     public void OnSelectButtonClicked()
-    {
+    {      
         EventSelectReward(this);
+    }
+
+    protected void RefreshRewardCountText()
+    {
+        mRewardCountText.text = string.Format(CountStr, mRewardData.RewardCount);
     }
 }
 
