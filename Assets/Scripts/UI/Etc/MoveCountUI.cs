@@ -18,7 +18,8 @@ public class MoveCountUI : MonoBehaviour
         ObserverCenter.Instance.AddObserver(ExcuteInputStateOnByNoti, EGameState.Input.ToString());
         ObserverCenter.Instance.AddObserver(ExcuteInputStateOnByNoti, EGameState.Match.ToString());
 
-        ObserverCenter.Instance.AddObserver(ExcuteHammerStateOnByNoti, EGameState.PlayerSkill.ToString());
+        // 아이템 쓸때 표시 변경인데 안씀
+        //ObserverCenter.Instance.AddObserver(ExcuteHammerStateOnByNoti, EGameState.PlayerSkill.ToString());
 
         ExcuteRefreshMoveCountByNoti(null);
     }

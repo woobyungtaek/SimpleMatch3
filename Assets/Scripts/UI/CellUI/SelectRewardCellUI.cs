@@ -18,6 +18,8 @@ public class SelectRewardCellUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mItemDescText;
     [SerializeField] private RewardData mRewardData;
 
+    [SerializeField] private GameObject mAdInfoObj;
+
 
     public delegate void SelectRewardEvent(SelectRewardCellUI cellIUI);
     public SelectRewardEvent EventSelectReward;
@@ -30,6 +32,8 @@ public class SelectRewardCellUI : MonoBehaviour
         mItemDescText.text = Localization.GetString($"{mRewardData.SpriteName}_Desc");
 
         RefreshRewardCountText();
+
+        mAdInfoObj.SetActive(mRewardData.RewardType == ERewardType.AD);
     }
 
     public void OnSelectButtonClicked()

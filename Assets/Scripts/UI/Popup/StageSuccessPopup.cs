@@ -34,7 +34,6 @@ public class StageSuccessPopup : Popup
     }
     private void ClearSelectRewardCellList()
     {
-        int loopCount = mSelectRewardCellList.Count;
         for (int index = 0; index < mSelectRewardCellList.Count; index++)
         {
             GameObjectPool.ReturnObject(mSelectRewardCellList[index].gameObject);
@@ -45,13 +44,38 @@ public class StageSuccessPopup : Popup
     public void OnSelectRewardButtonClicked(SelectRewardCellUI cellUI)
     {
         mSelectedReward = cellUI.CellRewardData;
+
+        if (mSelectedReward.RewardType == ERewardType.AD)
+        {
+            // 광고 보상이면 여기서 광고를 틀어준다.
+            if (!AdsManager.IsExist) { return; }
+            if (!AdsManager.Instance.IsRewardAdReady) { return; }
+            AdsManager.Instance.ShowRewardAd(ExcuteADSelectReward);
+
+            return;// 선택한 보상이 광고 보상이면 창을 닫지 않는다.
+        }
+
         OnCancelButtonClicked();
 
-        int loopCount = mSelectRewardCellList.Count;
-        for (int index = 0; index < loopCount; index++)
+
+        // 뭐지?
+        //int loopCount = mSelectRewardCellList.Count;
+        //for (int index = 0; index < loopCount; ++index)
+        //{
+        //    if (mSelectRewardCellList[index] == cellUI) { continue; }
+        //}
+    }
+
+    private void ExcuteADSelectReward(GoogleMobileAds.Api.Reward reward)
+    {
+        mSelectedReward.ExcuteRewardFunc();
+
+        foreach (var cell in mSelectRewardCellList)
         {
-            if (mSelectRewardCellList[index] == cellUI) { continue; }
+            if(cell.CellRewardData != mSelectedReward) { continue; }
+            cell.gameObject.SetActive(false);
         }
+        mSelectedReward = null;
     }
 
     public override void Init()
@@ -63,11 +87,12 @@ public class StageSuccessPopup : Popup
     }
     public void OnCancelButtonClicked()
     {
-        if (mSelectRewardCellList.Count > 0)
+        // 선택한 보상을 받는다.
+        if (mSelectedReward != null)
         {
-            if (mSelectedReward == null) { return; }
-            mSelectedReward.ExcuteRewardFunc();
+            mSelectedReward.ExcuteRewardFunc(); 
         }
+
         ClearSelectRewardCellList();
         MissionManager.Instance.TakeBasicReward();
         ClosePopup(true);

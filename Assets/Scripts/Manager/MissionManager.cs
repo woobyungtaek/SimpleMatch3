@@ -49,7 +49,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     [Header("Reward")]
     [SerializeField] private Transform mRewardCellUITransform;
     [SerializeField] private GameObject mRewardCellUIPrefab;
-    public List<RewardData> SelectRewardDataList { get => mSelectRewardList; }
+    public List<RewardData> SelectRewardDataList { get => mSelectRewardList_Grade; }
 
 
     [Header("Stage")]
@@ -98,12 +98,17 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     [Header("Reward")]
     [SerializeField]
-    private List<RewardData> mRewardDataList = new List<RewardData>();
+    private List<RewardData> mSelectRewardList_Grade = new List<RewardData>();
+
 
     [SerializeField]
     private List<RewardData> mBasicRewardList = new List<RewardData>();
     [SerializeField]
     private List<RewardData> mSelectRewardList = new List<RewardData>();
+    [SerializeField]
+    private List<RewardData> mAdRewardList = new List<RewardData>();
+
+
 
     private List<RewardData> mInstRandomRewardList = new List<RewardData>();
 
@@ -116,23 +121,36 @@ public class MissionManager : SceneSingleton<MissionManager>
     private void Awake()
     {
         mMissionDataListArr = DataManager.Instance.MissionDataListArr;
-        mRewardDataList = DataManager.Instance.RewardDataList;
+
+        var totalRewardList = DataManager.Instance.RewardDataList;
 
         mBasicRewardList.Clear();
-        for(int idx = 0; idx<mRewardDataList.Count; ++idx)
+        mSelectRewardList.Clear();
+        mAdRewardList.Clear();
+        for (int idx = 0; idx < totalRewardList.Count; ++idx)
         {
-            if(mRewardDataList[idx].RewardType ==  ERewardType.Basic)
+            switch (totalRewardList[idx].RewardType)
             {
-                mBasicRewardList.Add(mRewardDataList[idx]);
+                case ERewardType.Basic:
+                    mBasicRewardList.Add(totalRewardList[idx]);
+                    break;
+
+                case ERewardType.AD:
+                    mAdRewardList.Add(totalRewardList[idx]);
+                    break;
+
+                default:
+                    mSelectRewardList.Add(totalRewardList[idx]);
+                    break;
             }
         }
 
         CreateMissionCellUI();
 
         mDoubleChanceFunc = null;
-        if(InGameUseDataManager.IsExist)
+        if (InGameUseDataManager.IsExist)
         {
-            if(InGameUseDataManager.Instance.DoubleChancePer > 0f)
+            if (InGameUseDataManager.Instance.DoubleChancePer > 0f)
             {
                 mDoubleChancePer = InGameUseDataManager.Instance.DoubleChancePer;
                 mDoubleChanceFunc = DoubleChanceFunc;
@@ -185,17 +203,6 @@ public class MissionManager : SceneSingleton<MissionManager>
         instCollectEffect.PlayEffect();
     }
 
-    private RewardData GetRewardDataByNameGrade(string name, int grade)
-    {
-        int loopCount = mRewardDataList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            if (mRewardDataList[index].RewardName != name) { continue; }
-            if (mRewardDataList[index].Grade != grade) { continue; }
-            return mRewardDataList[index];
-        }
-        return null;
-    }
     public void CreateStageClearRewardDataList()
     {
         if (mCurrentMissionData == null) { return; }
@@ -227,22 +234,22 @@ public class MissionManager : SceneSingleton<MissionManager>
         {
             selectItemCount = 0;
         }
-                
+
         // 등급, 선택 횟수, 보여지는 개수
         CreateSelectRewardList(grade, selectItemCount, PlayerData.SelectRewardCount);
     }
     private void CreateSelectRewardList(int grade, int selectCount, int provisionCount)
     {
-        mSelectRewardList.Clear();
+        mSelectRewardList_Grade.Clear();
         if (selectCount <= 0) { return; }
 
         mInstRandomRewardList.Clear();
-        int loopCount = mRewardDataList.Count;
+
+        int loopCount = mSelectRewardList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (!(mRewardDataList[index].RewardType == ERewardType.Select)) { continue; }
-            if (mRewardDataList[index].Grade != grade) { continue; }//현재 등급의 보상만 추가 한다.
-            mInstRandomRewardList.Add(mRewardDataList[index]);
+            if (mSelectRewardList[index].Grade != grade) { continue; }//현재 등급의 보상만 추가 한다.
+            mInstRandomRewardList.Add(mSelectRewardList[index]);
         }
 
         int max = 0;
@@ -252,8 +259,16 @@ public class MissionManager : SceneSingleton<MissionManager>
             max = mInstRandomRewardList.Count;
             if (max <= 0) { Debug.Log("해당 등급의 추가 보상 수가 부족합니다."); return; }
             rand = Random.Range(0, max);
-            mSelectRewardList.Add(mInstRandomRewardList[rand]);
+            mSelectRewardList_Grade.Add(mInstRandomRewardList[rand]);
             mInstRandomRewardList.RemoveAt(rand);
+        }
+
+        // AD 리워드 추가 / Select 마지막에 넣는다.
+        if (!AdsManager.IsExist) { return; }
+        if(AdsManager.Instance.IsRewardAdReady && mAdRewardList.Count > 0)
+        {
+            int rndAdRewardIdx = Random.Range(0, mAdRewardList.Count);
+            mSelectRewardList_Grade.Add(mAdRewardList[rndAdRewardIdx]);
         }
     }
 
@@ -377,7 +392,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         CreateStageClearRewardDataList();
 
         // 선택 보상이 있음
-        if (mSelectRewardList.Count > 0)
+        if (mSelectRewardList_Grade.Count > 0)
         {
             PopupManager.Instance.CreatePopupByName("StageSuccessPopup");
             return;
@@ -404,7 +419,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         StartCoroutine(DelayCreateRewardEffect());
     }
     private System.Collections.IEnumerator DelayCreateRewardEffect()
-    {        
+    {
         foreach (var basicReward in mBasicRewardList)
         {
             // 획득 이팩트를 만들어 보여준다.
@@ -497,14 +512,14 @@ public class MissionManager : SceneSingleton<MissionManager>
             }
 
             int collectCount = 1;
-            if(mDoubleChanceFunc != null)
+            if (mDoubleChanceFunc != null)
             {
                 collectCount = mDoubleChanceFunc.Invoke(missionType);
             }
 
             //CreateMissionCollectEffect(effectPos, TileMapManager.Instance.RandCollectPos, missionType, color, missionSprite);
             CreateMissionCollectEffect(effectPos, mMissionCellUIList[index].transform.position, missionType, color, missionSprite, collectCount);
-            
+
             mMissionCellUIList[index].CollectMissionTarget(collectCount);
 
             if (mMissionCellUIList[index].IsComplete)

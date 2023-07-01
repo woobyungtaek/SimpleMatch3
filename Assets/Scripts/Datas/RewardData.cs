@@ -6,7 +6,8 @@ using UnityEngine;
 public enum ERewardType
 {
     Basic,
-    Select
+    Select,
+    AD
 }
 [System.Serializable]
 public class RewardData

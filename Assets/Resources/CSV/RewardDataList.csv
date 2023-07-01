@@ -16,3 +16,8 @@ Index,SpriteName,RewardName,MethodName,Grade,RewardCount,RewardType
 14,Gold,Gold,GoldIncrease,2,15,Select
 15,Gold,Gold,GoldIncrease,3,25,Select
 16,Gold,Gold,GoldIncrease,4,45,Select
+17,SkillIcons_3,SelectColorChange,ColorChangeIncrease,1,2,AD
+18,SkillIcons_2,SelectBlockSwap,BlockSwapIncrease,1,2,AD
+19,SkillIcons_1,SelectRandomBombBox,RandBombBox,1,3,AD
+20,Icon_Move,MoveCount,MoveIncrease,1,5,AD
+21,Gold,Gold,GoldIncrease,1,25,AD
