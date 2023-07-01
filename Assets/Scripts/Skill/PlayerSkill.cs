@@ -138,7 +138,10 @@ public class RandomBoxSkill : PlayerSkill
         MissionInfo mission = MissionManager.Instance.GetMissionInfoByType(blockType);
         if (mission != null)
         {
-            blockColor = mission.MissionColor;
+            int missionColor = mission.MissionColor;
+            if (missionColor < 0) { missionColor = blockColor; }
+
+            blockColor = missionColor;
         }
 
         IncreaseItemUseCount();
@@ -182,7 +185,7 @@ public class BlockSwapSkill : PlayerSkill
 
         tile1.BlockContainerOrNull.transform.position = tile1.transform.position;
         tile2.BlockContainerOrNull.transform.position = tile2.transform.position;
-        
+
         IncreaseItemUseCount();
 
         // 스킬사용 및 매치 체크
@@ -215,7 +218,7 @@ public class ColorChangeSkill : PlayerSkill
         }
     }
 
-    public override void DoSkill(Tile tile1 )
+    public override void DoSkill(Tile tile1)
     {
         // > 블록 컨테이너가 있고 & 블록이 움직일 수 있는 상태여야한다.
         if (tile1.BlockContainerOrNull.IsFixed) { return; }
@@ -224,7 +227,7 @@ public class ColorChangeSkill : PlayerSkill
         if (targetNum == -1) { return; }
 
         int changeNum = Random.Range(0, 5);
-        while(changeNum == targetNum)
+        while (changeNum == targetNum)
         {
             changeNum = Random.Range(0, 5);
         }
@@ -232,7 +235,7 @@ public class ColorChangeSkill : PlayerSkill
         // targetNum과 같은 블록을 changeNum으로 바꾸고 갱신해야한다.
         TileMapManager.Instance.CreateTileListBySameNumber(mTargetTileList, targetNum);
 
-        foreach(var tile in mTargetTileList)
+        foreach (var tile in mTargetTileList)
         {
             BlockContainer bc = tile.BlockContainerOrNull;
             int hp = bc.MainBlock.BlockHP;

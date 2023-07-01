@@ -141,7 +141,6 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     }
 
-
     private void CreateMissionCellUI()
     {
         for (int index = 0; index < 5; index++)

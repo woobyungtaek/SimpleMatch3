@@ -122,7 +122,7 @@ public class MissionData : Pool<MissionData>
         for (int idx = 0; idx < preset.MissionList.Count; ++idx)
         {
             var element = preset.MissionList[idx];
-            if (preset.IsTemplate)
+            if (preset.IsTemplate && element.MissionColor != -1)
             {
                 // MissionColor가 인덱스로 사용된다.
                 element.MissionColor = ColorArr[element.MissionColor];
