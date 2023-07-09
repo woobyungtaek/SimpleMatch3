@@ -36,8 +36,7 @@ public class BlockManager : SceneSingleton<BlockManager>
     [SerializeField] private TripleHomingBombBlock tripleChangeBombBlockPrefab;
     [SerializeField] private AllClearBombBlock allClearBombBlockPrefab;
 
-    private Dictionary<Type, GameObject> blockPrefabDictByType = new Dictionary<Type, GameObject>();
-    private Dictionary<string, GameObject> blockPrefabDictByName = new Dictionary<string, GameObject>();
+    private Dictionary<Type, GameObject> mBlockPrefabDict = new Dictionary<Type, GameObject>();
 
     private BlockContainer instBlockContainer;
     [SerializeField] private List<BlockContainer> mAllBlockContainer = new List<BlockContainer>();
@@ -91,13 +90,9 @@ public class BlockManager : SceneSingleton<BlockManager>
         return instBlockContainer;
     }
 
-    public Block GetBlockByBlockName(string blockName)
-    {
-        return GameObjectPool.Instantiate<Block>(blockPrefabDictByName[blockName]);
-    }
     public Block GetBlockByBlockType(Type blockType)
     {
-        return GameObjectPool.Instantiate<Block>(blockPrefabDictByType[blockType]);
+        return GameObjectPool.Instantiate<Block>(mBlockPrefabDict[blockType]);
     }
 
     public void ClearAllBlockContainers()
@@ -116,9 +111,7 @@ public class BlockManager : SceneSingleton<BlockManager>
         GameObject prefabObject;
         bool bBlock = false;
 
-        blockPrefabDictByType.Clear();
-
-        blockPrefabDictByName.Clear();
+        mBlockPrefabDict.Clear();
 
         FieldInfo[] fieldArr = typeof(BlockManager).GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -137,13 +130,11 @@ public class BlockManager : SceneSingleton<BlockManager>
             if (!bBlock) { continue; }
 
             type = fieldArr[index].GetValue(this).GetType();
-            if (blockPrefabDictByType.ContainsKey(type) == false) { blockPrefabDictByType.Add(type, null); }
-            if (blockPrefabDictByName.ContainsKey(type.ToString()) == false) { blockPrefabDictByName.Add(type.ToString(), null); }
-
+            if (mBlockPrefabDict.ContainsKey(type) == false) { mBlockPrefabDict.Add(type, null); }
+            
             prefabObject = (fieldArr[index].GetValue(this) as Block).gameObject;
 
-            blockPrefabDictByType[type] = prefabObject;
-            blockPrefabDictByName[type.ToString()] = prefabObject;
+            mBlockPrefabDict[type] = prefabObject;
         }
     }
 }

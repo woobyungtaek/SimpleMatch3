@@ -6,6 +6,9 @@ public class NormalTile : Tile
 {
     [SerializeField] private List<Tile> mAroundTileList = new List<Tile>();
 
+    private List<TileGimmick> mTileGimmickList = new List<TileGimmick>();
+
+
     public override bool IsCanFlow_Up
     {
         // 현재 타일에 블록이 흘러도 괜찮은가(위로 체크)
@@ -141,6 +144,7 @@ public class NormalTile : Tile
         }
     }
 
+
     public void CreateAroundSquareList()
     {
         TileMapManager.Instance.CreateTileListIncludeNullByAreaList(mAroundTileList, Coordi, TileArea.smallcross);
@@ -201,6 +205,7 @@ public class NormalTile : Tile
         {
             foreach(var tile in mAroundTileList)
             {
+                // 블럭컨테이너의 Color값이 전달되어야한다.
                 tile.HitTile_Splash();
             }
         }
@@ -211,6 +216,7 @@ public class NormalTile : Tile
         if (IsHit == true)       { return; }
         if (IsSplashHit == true) { return; }
         IsSplashHit = true;
+
         if (BlockContainerOrNull == null) { return; }
         BlockContainerOrNull.SplashHitBlockContainer(this);
     }
@@ -305,4 +311,16 @@ public class NormalTile : Tile
         BlockContainerOrNull.StartMovePositionByRoute(this);
     }
 
+    
+    // 타일 기믹
+    public override void AddTileGimmick(TileGimmick gimmick)
+    {
+        //for(int idx =0; idx < mTileGimmickList.Count; ++idx)
+        //{
+        //    // 같은 타입인 경우 처리
+        //}
+
+        mTileGimmickList.Add(gimmick);
+        mTileGimmickList.Sort((TileGimmick a, TileGimmick b) => a.Order.CompareTo(b.Order));
+    }
 }

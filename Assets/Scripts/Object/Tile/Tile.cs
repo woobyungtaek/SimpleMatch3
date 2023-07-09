@@ -303,4 +303,9 @@ public class Tile : MonoBehaviour, System.IDisposable
 
     public virtual void StartDrop() { }
 
+
+    public virtual void AddTileGimmick(TileGimmick gimmick)
+    {
+        // 반드시 오버라이드 해서 사용하세요.
+    }
 }
