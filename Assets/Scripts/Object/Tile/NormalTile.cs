@@ -201,19 +201,25 @@ public class NormalTile : Tile
         if (BlockContainerOrNull == null) { return; }
         IsHit = true;
 
-        if(!bExplosionHit)
+        if (!bExplosionHit)
         {
-            foreach(var tile in mAroundTileList)
+            foreach (var tile in mAroundTileList)
             {
                 // 블럭컨테이너의 Color값이 전달되어야한다.
                 tile.HitTile_Splash();
             }
         }
         BlockContainerOrNull.HitBlockContainer(this, bExplosionHit);
+
+        int loopCount = mTileGimmickList.Count - 1;
+        for (int index = loopCount; index >= 0; index--)
+        {
+            mTileGimmickList[index].Hit(this);
+        }
     }
     public override void HitTile_Splash()
     {
-        if (IsHit == true)       { return; }
+        if (IsHit == true) { return; }
         if (IsSplashHit == true) { return; }
         IsSplashHit = true;
 
@@ -311,16 +317,29 @@ public class NormalTile : Tile
         BlockContainerOrNull.StartMovePositionByRoute(this);
     }
 
-    
+
     // 타일 기믹
+    public override TileGimmick IsContainTileGimmick(System.Type type)
+    {
+        foreach (var tg in mTileGimmickList)
+        {
+            if (tg.GetType() == type)
+            {
+                return tg;
+            }
+        }
+        return null;
+    }
     public override void AddTileGimmick(TileGimmick gimmick)
     {
-        //for(int idx =0; idx < mTileGimmickList.Count; ++idx)
-        //{
-        //    // 같은 타입인 경우 처리
-        //}
+        gimmick.gameObject.transform.position = transform.position;
 
         mTileGimmickList.Add(gimmick);
         mTileGimmickList.Sort((TileGimmick a, TileGimmick b) => a.Order.CompareTo(b.Order));
+    }
+    public override void RemoveTileGimmick(TileGimmick gimmick)
+    {
+        mTileGimmickList.Remove(gimmick);
+        GameObjectPool.ReturnObject(gimmick.gameObject);
     }
 }

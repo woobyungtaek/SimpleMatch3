@@ -146,6 +146,16 @@ public class PuzzleInputManager : MonoBehaviour
 
         GetMousePositionNormalTile(out mInputTile);
         if (mInputTile == null) { return; }
+
+#if UNITY_EDITOR
+        // 기믹은 블럭컨테이너와 상관 없이 추가
+        if (Input.GetKey(KeyCode.Alpha5) == true)
+        {
+            if(mInputTile)
+            TileGimmickManager.Instance.CreateTileGimmickInTile(mInputTile, typeof(TG_Ice), 1);
+        }
+#endif
+
         if (mInputTile.BlockContainerOrNull == null) { return; }
         if (mInputTile.BlockContainerOrNull.IsFixed) { return; }
 #if UNITY_EDITOR
@@ -185,6 +195,8 @@ public class PuzzleInputManager : MonoBehaviour
             mInputTile = null;
             return;
         }
+
+
         if (Input.GetKey(KeyCode.Alpha9) == true)
         {
             mInputTile.RemoveBlockContainer();

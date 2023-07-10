@@ -2345,6 +2345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6637e58e48470a74887891073f91891f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameTransform: {fileID: 1763971421}
+  mTG_IcePrefab: {fileID: 7659449977907670808, guid: 859eb64b155fe0541b459cbfdf0cb395,
+    type: 3}
 --- !u!1 &974318460
 GameObject:
   m_ObjectHideFlags: 0

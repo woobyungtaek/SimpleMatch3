@@ -67,7 +67,7 @@ public class Block : MonoBehaviour, System.IDisposable
     protected void RemoveBlockToBlockContianer(BlockContainer blockContainer)
     {
         blockContainer.RemoveBlockByBlock(this);
-        GameObjectPool.ReturnObject(gameObject);
+        //GameObjectPool.ReturnObject(gameObject);
     }
     protected virtual string GetSpriteNameByBlockNumber()
     {

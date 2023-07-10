@@ -308,4 +308,12 @@ public class Tile : MonoBehaviour, System.IDisposable
     {
         // 반드시 오버라이드 해서 사용하세요.
     }
+    public virtual void RemoveTileGimmick(TileGimmick gimmick)
+    {
+        // 반드시 오버라이드 해서 사용하세요.
+    }
+    public virtual TileGimmick IsContainTileGimmick(System.Type type)
+    {
+        return null;
+    }
 }
