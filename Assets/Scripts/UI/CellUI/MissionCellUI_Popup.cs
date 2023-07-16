@@ -14,7 +14,7 @@ public class MissionCellUI_Popup : MonoBehaviour
     public void InitCellUI(MissionInfo missionInfo)
     {
         mMissionInfo = missionInfo;
-        mMissionImage.sprite = SpriteManager.Instance.GetBlockSpriteByBlockName(mMissionInfo.MissionSpriteName);
+        mMissionImage.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(mMissionInfo.MissionSpriteName);
         mMissionImage.SetNativeSize();
         mMissionCountText.text = $"X {mMissionInfo.MissionCount}";
     }

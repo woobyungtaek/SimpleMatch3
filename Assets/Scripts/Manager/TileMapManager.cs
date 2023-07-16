@@ -1145,6 +1145,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         for (int index = 0; index < loopCount; index++)
         {
             if (mNormalTileList[index].IsHit) { continue; }
+            
+            // 타일 기믹도 추가 대상이어야 한다.            
             if (mNormalTileList[index].BlockContainerOrNull == null) { continue; }
 
             instList = null;

@@ -8,7 +8,7 @@ public class SpriteManager : SceneSingleton<SpriteManager>
     [SerializeField] private SpriteAtlas GameAtlas;
     [SerializeField] private SpriteAtlas UIAtlas;
 
-    public Sprite GetBlockSpriteByBlockName(string blockName)
+    public Sprite GetPuzzleSpriteByName(string blockName)
     {
         return GameAtlas.GetSprite(blockName);
     }

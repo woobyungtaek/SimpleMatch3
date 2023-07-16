@@ -67,9 +67,9 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
+    - {fileID: 102900000, guid: 2858e6262ebb03f439694d09d1207022, type: 3}
     - {fileID: 2800000, guid: 7cd12a7673fe36d46a4b5c681e4e3b67, type: 3}
     - {fileID: 2800000, guid: 357317c9bb70eff43bc693f7574e3469, type: 3}
-    - {fileID: 102900000, guid: 2858e6262ebb03f439694d09d1207022, type: 3}
     - {fileID: 2800000, guid: ce9e5b820bc579643bada5c30e6c6b28, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
@@ -81,6 +81,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 31d11690d140b4945aba9608377abb24, type: 3}
   - {fileID: 21300000, guid: 74a0dab089ecb1f478cbdf9a1e3bfe58, type: 3}
   - {fileID: 21300000, guid: e099b5421af2f0c4c95512e9ebdbb4e7, type: 3}
+  - {fileID: 21300000, guid: b7e5458273bf1f04287e5e43d67d0503, type: 3}
   - {fileID: 21300000, guid: ce9e5b820bc579643bada5c30e6c6b28, type: 3}
   - {fileID: 21300000, guid: 3ad1ec03355da6144a3e458566515588, type: 3}
   - {fileID: 21300000, guid: b0e06e03d43299a439ec73c7ba73a637, type: 3}
@@ -122,6 +123,7 @@ SpriteAtlas:
   - HomingExplosionBlock_2
   - AroundBombBlock_1
   - VerticalBombBlock_3
+  - TG_Ice
   - AroundBombEffect
   - NormalBlock_2
   - Wall

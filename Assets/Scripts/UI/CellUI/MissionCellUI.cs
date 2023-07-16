@@ -35,7 +35,7 @@ public class MissionCellUI : MonoBehaviour, System.IDisposable
         mMissionInfo = missionInfo;
 
         mFakeCount = mMissionInfo.MissionCount;
-        mMissionImage.sprite = SpriteManager.Instance.GetBlockSpriteByBlockName(mMissionInfo.MissionSpriteName);
+        mMissionImage.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(mMissionInfo.MissionSpriteName);
         mMissionImage.SetNativeSize();
         mMissionCountText.text = string.Format("{0}", mFakeCount);
     }

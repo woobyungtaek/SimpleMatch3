@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class VineBlock : Block
 {
+    public static string spriteString = "NormalBlock_1";
+    public override string SpriteString { get => spriteString; }
+
+
     public static readonly WaitForSeconds mVineDelayTime = new WaitForSeconds(0.25f);
     public static bool IsVineHited;
     public static int VineBlockCount;
 
-    public static string spriteString = "NormalBlock_1";
-    public override string SpriteString { get => spriteString; }
 
     public override void SetBlockData(int blockNumber, int blockHP)
     {

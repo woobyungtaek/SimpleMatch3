@@ -201,6 +201,17 @@ public class NormalTile : Tile
         if (BlockContainerOrNull == null) { return; }
         IsHit = true;
 
+        // 기믹 : block은 hit 안하는 기믹이 있을 수 있다.
+        // 순서가 낮은 기믹은 Hit 안하는 기믹이 있을 수 있다.
+        int loopCount = mTileGimmickList.Count - 1;
+        for (int index = loopCount; index >= 0; index--)
+        {
+            mTileGimmickList[index].Hit(this);
+        }
+
+        // 기믹중 막는 기믹이 있다면 여기서 리턴
+
+        // 블록
         if (!bExplosionHit)
         {
             foreach (var tile in mAroundTileList)
@@ -211,11 +222,6 @@ public class NormalTile : Tile
         }
         BlockContainerOrNull.HitBlockContainer(this, bExplosionHit);
 
-        int loopCount = mTileGimmickList.Count - 1;
-        for (int index = loopCount; index >= 0; index--)
-        {
-            mTileGimmickList[index].Hit(this);
-        }
     }
     public override void HitTile_Splash()
     {

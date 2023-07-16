@@ -32,6 +32,8 @@ public class PuzzleInputManager : MonoBehaviour
         }
     }
 
+    public static System.Func<NormalTile, bool> PlayEditorFunc = null;
+
     [SerializeField] private bool mbOnDrag = false;
 
     private const float SWAP_SEC = 0.25f;
@@ -53,14 +55,18 @@ public class PuzzleInputManager : MonoBehaviour
     private static GameObject mSelectBlockEffect;
 
     private delegate void PlayerInput();
-    PlayerInput TouchInput;
-    PlayerInput DragInput;
+    private PlayerInput TouchInput;
+    private PlayerInput DragInput;
 
     private System.Action mCurrentInputFunc = null;
     private System.Action mPreviouseInputFunc = null;
 
     private PlayerSkill mCurrentSelectSkill;
 
+    public static System.Type GetType(string name)
+    {
+        return System.Type.GetType(name);
+    }
 
     private void Start()
     {
@@ -148,85 +154,15 @@ public class PuzzleInputManager : MonoBehaviour
         if (mInputTile == null) { return; }
 
 #if UNITY_EDITOR
-        // 기믹은 블럭컨테이너와 상관 없이 추가
-        if (Input.GetKey(KeyCode.Alpha5) == true)
+        if (PlayEditorFunc != null)
         {
-            if(mInputTile)
-            TileGimmickManager.Instance.CreateTileGimmickInTile(mInputTile, typeof(TG_Ice), 1);
+            if (PlayEditorFunc.Invoke(mInputTile)) { mInputTile = null; return; }
         }
 #endif
 
         if (mInputTile.BlockContainerOrNull == null) { return; }
         if (mInputTile.BlockContainerOrNull.IsFixed) { return; }
-#if UNITY_EDITOR
-        #region Test용 블록 체인지
-        if (Input.GetKey(KeyCode.BackQuote) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(NormalBlock), 0, 1);
-            mInputTile = null;
-            return;
-        }
-        if (Input.GetKey(KeyCode.Alpha1) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(NormalBlock), 1, 1);
-            mInputTile = null;
-            return;
-        }
-        if (Input.GetKey(KeyCode.Alpha2) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(NormalBlock), 2, 1);
-            mInputTile = null;
-            return;
-        }
-        if (Input.GetKey(KeyCode.Alpha3) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(NormalBlock), 3, 1);
-            mInputTile = null;
-            return;
-        }
-        if (Input.GetKey(KeyCode.Alpha4) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(NormalBlock), 4, 1);
-            mInputTile = null;
-            return;
-        }
 
-
-        if (Input.GetKey(KeyCode.Alpha9) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(RockBlock), -1, 3);
-            mInputTile = null;
-            return;
-        }
-        if (Input.GetKey(KeyCode.Alpha8) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(BoxBlock), -1, 1);
-            mInputTile = null;
-            return;
-        }
-        if (Input.GetKey(KeyCode.Alpha7) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(BarrelBlock), -1, 1);
-            mInputTile = null;
-            return;
-        }
-        if (Input.GetKey(KeyCode.Alpha6) == true)
-        {
-            mInputTile.RemoveBlockContainer();
-            BlockManager.Instance.CreateBlockByBlockDataInTile(mInputTile, typeof(VineBlock), -1, 1);
-            mInputTile = null;
-            return;
-        }
-        #endregion
-#endif
         if (SelectTileOrNull == null)
         {
             mbOnDrag = true;

@@ -84,7 +84,7 @@ public class MissionData : Pool<MissionData>
         CreateMissionInfoListByDataPreset(presetData);
     }
 
-    private void ClearMissionInfoList()
+    public void ClearMissionInfoList()
     {
         int loopCount = MissionInfoList.Count;
         for (int index = 0; index < loopCount; index++)
@@ -132,7 +132,20 @@ public class MissionData : Pool<MissionData>
 
             MissionInfoList.Add(info);
         }
-    }    
+    }
+
+
+    public void AddMissionInfoForce(int index, MissionInfo missionInfo)
+    {
+        if(MissionInfoList.Count <= index)
+        {
+            MissionInfoList.Add(missionInfo);
+            return;
+        }
+
+        MissionInfo.Destroy(MissionInfoList[index]);
+        MissionInfoList[index] = missionInfo;
+    }
 }
 
 public class MissionInfo : Pool<MissionInfo>
@@ -164,6 +177,9 @@ public class MissionInfo : Pool<MissionInfo>
         mMissionType = missionType;
         mMissionColor = color;
         mMissionCount = count;
+
+        // SpriteName을 가져오는 부분 부터 너무 분산되어있다.
+        // IMissionTarget을 만들고 타겟이 될 수 있는 Class에 붙여서 강제로 입력가능하게 하자
 
         mSpriteName = (string)missionType.GetField(SpriteFieldName).GetValue(null);
         mSpriteName = string.Format(mSpriteName, mMissionColor);

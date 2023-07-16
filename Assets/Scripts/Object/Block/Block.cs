@@ -38,7 +38,7 @@ public class Block : MonoBehaviour, System.IDisposable
         mBlockNumber = blockNumber;
         mBlockHP = blockHP;
         ExcuteCalculateHomiingOrder(null);
-        mBlockSprite.sprite = SpriteManager.Instance.GetBlockSpriteByBlockName(GetSpriteNameByBlockNumber());
+        mBlockSprite.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(GetSpriteNameByBlockNumber());
     }
     public virtual void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion) { }
     public virtual void SplashHitBlock(Tile tile, BlockContainer blockContainer) { }
