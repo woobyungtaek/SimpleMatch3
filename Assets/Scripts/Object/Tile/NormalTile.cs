@@ -8,6 +8,24 @@ public class NormalTile : Tile
 
     private List<TileGimmick> mTileGimmickList = new List<TileGimmick>();
 
+    public int HomingOrder
+    {
+        get
+        {
+            int result = 0;
+            if(BlockContainerOrNull != null)
+            {
+                result = BlockContainerOrNull.HomingOrder;
+            }
+
+            for(int index =0; index < mTileGimmickList.Count; ++index)
+            {
+                if(result >= mTileGimmickList[index].HomingOrder) { continue; }
+                result = mTileGimmickList[index].HomingOrder;
+            }
+            return result;
+        }
+    }
 
     public override bool IsCanFlow_Up
     {

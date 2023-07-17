@@ -1144,17 +1144,16 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         loopCount = mNormalTileList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (mNormalTileList[index].IsHit) { continue; }
-            
-            // 타일 기믹도 추가 대상이어야 한다.            
+            if (mNormalTileList[index].IsHit) { continue; }                       
             if (mNormalTileList[index].BlockContainerOrNull == null) { continue; }
 
+            // 타일 기믹도 추가 대상이어야 한다. 
+            int currentHommingOrder = mNormalTileList[index].HomingOrder;
             instList = null;
-
             secLoopCount = mHomingOrderList.Count;
             for (int orderIndex = 0; orderIndex < secLoopCount; orderIndex++)
             {
-                if (mHomingOrderList[orderIndex].HomingOrder == mNormalTileList[index].BlockContainerOrNull.HomingOrder)
+                if (mHomingOrderList[orderIndex].HomingOrder == currentHommingOrder)
                 {
                     instList = mHomingOrderList[orderIndex];
                 }
@@ -1165,7 +1164,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                 instList = ReuseHomingOrderTileList.Instantiate(); ;
                 mHomingOrderList.Add(instList);
             }
-            instList.HomingOrder = mNormalTileList[index].BlockContainerOrNull.HomingOrder;
+
+            instList.HomingOrder = currentHommingOrder;
             instList.tileList.Add(mNormalTileList[index]);
         }
         mHomingOrderList.Sort(SortHomingOrder);

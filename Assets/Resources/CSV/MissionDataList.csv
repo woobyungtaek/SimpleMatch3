@@ -32,3 +32,4 @@ Index,Area,Level,IsTemplate,Name,Block_Name,Block_Color,Block_Count,Block_Name,B
 30,All,Hard,TRUE,,VerticalBombBlock,0,1,AroundBombBlock,-1,2,VerticalBombBlock,2,1,,,,,,
 31,All,Hard,TRUE,,HorizontalBombBlock,0,1,AroundBombBlock,-1,2,HorizontalBombBlock,2,1,,,,,,
 32,All,Hard,TRUE,,HomingBombBlock,0,1,AroundBombBlock,-1,2,HomingBombBlock,2,1,,,,,,
+33,All,VeryEasy,FALSE,,TG_Ice,-1,3,,,,,,,,,,,,
