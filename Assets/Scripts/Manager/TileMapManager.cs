@@ -190,7 +190,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             return;
         }
 
-        if(mMapGimmickInfo == null)
+        if (mMapGimmickInfo == null)
         {
             mMapGimmickInfo = new MapGimmickInfo();
         }
@@ -686,7 +686,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
 
         #region 맵 기믹 실행
-        if(mMapGimmickInfo.IsExcutePossible)
+        if (mMapGimmickInfo.IsExcutePossible)
         {
             mMapGimmickInfo.ENextGameState = EGameState.None;
             mMapGimmickInfo.ExcuteMapGimmick();
@@ -1086,12 +1086,12 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
         // 중복없는 타일 선정
         ReuseTileList reuseTileList = ReuseTileList.Instantiate();
-        for(int cnt = 0; cnt < mNormalTileList.Count; ++cnt)
+        for (int cnt = 0; cnt < mNormalTileList.Count; ++cnt)
         {
             reuseTileList.tileList.Add(mNormalTileList[cnt]);
         }
-   
-        for(int cnt = 0; cnt < shuffleCount; ++cnt)
+
+        for (int cnt = 0; cnt < shuffleCount; ++cnt)
         {
             int idx_0 = Random.Range(0, mNormalTileList.Count);
             int idx_1 = Random.Range(0, mNormalTileList.Count);
@@ -1144,7 +1144,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         loopCount = mNormalTileList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (mNormalTileList[index].IsHit) { continue; }                       
+            if (mNormalTileList[index].IsHit) { continue; }
             if (mNormalTileList[index].BlockContainerOrNull == null) { continue; }
 
             // 타일 기믹도 추가 대상이어야 한다. 
@@ -1640,6 +1640,45 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     private int SortHomingOrder(ReuseHomingOrderTileList aList, ReuseHomingOrderTileList bList)
     {
         return bList.HomingOrder.CompareTo(aList.HomingOrder);
+    }
+
+    public void CreateMissionTargetOnTile(System.Type createType, int count, int color,int hp)
+    {
+        List<NormalTile> instList = new List<NormalTile>();
+        bool bTileGimmick = createType.IsSubclassOf(typeof(TileGimmick));
+        foreach (NormalTile tile in mNormalTileList)
+        {
+            if (bTileGimmick)
+            {
+                if (tile.IsContainTileGimmick(createType)) { continue; }
+            }
+            instList.Add(tile);
+        }
+
+        ShuffleList<NormalTile>(instList, Random.Range(instList.Count, instList.Count + 100));
+
+        for(int index = 0; index < count; ++index)
+        {
+            if(bTileGimmick)
+            {
+                TileGimmickManager.Instance.CreateTileGimmickInTile(instList[index], createType, color, hp);
+                continue;
+            }
+            BlockManager.Instance.CreateBlockByBlockDataInTile(instList[index], createType, color, hp);
+        }
+    }
+
+
+    public void ShuffleList<T>(List<T> targetList, int shuffleCount)
+    {
+        for(int i =0; i < shuffleCount; ++i)
+        {
+            int rndNum1 = Random.Range(0, targetList.Count);
+            int rndNum2 = Random.Range(0, targetList.Count);
+            T temp = targetList[rndNum1];
+            targetList[rndNum1] = targetList[rndNum2];
+            targetList[rndNum2] = temp;
+        }
     }
 
     /*기타*/

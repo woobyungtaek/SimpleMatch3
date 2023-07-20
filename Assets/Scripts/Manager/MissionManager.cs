@@ -475,7 +475,6 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
     }
 
-
     public void RefreshMissionCellUI()
     {
         if (mCurrentMissionData == null) { return; }
@@ -491,6 +490,18 @@ public class MissionManager : SceneSingleton<MissionManager>
 
             mMissionCellUIList[index].InitCellUI(mCurrentMissionData.MissionInfoList[index]);
             mMissionCellUIList[index].gameObject.SetActive(true);
+
+            // 미션 타겟을 강제로 생성해야하는 경우 추가
+            // Type을 TileGimmick, Block으로 변경 후 CreateForece 실행? 난이도를 전달 해줘야함
+            var createType  = mCurrentMissionData.MissionInfoList[index].MissionType;
+            int createCount = mCurrentMissionData.MissionInfoList[index].MissionCount;
+            int createColor = mCurrentMissionData.MissionInfoList[index].MissionColor;
+            if (createType.GetInterface("IForceCreateOnBoard") != null)
+            {
+                Debug.Log("강제생성");
+                TileMapManager.Instance.CreateMissionTargetOnTile(createType, createCount, createColor, 1);
+            }
+
         }
         ObserverCenter.Instance.SendNotification(Message.RefreshMission);
     }
@@ -606,3 +617,5 @@ public class BlockCollectNotiArgs : NotificationArgs
     public System.Type MissionType;
     public int MissionColor;
 }
+
+public interface IForceCreateOnBoard {}

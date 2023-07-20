@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VineBlock : Block
+public class VineBlock : Block, IForceCreateOnBoard
 {
     public static string spriteString = "NormalBlock_1";
     public override string SpriteString { get => spriteString; }
