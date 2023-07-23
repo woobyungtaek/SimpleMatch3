@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VerticalBombBlock : BombBlock
+public class VerticalBombBlock : BombBlock, IReserveBlockMaker
 {
     public static string spriteString = "VerticalBombBlock_{0}";
     public override string SpriteString { get => spriteString; }

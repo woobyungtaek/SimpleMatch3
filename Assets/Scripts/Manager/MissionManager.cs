@@ -265,44 +265,44 @@ public class MissionManager : SceneSingleton<MissionManager>
 
         // AD 리워드 추가 / Select 마지막에 넣는다.
         if (!AdsManager.IsExist) { return; }
-        if(AdsManager.Instance.IsRewardAdReady && mAdRewardList.Count > 0)
+        if (AdsManager.Instance.IsRewardAdReady && mAdRewardList.Count > 0)
         {
             int rndAdRewardIdx = Random.Range(0, mAdRewardList.Count);
             mSelectRewardList_Grade.Add(mAdRewardList[rndAdRewardIdx]);
         }
     }
 
-/*
-    게임 리셋 관련 > 안쓸 가능성이 크다.
-    public void ResetGameInfoByDay()
-    {
-        mStageCount = 0;
-        //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
-    }
-    public void ResetGameInfoByGameOver()
-    {
-        mPartCount = 0;
-        mStageCount = 0;
-        //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
-        ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
-        MapDataInfoNotiArg data = new MapDataInfoNotiArg();
-        if (PlayDataManager.IsExist)
+    /*
+        게임 리셋 관련 > 안쓸 가능성이 크다.
+        public void ResetGameInfoByDay()
         {
-            data.ConceptName = PlayDataManager.Instance.ConceptName;
+            mStageCount = 0;
+            //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
+            ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
+            ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
+            ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
         }
-        data.MapName = string.Format(MAP_DATA_FILE_FORMAT, mPartCount);
-        if (data.ConceptName == "Tutorial")
+        public void ResetGameInfoByGameOver()
         {
-            data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mPartCount);
+            mPartCount = 0;
+            mStageCount = 0;
+            //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), 1);
+            ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), 1);
+            ItemManager.Instance.AddSkillCount(typeof(BlockSwapSkill), 1);
+            ItemManager.Instance.AddSkillCount(typeof(ColorChangeSkill), 1);
+            MapDataInfoNotiArg data = new MapDataInfoNotiArg();
+            if (PlayDataManager.IsExist)
+            {
+                data.ConceptName = PlayDataManager.Instance.ConceptName;
+            }
+            data.MapName = string.Format(MAP_DATA_FILE_FORMAT, mPartCount);
+            if (data.ConceptName == "Tutorial")
+            {
+                data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mPartCount);
+            }
+            ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
         }
-        ObserverCenter.Instance.SendNotification(Message.ChangeMapInfo, data);
-    }
- */
+     */
 
     public void SetMoveAndItemCount(MapData mapdata)
     {
@@ -493,13 +493,44 @@ public class MissionManager : SceneSingleton<MissionManager>
 
             // 미션 타겟을 강제로 생성해야하는 경우 추가
             // Type을 TileGimmick, Block으로 변경 후 CreateForece 실행? 난이도를 전달 해줘야함
-            var createType  = mCurrentMissionData.MissionInfoList[index].MissionType;
+            var createType = mCurrentMissionData.MissionInfoList[index].MissionType;
             int createCount = mCurrentMissionData.MissionInfoList[index].MissionCount;
             int createColor = mCurrentMissionData.MissionInfoList[index].MissionColor;
             if (createType.GetInterface("IForceCreateOnBoard") != null)
             {
-                Debug.Log("강제생성");
-                TileMapManager.Instance.CreateMissionTargetOnTile(createType, createCount, createColor, 1);
+                Debug.Log("강제 생성");
+
+                int alreadyCount = TileMapManager.Instance.GetAlreadyContainCount_TileGimmick(createType);
+                int gapCount = createCount - alreadyCount;
+                if (gapCount <= 0) { continue; }
+
+                Debug.Log($"생성 개수 (타일기믹) : {gapCount}");
+
+                TileMapManager.Instance.CreateMissionTargetOnTile(createType, gapCount, createColor, 1);
+            }
+            else if (createType.GetInterface("IReserveBlockMaker") != null)
+            {
+
+                Debug.Log("생성 예약");
+                int alreadyCount = TileMapManager.Instance.GetAlreadyContainCount_Block(createType, createColor);
+                int gapCount = createCount - alreadyCount;
+                if (gapCount <= 0) { continue; }
+
+                Debug.Log($"생성 개수 (블럭) : {gapCount}");
+
+                BlockData reserveData = new BlockData();
+                reserveData.BlockType = createType;
+                if (createColor < 0)
+                {
+                    createColor = Random.Range(0, BlockMaker.MaxColor);
+                }
+                reserveData.BlockColor = createColor;
+                reserveData.BlockHP = 1;
+                BlockMaker.SetRandomDelayCreateCount();
+                for (int cnt = 0; cnt < gapCount; ++cnt)
+                {
+                    BlockMaker.AddReserveBlockData(reserveData);
+                }
             }
 
         }
@@ -598,7 +629,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     // 강제로 추가
     public void SetMissionTargetByForce(string type, int slot, int color, int amount)
     {
-        if(mCurrentMissionData == null)
+        if (mCurrentMissionData == null)
         {
             mCurrentMissionData = MissionData.Instantiate();
             mCurrentMissionData.ClearMissionInfoList();
@@ -618,4 +649,5 @@ public class BlockCollectNotiArgs : NotificationArgs
     public int MissionColor;
 }
 
-public interface IForceCreateOnBoard {}
+public interface IForceCreateOnBoard { }
+public interface IReserveBlockMaker { }

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxBlock : Block
+public class BoxBlock : Block, IForceCreateOnBoard
 {
     public static string spriteString = "NormalBlock_1";
     public override string SpriteString { get => spriteString; }
 
     public override void SetBlockData(int blockNumber, int blockHP)
     {
-        mBlockNumber = blockNumber;
+        mBlockNumber = -1;// blockNumber;
         mBlockHP = blockHP;
         ExcuteCalculateHomiingOrder(null);
     }

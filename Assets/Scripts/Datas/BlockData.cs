@@ -8,7 +8,6 @@ public struct BlockData : System.IDisposable
     public string   BlockName;
     public int      BlockColor;
     public int      BlockHP;
-    public int      BlockCount;
 
     public System.Type BlockType
     {
@@ -16,6 +15,10 @@ public struct BlockData : System.IDisposable
         {
             if(mBlockType == null) { mBlockType = System.Type.GetType(BlockName); }
             return mBlockType;
+        }
+        set
+        {
+            mBlockType = value;
         }
     }
     private System.Type mBlockType;

@@ -17,7 +17,7 @@ public class VineBlock : Block, IForceCreateOnBoard
     {
         VineBlockCount++;
 
-        mBlockNumber = blockNumber;
+        mBlockNumber = -1; // blockNumber;
         mBlockHP = blockHP;
         ExcuteCalculateHomiingOrder(null);
     }

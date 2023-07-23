@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HomingBombBlock : BombBlock
+public class HomingBombBlock : BombBlock, IReserveBlockMaker
 {
     public static string spriteString = "HomingExplosionBlock_{0}";
     public override string SpriteString { get => spriteString; }

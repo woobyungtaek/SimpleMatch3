@@ -33,6 +33,14 @@ public class Block : MonoBehaviour, System.IDisposable
         ObserverCenter.Instance.AddObserver(ExcuteCalculateHomiingOrder, Message.RefreshMission, null);
     }
 
+    public bool IsSameBlock(System.Type type, int blockColor)
+    {
+        if (!GetType().Equals(type)) { return false; }
+        if (blockColor < 0) { return true; }
+        if (mBlockNumber == blockColor) { return true; }
+        return false;
+    }
+
     public virtual void SetBlockData(int blockNumber, int blockHP)
     {
         mBlockNumber = blockNumber;
@@ -45,13 +53,13 @@ public class Block : MonoBehaviour, System.IDisposable
     public void CheckMissionBlock()
     {
         bool bResult = MissionManager.Instance.CheckMissionTargetByInfo(transform.position, GetType(), BlockNumber, BlockSprite);
-        if(!bResult)
+        if (!bResult)
         {
             // 미션 블럭이 아니면 게이지로 전환 되어야 한다.
             ObserverCenter.Instance.SendNotification(Message.MainSkillIncrease);
         }
     }
-    
+
     protected void ExcuteCalculateHomiingOrder(Notification noti)
     {
         mExtraOrder = 0;

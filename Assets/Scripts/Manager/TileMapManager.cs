@@ -1642,7 +1642,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         return bList.HomingOrder.CompareTo(aList.HomingOrder);
     }
 
-    public void CreateMissionTargetOnTile(System.Type createType, int count, int color,int hp)
+    public void CreateMissionTargetOnTile(System.Type createType, int count, int color, int hp)
     {
         List<NormalTile> instList = new List<NormalTile>();
         bool bTileGimmick = createType.IsSubclassOf(typeof(TileGimmick));
@@ -1657,9 +1657,9 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
         ShuffleList<NormalTile>(instList, Random.Range(instList.Count, instList.Count + 100));
 
-        for(int index = 0; index < count; ++index)
+        for (int index = 0; index < count; ++index)
         {
-            if(bTileGimmick)
+            if (bTileGimmick)
             {
                 TileGimmickManager.Instance.CreateTileGimmickInTile(instList[index], createType, color, hp);
                 continue;
@@ -1668,10 +1668,32 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
     }
 
+    public int GetAlreadyContainCount_TileGimmick(System.Type type)
+    {
+        int count = 0;
+        foreach (NormalTile tile in mNormalTileList)
+        {
+            if (!tile.IsContainTileGimmick(type)) { continue; }
+            count++;
+        }
+        return count;
+    }
+    public int GetAlreadyContainCount_Block(System.Type type, int blockColor)
+    {
+        int count = 0;
+        foreach (NormalTile tile in mNormalTileList)
+        {
+            if (tile.BlockContainerOrNull == null) { continue; }
+            if (tile.BlockContainerOrNull.GetContainSameBlock(type, blockColor) == null) { continue; }
+            count++;
+        }
+        return count;
+    }
+
 
     public void ShuffleList<T>(List<T> targetList, int shuffleCount)
     {
-        for(int i =0; i < shuffleCount; ++i)
+        for (int i = 0; i < shuffleCount; ++i)
         {
             int rndNum1 = Random.Range(0, targetList.Count);
             int rndNum2 = Random.Range(0, targetList.Count);

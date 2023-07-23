@@ -180,12 +180,15 @@ public class Tile : MonoBehaviour, System.IDisposable
 
     public void CreateBlockByCreateTileData()
     {
-        //블록 생성기
+        BlockData blockData = new BlockData();
+
+        // 블록 생성기
         if (BlockMakerOrNull != null)
         {
+            // 순서대로 생성이 먼저
             if (!BlockMakerOrNull.IsEnd)
             {
-                BlockData blockData = BlockMakerOrNull.CreateBlockList[BlockMakerOrNull.CurrentIndex];
+                blockData = BlockMakerOrNull.CreateBlockList[BlockMakerOrNull.CurrentIndex];
                 BlockManager.Instance.CreateBlockByBlockDataInTile(this, blockData.BlockType, blockData.BlockColor, blockData.BlockHP, TileMapManager.Instance.TileParentTransform);
                 BlockMakerOrNull.CurrentIndex += 1;
                 if (BlockMakerOrNull.IsEnd)
@@ -195,7 +198,17 @@ public class Tile : MonoBehaviour, System.IDisposable
                 return;
             }
         }
-        BlockManager.Instance.CreateBlockByBlockDataInTile(this, typeof(NormalBlock), Random.Range(0, 5), 1, TileMapManager.Instance.TileParentTransform);
+
+        // 예약된 블록 확인
+        if (BlockMaker.GetReserveBlockData(ref blockData))
+        {
+            // 예약 데이터가 있다면 예약 데이터를 우선 생성한다.
+            // 블록 타입, 색상, hp 필요함
+            BlockManager.Instance.CreateBlockByBlockDataInTile(this, blockData.BlockType, blockData.BlockColor, blockData.BlockHP, TileMapManager.Instance.TileParentTransform);
+            return;
+        }
+
+        BlockManager.Instance.CreateBlockByBlockDataInTile(this, typeof(NormalBlock), Random.Range(0, BlockMaker.MaxColor), 1, TileMapManager.Instance.TileParentTransform);
     }
     public void ResetTileState()
     {

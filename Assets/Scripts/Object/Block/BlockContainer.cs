@@ -137,6 +137,18 @@ public class BlockContainer : MonoBehaviour, IReserveData
     }
 
     // 블록 관리
+    public Block GetContainSameBlock(System.Type type, int blockColor)
+    {
+        foreach(var block in mBlockList)
+        {
+            if(block.IsSameBlock(type, blockColor))
+            {
+                return block;
+            }
+        }
+        return null;
+    }
+
     public void HitBlockContainer(Tile tile, bool bExplosionHit)
     {
         int loopCount = mBlockList.Count - 1;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AroundBombBlock : BombBlock
+public class AroundBombBlock : BombBlock, IReserveBlockMaker
 {
     public static string spriteString = "AroundBombBlock_{0}";
     public override string SpriteString { get => spriteString; }

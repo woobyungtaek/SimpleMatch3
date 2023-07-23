@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorBombBlock : BombBlock
+public class ColorBombBlock : BombBlock, IReserveBlockMaker
 {
     public static string spriteString = "ColorExplosionBlock";
     public override string SpriteString { get => spriteString; }
