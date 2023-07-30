@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AroundBombBlock : BombBlock, IReserveBlockMaker
+public class AroundBombBlock : BombBlock
 {
     public static string spriteString = "AroundBombBlock_{0}";
     public override string SpriteString { get => spriteString; }
@@ -21,11 +21,7 @@ public class AroundBombBlock : BombBlock, IReserveBlockMaker
         instEffect.PlayEffect();
         yield return instEffect.YieldEffectDuration;
         base.ExplosionBombBlock();
-        int loopCount = explosionTileAreaList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(true, 3);
     }
     protected override string GetSpriteNameByBlockNumber()
     {

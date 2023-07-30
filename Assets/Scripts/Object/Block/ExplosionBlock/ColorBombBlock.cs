@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorBombBlock : BombBlock, IReserveBlockMaker
+public class ColorBombBlock : BombBlock
 {
     public static string spriteString = "ColorExplosionBlock";
     public override string SpriteString { get => spriteString; }
@@ -42,10 +42,7 @@ public class ColorBombBlock : BombBlock, IReserveBlockMaker
         yield return instEffect.YieldEffectDuration;
         base.ExplosionBombBlock();
 
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(true);
     }
     protected override string GetSpriteNameByBlockNumber()
     {

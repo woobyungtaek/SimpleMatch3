@@ -36,10 +36,17 @@ public class BlockManager : SceneSingleton<BlockManager>
     [SerializeField] private TripleHomingBombBlock tripleChangeBombBlockPrefab;
     [SerializeField] private AllClearBombBlock allClearBombBlockPrefab;
 
+
     private Dictionary<Type, GameObject> mBlockPrefabDict = new Dictionary<Type, GameObject>();
 
     private BlockContainer instBlockContainer;
     [SerializeField] private List<BlockContainer> mAllBlockContainer = new List<BlockContainer>();
+
+
+    [Header("Block Animation Curve")]
+    [SerializeField] public AnimationCurve BlockArriveAniCurve;
+    [SerializeField] public AnimationCurve BlockMoveAniCurve;
+    [SerializeField] public AnimationCurve BlockPushAniCurve;
 
     private void Awake()
     {

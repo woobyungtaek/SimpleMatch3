@@ -29,4 +29,22 @@ public class BombBlock : Block
             TileMapManager.Instance.AddExplosionBlockQueueByBlock(this);
         }
     }
+
+    protected void BombBlockBasicHit(bool bPushEffectPlay, int pushDegree = 2)
+    {
+        int loopCount = explosionTileAreaList.Count;
+        for (int index = 0; index < loopCount; index++)
+        {
+            explosionTileAreaList[index].HitTile(true);
+        }
+
+        if (bPushEffectPlay)
+        {
+            for (int index = 0; index < loopCount; index++)
+            {
+                explosionTileAreaList[index].StartPushEffect(pushDegree);
+            }
+            TileMapManager.Instance.StartPushEffect();
+        }
+    }
 }

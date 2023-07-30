@@ -20,10 +20,6 @@ public class BigVerticalBombBlock : BombBlock
         yield return explosionEffectPrefab.YieldEffectDuration;
         base.ExplosionBombBlock();
 
-        int loopCount = explosionTileAreaList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(true, 3);
     }
 }

@@ -31,9 +31,6 @@ public class ColorChangeBombBlock : ChangeBombBlock
         }
 
         base.ExplosionBombBlock();
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(false);
     }
 }

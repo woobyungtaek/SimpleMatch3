@@ -19,10 +19,6 @@ public class BigHorizontalBombBlock : BombBlock
         yield return instEffect.YieldEffectDuration;
         base.ExplosionBombBlock();
 
-        int loopCount = explosionTileAreaList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(true, 3);
     }
 }

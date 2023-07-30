@@ -31,12 +31,8 @@ public class HomingChangeBombBlock : ChangeBombBlock
             if (explosionTileAreaList[index].BlockContainerOrNull == null) { continue; }
             Block instBlock = BlockManager.Instance.GetCreateBlockByBlockDataInTile(explosionTileAreaList[index], ChangeType, -100, 1);
         }
-        for (int index = 0; index < loopCount; index++)
-        {
-            // 한번에 치는 게 맞고
-            // 결국 폭탄 큐에 들어가면 차례대로 실행...
-            explosionTileAreaList[index].HitTile(true);
-        }
+
+        BombBlockBasicHit(false);
     }
     protected override string GetSpriteNameByBlockNumber()
     {

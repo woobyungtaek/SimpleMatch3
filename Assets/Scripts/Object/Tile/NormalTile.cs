@@ -13,14 +13,14 @@ public class NormalTile : Tile
         get
         {
             int result = 0;
-            if(BlockContainerOrNull != null)
+            if (BlockContainerOrNull != null)
             {
                 result = BlockContainerOrNull.HomingOrder;
             }
 
-            for(int index =0; index < mTileGimmickList.Count; ++index)
+            for (int index = 0; index < mTileGimmickList.Count; ++index)
             {
-                if(result >= mTileGimmickList[index].HomingOrder) { continue; }
+                if (result >= mTileGimmickList[index].HomingOrder) { continue; }
                 result = mTileGimmickList[index].HomingOrder;
             }
             return result;
@@ -162,6 +162,10 @@ public class NormalTile : Tile
         }
     }
 
+    // PushEffect
+    private int mPushEffectOrder;
+    private Vector2 mPushDir;
+    private float mPushPower;
 
     public void CreateAroundSquareList()
     {
@@ -203,6 +207,14 @@ public class NormalTile : Tile
         return null;
     }
 
+    public override void ResetTileState()
+    {
+        base.ResetTileState();
+        mPushEffectOrder = 99999;
+        mPushDir = Vector3.zero;
+        mPushPower = 0;
+    }
+
     public override void AddFlowStateDict(bool checkResult)
     {
         if (mFlowStateDict.ContainsKey(Coordi) == false)
@@ -228,8 +240,12 @@ public class NormalTile : Tile
         }
 
         // 기믹중 막는 기믹이 있다면 여기서 리턴
+        BlockContainerOrNull.StopPushEffect(this);
 
-        // 블록
+        // 밀려나는 연출용 오더값
+        mPushEffectOrder = 0;
+
+        // 블록 히트, 스플래쉬 히트
         if (!bExplosionHit)
         {
             foreach (var tile in mAroundTileList)
@@ -239,8 +255,8 @@ public class NormalTile : Tile
             }
         }
         BlockContainerOrNull.HitBlockContainer(this, bExplosionHit);
-
     }
+
     public override void HitTile_Splash()
     {
         if (IsHit == true) { return; }
@@ -250,6 +266,60 @@ public class NormalTile : Tile
         if (BlockContainerOrNull == null) { return; }
         BlockContainerOrNull.SplashHitBlockContainer(this);
     }
+
+    public override void StopPushEffect()
+    {
+        if (BlockContainerOrNull == null) { return; }
+        // 기믹중 막는 기믹이 있다면 여기서 리턴
+        BlockContainerOrNull.StopPushEffect(this);
+    }
+    public override void StartPushEffect(int pushDegree = 2)
+    {
+        foreach (var tile in mAroundTileList)
+        {
+            tile.SetPushEffect(0.75f, mPushEffectOrder + 1, pushDegree, this);
+        }
+    }
+    public override void SetPushEffect(float pushPower, int order, int pushDegree, Tile callTile)
+    {
+        if (pushDegree <= 0) { return; }
+        if (IsHit == true) { return; }
+        if (BlockContainerOrNull == null) { return; }
+        if (BlockContainerOrNull.IsFixed) { return; }
+
+        // 오더에 따른 방향 설정
+        if (mPushEffectOrder < order) { return; }
+        else if (mPushEffectOrder > order)
+        {
+            // 오더가 더 낮은게 들어오면 초기화
+            mPushDir = Coordi - callTile.Coordi;
+            mPushPower = pushPower;
+        }
+        else
+        {
+            // 오더가 같은게 들어오면 방향 더하기
+            mPushDir += Coordi - callTile.Coordi;
+            mPushPower = pushPower * 0.75f;
+        }
+
+        mPushEffectOrder = order;        
+        pushPower -= mPushPower * 0.5f;
+
+        foreach (var tile in mAroundTileList)
+        {
+            tile.SetPushEffect(pushPower, mPushEffectOrder + 1, pushDegree - 1, this);
+        }
+
+        TileMapManager.Instance.AddPushTile(this);
+    }
+    public void StartPushCoroutine()
+    {
+        if (IsHit == true) { return; }
+        if (BlockContainerOrNull == null) { return; }
+        if (BlockContainerOrNull.IsFixed) { return; }
+        BlockContainerOrNull.StartPushEffectCoroutine(mPushDir, mPushPower, this);
+    }
+
     public override void Dispose()
     {
         mAroundTileList.Clear();

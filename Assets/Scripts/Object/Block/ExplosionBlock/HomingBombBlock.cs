@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HomingBombBlock : BombBlock, IReserveBlockMaker
+public class HomingBombBlock : BombBlock
 {
     public static string spriteString = "HomingExplosionBlock_{0}";
     public override string SpriteString { get => spriteString; }
@@ -27,10 +27,7 @@ public class HomingBombBlock : BombBlock, IReserveBlockMaker
         yield return instEffect.YieldEffectDuration;
         base.ExplosionBombBlock();
 
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(true);
     }
 
     protected override string GetSpriteNameByBlockNumber()

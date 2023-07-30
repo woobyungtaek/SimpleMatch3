@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VerticalBombBlock : BombBlock, IReserveBlockMaker
+public class VerticalBombBlock : BombBlock
 {
     public static string spriteString = "VerticalBombBlock_{0}";
     public override string SpriteString { get => spriteString; }
@@ -23,11 +23,7 @@ public class VerticalBombBlock : BombBlock, IReserveBlockMaker
         yield return instEffect.YieldEffectDuration;
         base.ExplosionBombBlock();
 
-        int loopCount = explosionTileAreaList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(false);
     }
 
     protected override string GetSpriteNameByBlockNumber()

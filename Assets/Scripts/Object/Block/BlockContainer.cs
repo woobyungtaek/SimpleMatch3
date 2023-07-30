@@ -31,6 +31,12 @@ public class BlockContainer : MonoBehaviour, IReserveData
     // 드랍(무빙)
     private Vector3 mStartPos;
     private float mTime = 0f;
+    private AnimationCurve mMoveAniCurve;
+
+    // 밀려나는 연출
+    private Vector3 mPushPos;
+    private Coroutine mPushCoroutine;
+    private static AnimationCurve mPushAniCurve;
 
     // 이동시 경로
     private Queue<Tile> mRouteTileQueue = new Queue<Tile>();
@@ -67,6 +73,13 @@ public class BlockContainer : MonoBehaviour, IReserveData
         if (mMoveRouteCoroutine != null) { return; }
         speed = mRouteTileQueue.Count;
         if (speed > 2f) { speed = 2.25f; }
+
+        if (mPushCoroutine != null)
+        {
+            StopCoroutine(mPushCoroutine);
+            mPushCoroutine = null;
+        }
+
         mMoveRouteCoroutine = StartCoroutine(MoveRouteCoroutine(startTile));
     }
 
@@ -75,6 +88,8 @@ public class BlockContainer : MonoBehaviour, IReserveData
         Tile targetTile = null;
         Tile beforeTile = startTile;
 
+        float mTimeLimit = 1f;
+        mMoveAniCurve = BlockManager.Instance.BlockArriveAniCurve;
         while (mRouteTileQueue.Count != 0)
         {
             mStartPos = transform.position;
@@ -82,22 +97,28 @@ public class BlockContainer : MonoBehaviour, IReserveData
             // 목표 설정          
             targetTile = mRouteTileQueue.Dequeue();
 
+            // 바운스 상태 체크 (뿌요오옹~ 효과)
+            if (mRouteTileQueue.Count == 0)
+            {
+                mTimeLimit = 1.5f;
+                mMoveAniCurve = BlockManager.Instance.BlockArriveAniCurve;
+            }
+
             // 흐르는 상태인지 확인
             bool bFlowState = false;
             if (beforeTile != null)
             {
-               if(targetTile != beforeTile.SendTileList[0])
+                if (targetTile != beforeTile.SendTileList[0])
                 {
                     bFlowState = true;
                 }
             }
 
-            if(bFlowState)
+            if (bFlowState)
             {
                 // 위로 블록이 없어야함
                 // 아래가 Arrive여야함
-
-                while ( !targetTile.IsPossibleFlowDrop )
+                while (!targetTile.IsPossibleFlowDrop)
                 {
                     yield return null;
                 }
@@ -111,19 +132,19 @@ public class BlockContainer : MonoBehaviour, IReserveData
                 }
             }
 
-            if(beforeTile != null)
+            if (beforeTile != null)
             {
                 beforeTile.BlockContainerOrNull = null;
             }
             targetTile.BlockContainerOrNull = this;
             var targetPos = targetTile.transform.position;
-            
+
             // 이동
             mTime = 0f;
-            while (mTime < 1)
+            while (mTime < mTimeLimit)
             {
                 mTime += (Time.deltaTime / GameConfig.DROP_DURATION) * speed;
-                transform.position = Vector3.LerpUnclamped(mStartPos, targetPos, mTime);
+                transform.position = Vector3.LerpUnclamped(mStartPos, targetPos, mMoveAniCurve.Evaluate(mTime));
                 yield return null;
             }
             beforeTile = targetTile;
@@ -136,12 +157,62 @@ public class BlockContainer : MonoBehaviour, IReserveData
         ObserverCenter.Instance.SendNotification(Message.DropEndCheck);
     }
 
+    // 밀려 나기 연출
+    public void StartPushEffectCoroutine(Vector2 dir, float pushPower, Tile startTile)
+    {
+        //if (mMoveRouteCoroutine != null)
+        //{
+        //    if (mPushCoroutine != null) { StopCoroutine(mPushCoroutine); }
+        //    return; 
+        //}
+        if (mPushCoroutine != null)
+        {
+            StopCoroutine(mPushCoroutine);
+            mPushCoroutine = null;
+        }
+        
+        mStartPos = startTile.transform.position;
+        mPushPos.x = mStartPos.x + dir.x;
+        mPushPos.y = mStartPos.y - dir.y;
+
+        if(mPushAniCurve == null)
+        {
+            mPushAniCurve = BlockManager.Instance.BlockPushAniCurve;
+        }
+
+        mPushCoroutine = StartCoroutine(PushCoroutine(pushPower));
+    }
+    private IEnumerator PushCoroutine(float pushPower)
+    {
+        mTime = 0;
+        while (mTime < 1f)
+        {
+            mTime += (Time.deltaTime / GameConfig.PUSH_DURATION);
+            transform.position = Vector3.LerpUnclamped(mStartPos, mPushPos, mPushAniCurve.Evaluate(mTime) * pushPower);
+            yield return null;
+        }
+
+        // 종료 시
+        transform.position = mStartPos;
+        mPushCoroutine = null;
+    }
+
+    public void StopPushEffect(Tile tile)
+    {
+        if (mPushCoroutine != null)
+        {
+            StopCoroutine(mPushCoroutine);
+            mPushCoroutine = null;
+            transform.position = tile.transform.position;
+        }
+    }
+
     // 블록 관리
     public Block GetContainSameBlock(System.Type type, int blockColor)
     {
-        foreach(var block in mBlockList)
+        foreach (var block in mBlockList)
         {
-            if(block.IsSameBlock(type, blockColor))
+            if (block.IsSameBlock(type, blockColor))
             {
                 return block;
             }
@@ -193,6 +264,12 @@ public class BlockContainer : MonoBehaviour, IReserveData
     }
     public void RemoveAllBlock()
     {
+        if (mPushCoroutine != null) 
+        {
+            StopCoroutine(mPushCoroutine);
+            mPushCoroutine = null;
+        }
+
         int loopCount = mBlockList.Count;
         for (int index = 0; index < loopCount; index++)
         {

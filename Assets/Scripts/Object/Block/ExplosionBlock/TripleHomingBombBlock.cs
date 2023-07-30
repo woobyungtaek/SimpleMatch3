@@ -26,10 +26,7 @@ public class TripleHomingBombBlock : BombBlock
         yield return instEffect.YieldEffectDuration;
         base.ExplosionBombBlock();
 
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(true);
     }
 
     protected override string GetSpriteNameByBlockNumber()

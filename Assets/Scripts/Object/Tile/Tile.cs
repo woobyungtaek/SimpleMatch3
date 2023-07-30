@@ -35,6 +35,7 @@ public class Tile : MonoBehaviour, System.IDisposable
     protected Coroutine mCreateCoroutine;
     protected Queue<ReserveData> mCreateReserveDataQueue = new Queue<ReserveData>();
 
+
     public Vector2 Coordi { get => mCoordi; set => mCoordi = value; }
     public Vector2 Gravity { get => mGravity; set => mGravity = value; }
     public bool IsCreateTile { get => mbCreateTile; set => mbCreateTile = value; }
@@ -210,7 +211,7 @@ public class Tile : MonoBehaviour, System.IDisposable
 
         BlockManager.Instance.CreateBlockByBlockDataInTile(this, typeof(NormalBlock), Random.Range(0, BlockMaker.MaxColor), 1, TileMapManager.Instance.TileParentTransform);
     }
-    public void ResetTileState()
+    public virtual void ResetTileState()
     {
         IsHit = false;
         IsSplashHit = false;
@@ -236,6 +237,10 @@ public class Tile : MonoBehaviour, System.IDisposable
     public virtual void AddFlowStateDict(bool checkResult) { }
     public virtual void HitTile(bool bExplosionHit) { }
     public virtual void HitTile_Splash() { }
+    public virtual void StopPushEffect() { }
+    public virtual void StartPushEffect(int pushDegree = 2) { }
+    public virtual void SetPushEffect(float pushPower, int order, int pushDegree, Tile callTile) { }
+
     public virtual void Dispose()
     {
         BlockContainerOrNull = null;

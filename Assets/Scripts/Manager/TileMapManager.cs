@@ -29,6 +29,17 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
     }
 
+    public void AddPushTile(NormalTile tile)
+    {
+        if (mPushTargetDict.ContainsKey(tile)) { return; }
+        mPushTargetDict.Add(tile, true);
+    }
+    public void RemovePushTile(NormalTile tile)
+    {
+        if (!mPushTargetDict.ContainsKey(tile)) { return; }
+        mPushTargetDict.Remove(tile);
+    }
+
     public Vector3 RandCollectPos
     {
         get
@@ -49,6 +60,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     private List<Vector2> mCoordiList = new List<Vector2>();
     private List<Tile> mTileList = new List<Tile>();
     private List<NormalTile> mNormalTileList = new List<NormalTile>();
+    private Dictionary<NormalTile, bool> mPushTargetDict = new Dictionary<NormalTile, bool>();
 
     [Header("StageInfo")]
     [SerializeField] private int mMoveCount;
@@ -724,6 +736,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         Sprite blockSprite;
         BombBlock bombBlock;
 
+        mPushTargetDict.Clear();
+
         if (!mbBombMerge)
         {
             //mExplosionTileListList.Clear();
@@ -764,12 +778,19 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                     }
                     hitTileList[matchTileIndex].HitTile(false);
                 }
+
+                for (int matchTileIndex = 0; matchTileIndex < secLoopCount; matchTileIndex++)
+                {
+                    hitTileList[matchTileIndex].StartPushEffect();
+                }
             }
+
+            // 밀려나는 연출 대상 타일 애니메이션 재생
+            StartPushEffect();
 
             yield return GameConfig.yieldMergeDuration;
             //yield return null;
             // 합성이 된다음 타일에 설정이 되기때문에 위의 대기 시간때 겹치는 가능성이 생겨버림..
-            // 일단 없애 
 
             loopCount = mMatchInfoList.Count;
             for (int index = 0; index < loopCount; index++)
@@ -820,6 +841,16 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
         TestComboCount++;
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.TileReadyCheck);
+    }
+
+    public void StartPushEffect()
+    {
+        // 밀려나는 연출 대상 타일 애니메이션 재생
+        foreach (NormalTile tile in mPushTargetDict.Keys)
+        {
+            tile.StartPushCoroutine();
+        }
+        mPushTargetDict.Clear();
     }
 
     private IEnumerator ResultCheckCoroutine()

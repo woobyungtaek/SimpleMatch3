@@ -17,11 +17,7 @@ public class AllClearBombBlock : BombBlock
         yield return null;
 
         base.ExplosionBombBlock();
-        int loopCount = explosionTileAreaList.Count;
-        for (int index = 0; index < loopCount; index++)
-        {
-            explosionTileAreaList[index].HitTile(true);
-        }
+        BombBlockBasicHit(false);
         yield return null;
     }
 }
