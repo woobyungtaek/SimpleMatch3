@@ -71,6 +71,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 7cd12a7673fe36d46a4b5c681e4e3b67, type: 3}
     - {fileID: 2800000, guid: 357317c9bb70eff43bc693f7574e3469, type: 3}
     - {fileID: 2800000, guid: ce9e5b820bc579643bada5c30e6c6b28, type: 3}
+    - {fileID: 102900000, guid: 46777aa75bbf14844882950ab8b6355f, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -101,6 +102,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2c9a8e1a39a93684ca5facfd7c873f13, type: 3}
   - {fileID: 21300000, guid: 17bd546a6730a0244ab795a2c92e2f50, type: 3}
   - {fileID: 21300000, guid: 33f6858a65edee346ac1405a0634d92d, type: 3}
+  - {fileID: 21300000, guid: 7533911b0f171464e9b97deed4e0c2b9, type: 3}
   - {fileID: 21300000, guid: 9ae0a64b42bd2a941b201ddf6168eaef, type: 3}
   - {fileID: 21300000, guid: d840387c472c6744caadbaafedaefe4b, type: 3}
   - {fileID: 21300000, guid: 9c8fbd8c15d966f4d8c8acc1570062ed, type: 3}
@@ -143,6 +145,7 @@ SpriteAtlas:
   - AroundBombBlock_0
   - Shelf
   - AroundBombBlock_3
+  - BubbleWave
   - Pot
   - AroundBombBlock_-1
   - HorizontalBombBlock_0

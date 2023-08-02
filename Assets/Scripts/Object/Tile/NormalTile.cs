@@ -255,6 +255,7 @@ public class NormalTile : Tile
             }
         }
         BlockContainerOrNull.HitBlockContainer(this, bExplosionHit);
+        TileMapManager.Instance.CreateTileHitEffect(gameObject.transform.position);
     }
 
     public override void HitTile_Splash()

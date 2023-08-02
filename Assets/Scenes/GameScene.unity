@@ -2312,12 +2312,14 @@ MonoBehaviour:
     type: 3}
   mergeEffectPrefab: {fileID: 8554247902127120495, guid: ee07986928834b24a9ee78e0d7f79aef,
     type: 3}
+  mBlockMatchEffectPrefab: {fileID: 7982029246026947142, guid: 5f932e531d3e8a845b05251f6dce247c,
+    type: 3}
   mMatchPossibleInfoList: []
   mMatchInfoList: []
   mDuplicateMatchInfoList: []
   mSquareMatchInfoList: []
   TestComboCount: 0
-  mTestMapGimmickInfo: {fileID: 11400000, guid: c1e60f2ebc74fe54a84d509fca564e90,
+  mTestMapGimmickInfo: {fileID: 11400000, guid: 8d015f51cb70c5e419e01e0b63ab789e,
     type: 2}
 --- !u!1 &936466005
 GameObject:

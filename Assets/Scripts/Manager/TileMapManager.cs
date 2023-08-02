@@ -92,6 +92,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
     [Header("EffectPrefabs")]
     [SerializeField] private MergeEffect mergeEffectPrefab;
+    [SerializeField] private BlockMatchEffect mBlockMatchEffectPrefab;
 
     [Header("MatchPossible")]
     [SerializeField] private List<MatchInfo> mMatchPossibleInfoList = new List<MatchInfo>();
@@ -1719,6 +1720,13 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             count++;
         }
         return count;
+    }
+
+    public void CreateTileHitEffect(Vector3 position)
+    {
+        var instBlockMatchEffect = GameObjectPool.Instantiate<BlockMatchEffect>(mBlockMatchEffectPrefab.gameObject);
+        instBlockMatchEffect.transform.position = position;
+        instBlockMatchEffect.PlayEffect();
     }
 
 

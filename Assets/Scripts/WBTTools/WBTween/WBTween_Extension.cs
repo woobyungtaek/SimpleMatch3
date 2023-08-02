@@ -58,6 +58,19 @@ namespace WBTWeen
 
             return tween;
         }
+        public static BTTransformTween Scale(this Transform transform, Vector3 from, Vector3 to, float duration)
+        {
+            var tween = BTTransformTween.GetTween(transform);
+
+            tween.TweenType = BTTransformTween.ETweenType.Scale;
+            tween.From = from;
+
+            tween.To = to;
+            tween.Duration = duration;
+            tween.Play();
+
+            return tween;
+        }
 
         #endregion
     }
