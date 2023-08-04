@@ -105,6 +105,7 @@ public class PuzzleInputManager : MonoBehaviour
             return;
         }
 #endif
+
         mCurrentInputFunc?.Invoke();
     }
 
@@ -383,6 +384,8 @@ public class PuzzleInputManager : MonoBehaviour
         BlockContainer blockContainer = TargetTileOrNull.BlockContainerOrNull;
         TargetTileOrNull.BlockContainerOrNull = SelectTileOrNull.BlockContainerOrNull;
         SelectTileOrNull.BlockContainerOrNull = blockContainer;
+
+        AudioManager.Instance.PlayByType(EAudioPlayType.EBlockSwap);
 
         TargetTileOrNull.BlockContainerOrNull.StartMovePositionByTile(TargetTileOrNull, SWAP_SEC);
         SelectTileOrNull.BlockContainerOrNull.StartMovePositionByTile(SelectTileOrNull, SWAP_SEC);

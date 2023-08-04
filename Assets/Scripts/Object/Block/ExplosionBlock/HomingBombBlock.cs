@@ -28,6 +28,7 @@ public class HomingBombBlock : BombBlock
         base.ExplosionBombBlock();
 
         BombBlockBasicHit(true);
+        AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
     }
 
     protected override string GetSpriteNameByBlockNumber()

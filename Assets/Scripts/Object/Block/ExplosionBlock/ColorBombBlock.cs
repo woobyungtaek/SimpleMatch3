@@ -43,6 +43,7 @@ public class ColorBombBlock : BombBlock
         base.ExplosionBombBlock();
 
         BombBlockBasicHit(true);
+        AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
     }
     protected override string GetSpriteNameByBlockNumber()
     {

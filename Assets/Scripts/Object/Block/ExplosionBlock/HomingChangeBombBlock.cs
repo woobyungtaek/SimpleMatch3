@@ -33,6 +33,7 @@ public class HomingChangeBombBlock : ChangeBombBlock
         }
 
         BombBlockBasicHit(false);
+        AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
     }
     protected override string GetSpriteNameByBlockNumber()
     {

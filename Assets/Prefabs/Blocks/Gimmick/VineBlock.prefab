@@ -129,7 +129,7 @@ MonoBehaviour:
   mBlockNumber: -1
   mBlockHP: 0
   mOrder: 0
-  mHomingOrder: 120
+  mHomingOrder: 1
   mExtraOrder: 0
   mbFixed: 1
   mBlockSprite: {fileID: 6134353992972594698}

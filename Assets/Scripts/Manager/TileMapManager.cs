@@ -7,6 +7,8 @@ using UnityEngine.U2D;
 
 public class TileMapManager : SceneSingleton<TileMapManager>
 {
+    public static readonly float MATCH_CLIP_PITCH = 1f;
+
     public Transform TileParentTransform { get => mTileParentTransform; }
     public Transform MoveCountUI { get => mMoveCountUI; }
     public SpriteRenderer BoardBackGround
@@ -116,7 +118,21 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     private Dictionary<System.Type, Dictionary<System.Type, System.Type>> mExplosionMergeConditionDict = new Dictionary<System.Type, Dictionary<System.Type, System.Type>>();
 
     ///콤보 : 매치 성공 카운트
-    [SerializeField] private int TestComboCount;
+    [SerializeField] private int mComboCount;
+    private int ComboCount
+    {
+        get { return mComboCount; }
+        set
+        {
+            mComboCount = value;
+            float pitch = MATCH_CLIP_PITCH + (mComboCount * 0.3f);
+            if(pitch > 2.3f)
+            {
+                pitch = 2.3f;
+            }
+            AudioManager.Instance.SetPitchByType(EAudioPlayType.EMatchEffect, pitch);
+        }
+    }
 
     // 맵 기믹 : 맵별 기믹
     [SerializeField] private MapGimmickInfo mTestMapGimmickInfo;
@@ -138,6 +154,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         observerCenter.AddObserver(ExecuteMatchCheckByNoti, EGameState.MatchCheck.ToString());
         observerCenter.AddObserver(ExcuteMatchByNoti, EGameState.Match.ToString());
         observerCenter.AddObserver(ExcuteResultCheckByNoti, EGameState.ResultCheck.ToString());
+        observerCenter.AddObserver(ExcuteInputByNoti, EGameState.Input.ToString());
 
         observerCenter.AddObserver(ExcuteDropEndCheck, Message.DropEndCheck);
     }
@@ -299,6 +316,11 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     private void ExcuteResultCheckByNoti(Notification noti)
     {
         StartCoroutine(ResultCheckCoroutine());
+    }
+
+    private void ExcuteInputByNoti(Notification noti)
+    {
+        ComboCount = 0;
     }
 
     private void CheckLineMatchInternal(List<MatchInfo> matchInfoList, List<ReuseTileList> lineListList, EMatchType matchType, int matchID)
@@ -513,6 +535,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                         instBlockOrNull.SetBlockData(blockNumber, 1);
                     }
 
+                    AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
                     PuzzleInputManager.SelectTileOrNull.HitTile(false);
                     PuzzleInputManager.TargetTileOrNull.HitTile(false);
 
@@ -786,6 +809,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                 }
             }
 
+            AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
+
             // 밀려나는 연출 대상 타일 애니메이션 재생
             StartPushEffect();
 
@@ -840,7 +865,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         //IsNextStep = false;
         #endregion
 
-        TestComboCount++;
+        ComboCount += 1;
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.TileReadyCheck);
     }
 
@@ -856,7 +881,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
     private IEnumerator ResultCheckCoroutine()
     {
-        TestComboCount = 0;
+        mComboCount = 0;
         if (MissionManager.Instance.IsMissionClear)
         {
             //콜레팅 이펙트가 끝날때 까지 대기해야함, 간단하게 Max시간만큼 대기
