@@ -19,6 +19,7 @@ public class AroundEffect : BlockEffect
     [SerializeField] private AnimationCurve mAlphaCurve = new AnimationCurve();
     [SerializeField] private List<SpriteRenderer> mEffectObject = new List<SpriteRenderer>();
 
+
     public override void SetEffectDataByData(Vector3 startPos, Vector3 targetPos, Sprite spriteOrNull = null)
     {
         transform.position = startPos;
@@ -31,6 +32,8 @@ public class AroundEffect : BlockEffect
     }
     private IEnumerator PlayEffectCoroutine()
     {
+        AudioManager.Instance.PlayByClip(EAudioClip.EAroundBomb);
+
         mTime = 0f;
         loopCount = mEffectObject.Count;
         for (int index = 0; index < loopCount; index++)
@@ -38,7 +41,7 @@ public class AroundEffect : BlockEffect
             mEffectObject[index].transform.localScale = Vector3.zero;
         }
 
-        while (mTime < 1)
+        while (mTime < 1f)
         {
             mTime += Time.deltaTime / mDuration;
             for (int index = 0; index < loopCount; index++)

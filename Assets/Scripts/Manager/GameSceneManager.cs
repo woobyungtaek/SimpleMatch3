@@ -48,6 +48,7 @@ public class GameSceneManager : MonoBehaviour
 
         mMainCamera = Camera.main;
         mMainCamera.transform.position = mUpPos.position + DepthPos;
+
     }
 
     // 데이터 로드
@@ -85,6 +86,9 @@ public class GameSceneManager : MonoBehaviour
             TutorialManager.Instance.SetTutorialData(mTutoData);
             TutorialManager.Instance.StartTutorial();
         }
+
+        // Test
+        AudioManager.Instance.PlayBgmByIndex(2);
 
         StartCoroutine(DelayStartByFadeOutEffect());
     }

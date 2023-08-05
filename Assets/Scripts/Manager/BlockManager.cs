@@ -47,6 +47,7 @@ public class BlockManager : SceneSingleton<BlockManager>
     [SerializeField] public AnimationCurve BlockArriveAniCurve;
     [SerializeField] public AnimationCurve BlockMoveAniCurve;
     [SerializeField] public AnimationCurve BlockPushAniCurve;
+    [SerializeField] public AnimationCurve BlockMatchEffectAniCurve;
 
     private void Awake()
     {

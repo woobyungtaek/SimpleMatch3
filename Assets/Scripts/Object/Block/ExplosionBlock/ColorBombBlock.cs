@@ -29,6 +29,7 @@ public class ColorBombBlock : BombBlock
 
     private IEnumerator ExplosionBombBlockCoroutine()
     {
+        AudioManager.Instance.PlayByType(EAudioPlayType.EColorBombLine);
         TileMapManager.Instance.CreateTileListBySameNumber(explosionTileAreaList, BlockNumber);
 
         int loopCount = explosionTileAreaList.Count;
@@ -43,7 +44,6 @@ public class ColorBombBlock : BombBlock
         base.ExplosionBombBlock();
 
         BombBlockBasicHit(true);
-        AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
     }
     protected override string GetSpriteNameByBlockNumber()
     {

@@ -11,6 +11,7 @@ public class ColorChangeBombBlock : ChangeBombBlock
 
     private IEnumerator ExplosionBombBlockCoroutine()
     {
+        AudioManager.Instance.PlayByType(EAudioPlayType.EColorBombLine);
         TileMapManager.Instance.CreateTileListBySameNumber(explosionTileAreaList, BlockNumber);
         int loopCount = explosionTileAreaList.Count;
 

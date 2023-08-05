@@ -27,6 +27,7 @@ public class StraightEffect : BlockEffect
     }
     private IEnumerator PlayEffectCoroutine()
     {
+        AudioManager.Instance.PlayByClip(EAudioClip.EAroundBomb);
         mTime = 0f;
         loopCount = mEffectObject.Count;
         for (int index = 0; index < loopCount; index++)
