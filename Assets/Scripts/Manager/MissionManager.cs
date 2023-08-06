@@ -68,10 +68,10 @@ public class MissionManager : SceneSingleton<MissionManager>
             mRemainStage.Value = mChapterData.GetStageCount(mPartCount) - mStageCount;
         }
     }
-    private int PartCount
+    public int PartCount
     {
         get => mPartCount;
-        set
+        private set
         {
             mPartCount = value;
             mPart.Value = mPartCount + 1;

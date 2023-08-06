@@ -49,6 +49,8 @@ public partial class BTTransformTween : TweenClass
 
         mDelay = 0f;
 
+        mLoopCount = 0;
+
         mCurve = WBTween.EaseCurveArr[0];
         mAniCoroutine = null;
 

@@ -9,7 +9,7 @@ public class PlayerSkillButton : MonoBehaviour
     public static PlayerSkill CurrentActiveSkill;
 
     [SerializeField] protected Button mSkillButton;
-    [SerializeField] private Image mItemImage;
+    [SerializeField] protected Image mItemImage;
     [SerializeField] protected Image mLockImage;
     [SerializeField] private TextMeshProUGUI mItemCountText;
 

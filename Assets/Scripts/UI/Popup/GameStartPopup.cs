@@ -79,7 +79,6 @@ public class GameStartPopup : Popup
 
         ClosePopup();
 
-        LobbySceneManager.Instance.SelectedChapterNum = mSelectChapter;
         // Inventory Index로 Data 획득, Data의 Index를 넘겨준다.
         // Inventory Index로 개수를 빼준다.
         for (int cnt = 0; cnt < mBoosterButtons.Length; ++cnt)
@@ -87,6 +86,7 @@ public class GameStartPopup : Popup
             LobbySceneManager.Instance.UseBoosterItemArr[cnt] = mBoosterButtons[cnt].CurrentData;
         }
 
+        LobbySceneManager.Instance.SelectedChapterNum = mSelectChapter;
         LobbySceneManager.Instance.ChapterStart();
     }
 

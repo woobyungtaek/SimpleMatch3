@@ -110,8 +110,8 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     }
     public void ChapterStart()
     {
-        InGameUseDataManager.Instance.ConceptName = "Concept_0";
-        InGameUseDataManager.Instance.MapName = "DayMap_0";
+        // InGameUseDataManager.Instance.ConceptName = "Concept_0";
+        // InGameUseDataManager.Instance.MapName = "DayMap_0";
 
         InGameUseDataManager.Instance.ChapterMapGimmickInfo = mChapterGimmickArr[mSelectedChapterNum];
         InGameUseDataManager.Instance.CurrentChapterData = mChapterDataArr[mSelectedChapterNum];

@@ -4137,7 +4137,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 43ac3f54871cf5c438923971c738b8d3, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6372,6 +6372,75 @@ MonoBehaviour:
   mCurrentSkill:
     SkillCount: 0
   mChargeImage: {fileID: 594863557}
+  mShakeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.15112393
+      value: 0
+      inSlope: -0
+      outSlope: -0.021015044
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.36843118
+    - serializedVersion: 3
+      time: 0.30112392
+      value: 1
+      inSlope: 0.00000023841858
+      outSlope: 0.00000023841858
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.45112392
+      value: 0
+      inSlope: -0.016114729
+      outSlope: -0.016114729
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.36354488
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6011239
+      value: 1
+      inSlope: -0.015164736
+      outSlope: -0.015164736
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.36385733
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7511239
+      value: 0
+      inSlope: -0.028653435
+      outSlope: 0
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.34432536
+      outWeight: 0.18995383
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!222 &867762521135467910
 CanvasRenderer:
   m_ObjectHideFlags: 0

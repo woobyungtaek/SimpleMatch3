@@ -57,11 +57,6 @@ public class GameSceneManager : MonoBehaviour
         Random.InitState((int)System.DateTime.Now.Ticks);
 
         Time.timeScale = 1;
-        if (InGameUseDataManager.IsExist)
-        {
-            mConceptName = InGameUseDataManager.Instance.ConceptName;
-            mMapName = InGameUseDataManager.Instance.MapName;
-        }
 
         var tileMapManager = TileMapManager.Instance;
         var missionManager = MissionManager.Instance;
@@ -74,7 +69,16 @@ public class GameSceneManager : MonoBehaviour
 
         #endregion
 
-        LoadMapDataInternal();
+        if (InGameUseDataManager.IsExist)
+        {
+            int currentMapDataIndex = missionManager.PartCount;
+            mMapData = InGameUseDataManager.Instance.CurrentChapterData.MapDataList[currentMapDataIndex];
+        }
+        else
+        {
+            LoadMapDataInternal();
+        }
+
         LoadTutoDataInternal();
 
         tileMapManager.CreateMapByMapData(mMapData);
@@ -109,17 +113,17 @@ public class GameSceneManager : MonoBehaviour
 
         if (InGameUseDataManager.IsExist)
         {
+            int currentMapDataIndex = MissionManager.Instance.PartCount;
+            mMapData = InGameUseDataManager.Instance.CurrentChapterData.MapDataList[currentMapDataIndex];   
+        }
+        else
+        {
             if (!string.IsNullOrEmpty(data.ConceptName))
             {
-                InGameUseDataManager.Instance.ConceptName = data.ConceptName;
+                mConceptName = data.ConceptName;
             }
-            InGameUseDataManager.Instance.MapName = data.MapName;
+            mMapName = data.MapName;
         }
-        if (!string.IsNullOrEmpty(data.ConceptName))
-        {
-            mConceptName = data.ConceptName;
-        }
-        mMapName = data.MapName;
     }
 
     private void LoadMapDataInternal()
@@ -132,7 +136,7 @@ public class GameSceneManager : MonoBehaviour
 
         mLoadMapStrBuilder.Append(mMapName);
 
-        mMapData = Utility.LoadJsonFile<MapData>(mLoadMapStrBuilder.ToString());
+        Utility.LoadJsonFile<MapLoadData>(mLoadMapStrBuilder.ToString()).Copy(mMapData);
         if (mMapData == null)
         {
             Debug.Log("맵데이터가 제대로 로드되지 않았습니다.");
@@ -167,7 +171,8 @@ public class GameSceneManager : MonoBehaviour
         MissionManager.Instance.SetStageInfo();
 
         mSpeachBubble.transform.Scale(Vector3.one, 0.5f)
-            .OnComplete(() => {
+            .OnComplete(() =>
+            {
                 mSpeachBubble.transform.Scale(Vector3.zero, 0.5f).SetDelay(0.75f)
                 .OnComplete(() =>
                 {
@@ -190,7 +195,8 @@ public class GameSceneManager : MonoBehaviour
     private void Sequence_CharacterOut()
     {
         mCharacter.transform.MoveLocal(new Vector3(-6.5f, 2.5f, 0), 1f)
-            .OnComplete(() => {
+            .OnComplete(() =>
+            {
                 PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.StageSuccess);
             });
     }

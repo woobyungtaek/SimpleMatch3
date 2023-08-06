@@ -11,6 +11,7 @@ public class ChapterData : ScriptableObject
     public int AllClearGold;
 
     [SerializeField] public List<PartData> MissionLevelList = new List<PartData>(3);
+    [SerializeField] public List<MapData> MapDataList = new List<MapData>(3);
 }
 
 [System.Serializable]
