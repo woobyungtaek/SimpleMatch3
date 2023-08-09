@@ -2340,15 +2340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mConceptName: Concept_0
   mMapName: DayMap_3
-  mMapData:
-    mapSize: {x: 0, y: 0}
-    moveCount: 0
-    gravity: {x: 0, y: 0}
-    missionList: []
-    blockMakerList: []
-    tutoName: 
-    tileStr: 
-    blockStr: 
+  mMapData: {fileID: 11400000, guid: 52960ec338d30af4c875fecef66647c6, type: 2}
   mMainCamera: {fileID: 519420031}
   mCharacter: {fileID: 2009906488}
   mSpeachBubble: {fileID: 1046662729}
@@ -5329,6 +5321,7 @@ MonoBehaviour:
     type: 3}
   mMissionCellUIPrefab: {fileID: 7258952905641866771, guid: a1b6fd0c7c75566459a5072f37aae71b,
     type: 3}
+  mAllMissionList: []
   mSelectRewardList_Grade: []
   mBasicRewardList: []
   mSelectRewardList: []

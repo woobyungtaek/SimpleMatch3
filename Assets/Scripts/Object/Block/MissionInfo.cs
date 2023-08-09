@@ -69,6 +69,7 @@ public class MissionDataPreset
     }
 }
 
+[System.Serializable]
 public class MissionData : Pool<MissionData>
 {
     private static int[] ColorArr = { 0, 1, 2, 3, 4 };

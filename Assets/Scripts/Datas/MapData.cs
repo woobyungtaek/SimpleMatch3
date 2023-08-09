@@ -25,16 +25,26 @@ public class MapLoadData
         data.moveCount = moveCount;
         data.gravity = gravity;
 
+        if(data.missionList == null)
+        {
+            data.missionList = new List<MissionData_Element>();
+        }
         data.missionList.Clear();
         for(int index =0; index < missionList.Count; ++index)
         {
             data.missionList.Add(missionList[index]);
+        }
+
+        if (data.blockMakerList == null)
+        {
+            data.blockMakerList = new List<BlockMaker>();
         }
         data.blockMakerList.Clear();
         for (int index = 0; index < blockMakerList.Count; ++index)
         {
             data.blockMakerList.Add(blockMakerList[index]);
         }
+
         data.tutoName = tutoName;
         data.tileStr = tileStr;
         data.blockStr = blockStr;

@@ -76,7 +76,7 @@ public class GameSceneManager : MonoBehaviour
         }
         else
         {
-            LoadMapDataInternal();
+            //LoadMapDataInternal();
         }
 
         LoadTutoDataInternal();
@@ -136,6 +136,11 @@ public class GameSceneManager : MonoBehaviour
 
         mLoadMapStrBuilder.Append(mMapName);
 
+
+        if(mMapData == null)
+        {
+            mMapData = new MapData();
+        }
         Utility.LoadJsonFile<MapLoadData>(mLoadMapStrBuilder.ToString()).Copy(mMapData);
         if (mMapData == null)
         {

@@ -6,8 +6,6 @@ using TMPro;
 
 public class MissionManager : SceneSingleton<MissionManager>
 {
-    private readonly string MAP_DATA_FILE_FORMAT = "DayMap_{0}";
-    private readonly string TUTO_MAP_FILE_FORMAT = "TutorialMap_{0}";
     private readonly WaitForSeconds REWARD_CREATE_DELAY = new WaitForSeconds(0.5f);
 
     public bool IsMissionClear
@@ -92,7 +90,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     private List<GameObject> mAllCollectEffectList = new List<GameObject>();
 
     [SerializeField]
-    private List<MissionDataPreset>[] mMissionDataListArr;
+    private List<MissionDataPreset> mAllMissionList;
     private List<MissionData> mDayMissionDataList = new List<MissionData>();
     private MissionData mCurrentMissionData;
 
@@ -120,7 +118,7 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     private void Awake()
     {
-        mMissionDataListArr = DataManager.Instance.MissionDataListArr;
+        mAllMissionList = DataManager.Instance.MissionDataListArr;
 
         var totalRewardList = DataManager.Instance.RewardDataList;
 
@@ -172,11 +170,12 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     private MissionDataPreset GetMissionDataPreset(EMissionLevel level)
     {
-        if (mMissionDataListArr[(int)level] == null) { return null; }
-        int count = mMissionDataListArr[(int)level].Count;
+        int count = mChapterData.DiffList[(int)level].list.Count;
         int randIdx = Random.Range(0, count);
 
-        return mMissionDataListArr[(int)level][randIdx];
+        int missionIndex = mChapterData.DiffList[(int)level].list[randIdx];
+
+        return mAllMissionList[missionIndex];
     }
 
 

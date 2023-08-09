@@ -167,7 +167,7 @@ public static class Utility
         return ParseCSV<T>(parseStr);
     }
 
-    private static List<T> ParseCSV<T>(string parseStr)
+    public static List<T> ParseCSV<T>(string parseStr)
     {
         List<T> create_list = new List<T>();
         DoParsing<T, T>(parseStr, ref create_list);
@@ -413,4 +413,5 @@ public static class Utility
             list.Add((T)inst_obj);
         }
     }
+
 }

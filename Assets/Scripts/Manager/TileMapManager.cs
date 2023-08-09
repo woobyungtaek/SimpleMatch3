@@ -222,7 +222,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
         if (mMapGimmickInfo == null)
         {
-            mMapGimmickInfo = new MapGimmickInfo();
+            mMapGimmickInfo = ScriptableObject.CreateInstance<MapGimmickInfo>();// new MapGimmickInfo();
         }
 
         mMapGimmickInfo = mTestMapGimmickInfo;

@@ -99,16 +99,16 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    [SerializeField] private List<MissionDataPreset>[] mMissionDataListArr = new List<MissionDataPreset>[(int)EMissionLevel.Max];
-    public List<MissionDataPreset>[] MissionDataListArr
+    [SerializeField] private List<MissionDataPreset> mMissionDataList;
+    public List<MissionDataPreset> MissionDataListArr
     {
         get
         {
-            if (mMissionDataListArr == null)
+            if (mMissionDataList == null)
             {
                 LoadMissionDataPreset();
             }
-            return mMissionDataListArr;
+            return mMissionDataList;
         }
     }
 
@@ -210,17 +210,7 @@ public class DataManager : Singleton<DataManager>
     }
     public void LoadMissionDataPreset()
     {
-        var missionDataList = Utility.LoadCSVFile<MissionDataPreset>(MISSION_DATA_FILE_NAME);
-        foreach (var data in missionDataList)
-        {
-            // Area Check
-
-            // level Check
-            int level = (int)data.Level;
-            if (mMissionDataListArr[level] == null) { mMissionDataListArr[level] = new List<MissionDataPreset>(); }
-
-            mMissionDataListArr[level].Add(data);
-        }
+        mMissionDataList = Utility.LoadCSVFile<MissionDataPreset>(MISSION_DATA_FILE_NAME);
     }
     public void LoadRewardDataList()
     {
