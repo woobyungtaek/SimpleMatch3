@@ -1367,18 +1367,12 @@ MonoBehaviour:
   mTutoStageButtonPrefab: {fileID: 1147530455155360579, guid: 95ebc534c632ba54e95ca57aed48ecab,
     type: 3}
   mTutoStageButtonList: []
-  mChapterGimmickArr:
-  - {fileID: 11400000, guid: 8d015f51cb70c5e419e01e0b63ab789e, type: 2}
-  - {fileID: 11400000, guid: 8d015f51cb70c5e419e01e0b63ab789e, type: 2}
-  - {fileID: 11400000, guid: 8d015f51cb70c5e419e01e0b63ab789e, type: 2}
-  - {fileID: 11400000, guid: a0eb8eb684dde23459862748912afdcd, type: 2}
-  - {fileID: 11400000, guid: a0eb8eb684dde23459862748912afdcd, type: 2}
   mChapterDataArr:
   - {fileID: 11400000, guid: 570348544117ca240bf238d71f346f58, type: 2}
+  - {fileID: 11400000, guid: 30d7c3f5c2679d14f8a7aaaa0b67ed1e, type: 2}
+  - {fileID: 11400000, guid: a65d887e8ebe6134fba5fad5beb80c96, type: 2}
   - {fileID: 11400000, guid: 5abab4e66b366764ea225f62d82c18a7, type: 2}
   - {fileID: 11400000, guid: 306b5c342c9c1e3449c5750f6e921a0e, type: 2}
-  - {fileID: 11400000, guid: ea3c372b106028f418a1a7595707a22c, type: 2}
-  - {fileID: 11400000, guid: 6eb508f9d1b1d5048a1fa0b4f5d09b54, type: 2}
 --- !u!4 &984335162
 Transform:
   m_ObjectHideFlags: 0

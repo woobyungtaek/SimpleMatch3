@@ -75,11 +75,10 @@ MonoBehaviour:
   mbCreateTile: 0
   mbReservationTile: 0
   mbHit: 0
-  mbSplahHit: 0
+  mbHit_Spalsh: 0
   mbArrive: 0
   mbFlowCheckTile: 0
   BlockContainerOrNull: {fileID: 0}
-  mStartBlockContainer: {fileID: 0}
   mSendTileList: []
   mRecieveTileList: []
   BlockMakerOrNull:

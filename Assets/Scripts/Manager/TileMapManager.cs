@@ -9,6 +9,14 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 {
     public static readonly float MATCH_CLIP_PITCH = 1f;
 
+    public enum EBlockDropState
+    {
+        Check,
+        Straight,
+        Flowing,
+        End
+    }
+
     public Transform TileParentTransform { get => mTileParentTransform; }
     public Transform MoveCountUI { get => mMoveCountUI; }
     public SpriteRenderer BoardBackGround
@@ -126,7 +134,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         {
             mComboCount = value;
             float pitch = MATCH_CLIP_PITCH + (mComboCount * 0.3f);
-            if(pitch > 2.3f)
+            if (pitch > 2.3f)
             {
                 pitch = 2.3f;
             }
@@ -138,6 +146,9 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     [SerializeField] private MapGimmickInfo mTestMapGimmickInfo;
 
     private MapGimmickInfo mMapGimmickInfo;
+
+    // 블록 드랍
+    private EBlockDropState mCurrentDropState;
 
     private void Awake()
     {
@@ -215,7 +226,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     {
         if (InGameUseDataManager.IsExist)
         {
-            mMapGimmickInfo = InGameUseDataManager.Instance.ChapterMapGimmickInfo;
+            mMapGimmickInfo = InGameUseDataManager.Instance.CurrentChapterData.MapGimmickData;
             mMapGimmickInfo.Init();
             return;
         }
@@ -256,52 +267,227 @@ public class TileMapManager : SceneSingleton<TileMapManager>
 
     private void ExecuteDropBlockByNoti(Notification noti)
     {
-        Tile.IsNotReady = false;
-        int loopCount = mTileList.Count;
+        DropableCheck(); // 드랍 가능 상태 확인
+    }
 
+    //private void DropBlockOriginal()
+    //{
+    //    Tile.IsNotReady = false;
+    //    int loopCount = mTileList.Count;
+
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].SaveStartBlockContainer();
+    //        mTileList[index].IsArrive = true;
+    //        mTileList[index].IsTestReady = false;
+    //    }
+
+    //    for (int cnt = 0; cnt < loopCount; ++cnt) // 이만큼 루프할 일은 없다.
+    //    {
+    //        Tile.IsNotReady = false;
+    //        for (int index = 0; index < loopCount; ++index)
+    //        {
+    //            //mTileList[index].CheckDrop();
+    //            mTileList[index].CheckDrop2();
+    //        }
+
+    //        if (!Tile.IsNotReady) { break; }
+    //    }
+
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].AddDestTile();
+    //    }
+
+    //    Tile.IsMoveStart = false;
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].StartDrop();
+    //    }
+
+    //    if (!Tile.IsMoveStart)
+    //    {
+    //        // 아무것도 출발한게 없다면
+    //        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
+    //    }
+    //}
+    //public void DropBlockNew()
+    //{
+    //    Tile.IsNotReady = false;
+    //    int loopCount = mTileList.Count;
+
+    //    // 드랍 가능한 상태 체크
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].DropableState = EDropableState.NeedCheck;
+    //    }
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].CheckDropableState();
+    //    }
+
+    //    // 시작 블록 컨테이너 설정 
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].SaveStartBlockContainer();
+    //        mTileList[index].IsArrive = true;
+    //    }
+
+    //    // 이미 있는 블록 내리기
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].DropStraight();
+    //    }
+
+    //    // 타일이 위쪽으로 요청하기
+    //    // 직선으로 쭉 위에 받아 올 수 있는 블록 있는지 확인
+    //    // 없다면 좌우 한 칸씩만 받아 올 수 있는 블록 있는지 확인
+
+    //    //
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].AddDestTile();
+    //    }
+
+    //    // 설정한 방법으로 Drop
+    //    Tile.IsMoveStart = false;
+    //    for (int index = 0; index < loopCount; index++)
+    //    {
+    //        mTileList[index].StartDrop();
+    //    }
+
+    //    // 출발 X
+    //    if (!Tile.IsMoveStart)
+    //    {
+    //        PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
+    //    }
+    //}
+
+    #region DropBlockFinal
+    // 재귀로 돌리니깐 터지네...
+    // 상태 변경으로 가야 할 듯
+
+    // 1
+    private void DropableCheck()
+    {
+        int loopCount = mTileList.Count;
+        // 드랍 가능한 상태 체크
+        for (int index = 0; index < loopCount; index++)
+        {
+            mTileList[index].DropableState = EDropableState.NeedCheck;
+        }
+        for (int index = 0; index < loopCount; index++)
+        {
+            mTileList[index].CheckDropableState();
+        }
+
+        // 시작 블록 컨테이너 설정
         for (int index = 0; index < loopCount; index++)
         {
             mTileList[index].SaveStartBlockContainer();
             mTileList[index].IsArrive = true;
         }
 
-        for (int cnt = 0; cnt < loopCount; ++cnt) // 이만큼 루프할 일은 없다.
+        mCurrentDropState = EBlockDropState.Check;
+        while (mCurrentDropState != EBlockDropState.End)
         {
-            Tile.IsNotReady = false;
-            for (int index = 0; index < loopCount; ++index)
+            switch (mCurrentDropState)
             {
-                mTileList[index].CheckDrop();
+                case EBlockDropState.Check:
+                    CheckTileReserveEnd();
+                    break;
+                case EBlockDropState.Straight:
+                    StraightDrop();
+                    break;
+                case EBlockDropState.Flowing:
+                    FlowingDrop();
+                    break;
             }
-
-            if (!Tile.IsNotReady) { break; }
-        }
-
-        for (int index = 0; index < loopCount; index++)
-        {
-            mTileList[index].AddDestTile();
         }
 
         Tile.IsMoveStart = false;
         for (int index = 0; index < loopCount; index++)
         {
+            mTileList[index].AddDestTile();
+        }
+        for (int index = 0; index < loopCount; index++)
+        {
             mTileList[index].StartDrop();
         }
-
         if (!Tile.IsMoveStart)
         {
-            // 아무것도 출발한게 없다면
             PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
         }
     }
-
-    private void ExcuteDropEndCheck(Notification noti)
+    // 2
+    private void CheckTileReserveEnd()
     {
         int loopCount = mTileList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            if (!mTileList[index].IsArrive) { return; }
+            if (!(mTileList[index] is NormalTile)) { continue; }
+            if (mTileList[index].ReserveData != null) { continue; }
+            if (mTileList[index].DropableState == EDropableState.Impossible)
+            {
+                if (mTileList[index].CheckDropReadyState()) { continue; }
+            }
+
+            mCurrentDropState = EBlockDropState.Straight;
+            return;
+        }
+        mCurrentDropState = EBlockDropState.End;
+    }
+    //3
+    private void StraightDrop()
+    {
+        bool bStraightMove = false;
+        int loopCount = mTileList.Count;
+
+        for (int index = 0; index < loopCount; index++)
+        {
+            // 직선 내리기 실행
+            bStraightMove |= mTileList[index].StraightMove();
         }
 
+        if (bStraightMove)
+        {
+            mCurrentDropState = EBlockDropState.Straight;
+        }
+        else
+        {
+            mCurrentDropState = EBlockDropState.Flowing;
+        }
+    }
+    //4
+    private void FlowingDrop()
+    {
+        bool bFlowingMove = false;
+        int loopCount = mTileList.Count;
+        for (int index = 0; index < loopCount; index++)
+        {
+            // 흘러내리기 실행
+            bFlowingMove |= mTileList[index].FlowingMove();
+        }
+
+        // 흘러내린게 1개라도 있다면
+        if (bFlowingMove)
+        {
+            mCurrentDropState = EBlockDropState.Straight;
+        }
+        else
+        {
+            mCurrentDropState = EBlockDropState.Check;
+        }
+    }
+    #endregion
+
+    private void ExcuteDropEndCheck(Notification noti)
+    {
+        int loopCount = mTileList.Count;
+        for (int index = 0; index < loopCount; ++index)
+        {
+            if (!mTileList[index].IsArrive) { return; }
+        }
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.MatchCheck);
     }
     private void ExecuteMatchCheckByNoti(Notification noti)
@@ -739,8 +925,6 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         #endregion
 
         yield return null;
-
-
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(eNextState);
     }
 
@@ -898,14 +1082,14 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             yield return GameConfig.yieldGameOverDuration;//임의의로 
 
 #if UNITY_ANDROID || UNITY_IOS
-
             // 시청 가능한 광고 횟수
             PopupManager.Instance.CreatePopupByName("ContinuePopup");
             yield break;
 
-#endif
+#else
             ObserverCenter.Instance.SendNotification(Message.CameraUp);
             yield break;
+#endif
         }
 
         if (IsMatched && IsPlayerInputMove)
@@ -1712,7 +1896,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             instList.Add(tile);
         }
 
-        ShuffleList<NormalTile>(instList, Random.Range(instList.Count, instList.Count + 100));
+        ShuffleList(instList, Random.Range(instList.Count, instList.Count + 100));
 
         for (int index = 0; index < count; ++index)
         {

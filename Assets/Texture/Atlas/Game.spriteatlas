@@ -80,6 +80,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e0021a00a35d4e54ba53c1e2f39232a1, type: 3}
   - {fileID: 21300000, guid: 78caee70d4739f64f829956f288cdc1b, type: 3}
   - {fileID: 21300000, guid: 31d11690d140b4945aba9608377abb24, type: 3}
+  - {fileID: 21300000, guid: 1064ca90f258c8741afcf2c1b58cde75, type: 3}
   - {fileID: 21300000, guid: 74a0dab089ecb1f478cbdf9a1e3bfe58, type: 3}
   - {fileID: 21300000, guid: e099b5421af2f0c4c95512e9ebdbb4e7, type: 3}
   - {fileID: 21300000, guid: b7e5458273bf1f04287e5e43d67d0503, type: 3}
@@ -95,6 +96,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 81475306aeab7d14aaa3794a9733b219, type: 3}
   - {fileID: 21300000, guid: 7cd12a7673fe36d46a4b5c681e4e3b67, type: 3}
   - {fileID: 21300000, guid: 489d637722296f142ae3377d5b52b4b2, type: 3}
+  - {fileID: 21300000, guid: 83a628a78b6494b40a6abb56920b0d6a, type: 3}
   - {fileID: 21300000, guid: d5d8c3c8bb8312a48a8a4807a1bfbe86, type: 3}
   - {fileID: 21300000, guid: 7405b3695225e2649867ecea4311ba8e, type: 3}
   - {fileID: 21300000, guid: 8f077b79b34dbdf439cdb99292edf408, type: 3}
@@ -109,6 +111,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 358171acf1b9aa146836673f25d14fba, type: 3}
   - {fileID: 21300000, guid: 72f97b4d3e827c64ab184e8c1e1c1c73, type: 3}
   - {fileID: 21300000, guid: 8106538db39822042918c18320c65d46, type: 3}
+  - {fileID: 21300000, guid: 74a2e58d11c0dac4d8e4e2513bd84e64, type: 3}
   - {fileID: 21300000, guid: 59e84bcdf6b5c564a90200bf8857e457, type: 3}
   - {fileID: 21300000, guid: 4088aecdf4a7c83408b7f5458f41e75d, type: 3}
   - {fileID: 21300000, guid: 5e8ec9edec323984e92d712e5b374f1d, type: 3}
@@ -123,6 +126,7 @@ SpriteAtlas:
   - WindowFrameMask
   - VerticalBombBlock_4
   - HomingExplosionBlock_2
+  - Box_1
   - AroundBombBlock_1
   - VerticalBombBlock_3
   - TG_Ice
@@ -138,6 +142,7 @@ SpriteAtlas:
   - HorizontalBombBlock_3
   - SelectBlockEffect
   - WindowFrame
+  - Box_3
   - HomingExplosionBlock_1
   - HomingExplosionBlock_0
   - HorizontalBombBlock_4
@@ -152,6 +157,7 @@ SpriteAtlas:
   - NormalBlock_0
   - HorizontalBombBlock_-1
   - HomingExplosionBlock_3
+  - Box_2
   - HomingExplosionBlock_-1
   - NormalBlock_4
   - Baseboard

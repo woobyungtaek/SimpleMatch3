@@ -5,7 +5,7 @@ using UnityEngine;
 public class AroundBombBlock : BombBlock
 {
     public static string spriteString = "AroundBombBlock_{0}";
-    public override string SpriteString { get => spriteString; }
+    public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
     public override void ExplosionBombBlock()
     {
@@ -22,9 +22,5 @@ public class AroundBombBlock : BombBlock
         yield return instEffect.YieldEffectDuration;
         base.ExplosionBombBlock();
         BombBlockBasicHit(true, 3);
-    }
-    protected override string GetSpriteNameByBlockNumber()
-    {
-        return string.Format(SpriteString, BlockNumber);
     }
 }

@@ -15,7 +15,6 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         {
             mSelectedChapterNum = value;
             if (mSelectedChapterNum < 0) { mSelectedChapterNum = 0; }
-            if (mSelectedChapterNum >= mChapterGimmickArr.Length) { mSelectedChapterNum = mChapterGimmickArr.Length - 1; }
             PlayerPrefs.SetInt("LastPlayChapterNum", mSelectedChapterNum);
         }
     }
@@ -26,9 +25,11 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     [SerializeField] private List<TutorialStageCellUI> mTutoStageButtonList = new List<TutorialStageCellUI>();
 
     [Header("Chapter")]
-    [SerializeField] private MapGimmickInfo[] mChapterGimmickArr = new MapGimmickInfo[2];
-    [SerializeField] private ChapterData[] mChapterDataArr = new ChapterData[2];
-    public int GetChapterCount { get => mChapterGimmickArr.Length; }
+    [SerializeField] private ChapterData[] mChapterDataArr = new ChapterData[0];
+    public int GetChapterCount
+    {
+        get => mChapterDataArr.Length;
+    }
 
 
     public BoosterItemData[] UseBoosterItemArr = new BoosterItemData[3];
@@ -110,10 +111,6 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
     }
     public void ChapterStart()
     {
-        // InGameUseDataManager.Instance.ConceptName = "Concept_0";
-        // InGameUseDataManager.Instance.MapName = "DayMap_0";
-
-        InGameUseDataManager.Instance.ChapterMapGimmickInfo = mChapterGimmickArr[mSelectedChapterNum];
         InGameUseDataManager.Instance.CurrentChapterData = mChapterDataArr[mSelectedChapterNum];
 
         InGameUseDataManager.Instance.ChapterNumber = mSelectedChapterNum;

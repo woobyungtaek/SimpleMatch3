@@ -46,7 +46,7 @@ public class Block : MonoBehaviour, System.IDisposable
         mBlockNumber = blockNumber;
         mBlockHP = blockHP;
         ExcuteCalculateHomiingOrder(null);
-        mBlockSprite.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(GetSpriteNameByBlockNumber());
+        mBlockSprite.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(SpriteString);
     }
     public virtual void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion) { }
     public virtual void SplashHitBlock(Tile tile, BlockContainer blockContainer) { }
@@ -76,10 +76,6 @@ public class Block : MonoBehaviour, System.IDisposable
     {
         blockContainer.RemoveBlockByBlock(this);
         //GameObjectPool.ReturnObject(gameObject);
-    }
-    protected virtual string GetSpriteNameByBlockNumber()
-    {
-        return null;
     }
 
     public void Dispose() { }

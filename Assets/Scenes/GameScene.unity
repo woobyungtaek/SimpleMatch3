@@ -2338,9 +2338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04d23a4a4ceee6340b3621f879aa7db4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mConceptName: Concept_0
-  mMapName: DayMap_3
-  mMapData: {fileID: 11400000, guid: 52960ec338d30af4c875fecef66647c6, type: 2}
+  mMapData: {fileID: 11400000, guid: 4d4a409a16a3ea64a86a93ec7f7a8b88, type: 2}
   mMainCamera: {fileID: 519420031}
   mCharacter: {fileID: 2009906488}
   mSpeachBubble: {fileID: 1046662729}
@@ -4995,7 +4993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1826200290
 RectTransform:
   m_ObjectHideFlags: 0

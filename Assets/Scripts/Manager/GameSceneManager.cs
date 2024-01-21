@@ -6,16 +6,10 @@ using WBTWeen;
 
 public class GameSceneManager : MonoBehaviour
 {
-    private const string MAP_DATA_FOLDER_PATH = "MapData/";
-    private const string TUTO_DATA_FORMAT = "TutoData/{0}";
-
-    [Header("Stage Data")]
-    [SerializeField] private string mConceptName;
-    [SerializeField] private string mMapName;
+    private readonly string TUTO_DATA_FORMAT = "TutoData/{0}";
 
     [SerializeField] private MapData mMapData;
     private TutorialData mTutoData;
-    private StringBuilder mLoadMapStrBuilder = new StringBuilder();
 
     [Header("Game Scene Direction")]
     [SerializeField] private Camera mMainCamera;
@@ -74,10 +68,6 @@ public class GameSceneManager : MonoBehaviour
             int currentMapDataIndex = missionManager.PartCount;
             mMapData = InGameUseDataManager.Instance.CurrentChapterData.MapDataList[currentMapDataIndex];
         }
-        else
-        {
-            //LoadMapDataInternal();
-        }
 
         LoadTutoDataInternal();
 
@@ -116,37 +106,8 @@ public class GameSceneManager : MonoBehaviour
             int currentMapDataIndex = MissionManager.Instance.PartCount;
             mMapData = InGameUseDataManager.Instance.CurrentChapterData.MapDataList[currentMapDataIndex];   
         }
-        else
-        {
-            if (!string.IsNullOrEmpty(data.ConceptName))
-            {
-                mConceptName = data.ConceptName;
-            }
-            mMapName = data.MapName;
-        }
     }
 
-    private void LoadMapDataInternal()
-    {
-        mLoadMapStrBuilder.Clear();
-
-        mLoadMapStrBuilder.Append(MAP_DATA_FOLDER_PATH);
-        mLoadMapStrBuilder.Append(mConceptName);
-        if (!string.IsNullOrEmpty(mConceptName)) { mLoadMapStrBuilder.Append('/'); }
-
-        mLoadMapStrBuilder.Append(mMapName);
-
-
-        if(mMapData == null)
-        {
-            mMapData = new MapData();
-        }
-        Utility.LoadJsonFile<MapLoadData>(mLoadMapStrBuilder.ToString()).Copy(mMapData);
-        if (mMapData == null)
-        {
-            Debug.Log("맵데이터가 제대로 로드되지 않았습니다.");
-        }
-    }
     private void LoadTutoDataInternal()
     {
         if (string.IsNullOrEmpty(mMapData.tutoName)) { return; }

@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class BlockContainer : MonoBehaviour, IReserveData
 {
-    public bool IsFixed { get => mMainBlock.IsFixed; }
+    public bool IsFixed
+    {
+        get
+        {
+            if (mMainBlock != null)
+            {
+                return mMainBlock.IsFixed;
+            }
+            return false;
+        }
+    }
     public bool IsOnlyNormalBlock
     {
         get
@@ -27,6 +37,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
     // 블록 정보
     [SerializeField] private Block mMainBlock;
     [SerializeField] private List<Block> mBlockList = new List<Block>();
+    [SerializeField] private List<Block> mReserveBlockList = new List<Block>();
 
     // 드랍(무빙)
     private Vector3 mStartPos;
@@ -41,7 +52,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
     // 이동시 경로
     private Queue<Tile> mRouteTileQueue = new Queue<Tile>();
     public Queue<Tile> RouteTileQueue { get => mRouteTileQueue; }
-    public Tile DestTile;
+    public Tile DestTile { get; set; }
 
     // 스왑
     public void StartMovePositionByTile(Tile targetTile, float duration)
@@ -66,7 +77,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
     float speed = 1f;
     // 드랍
     private Coroutine mMoveRouteCoroutine;
-    public void StartMovePositionByRoute(Tile startTile = null)
+    public void StartMovePositionByRoute()
     {
         if (IsFixed) { return; }
         if (mRouteTileQueue.Count == 0) { return; }
@@ -79,17 +90,15 @@ public class BlockContainer : MonoBehaviour, IReserveData
             StopCoroutine(mPushCoroutine);
             mPushCoroutine = null;
         }
-
-        mMoveRouteCoroutine = StartCoroutine(MoveRouteCoroutine(startTile));
+        mMoveRouteCoroutine = StartCoroutine(MoveRouteCoroutine());
     }
-
-    private IEnumerator MoveRouteCoroutine(Tile startTile = null)
+    private IEnumerator MoveRouteCoroutine()
     {
         Tile targetTile = null;
-        Tile beforeTile = startTile;
 
         float mTimeLimit = 1f;
-        mMoveAniCurve = BlockManager.Instance.BlockArriveAniCurve;
+        mMoveAniCurve = BlockManager.Instance.BlockMoveAniCurve;
+
         while (mRouteTileQueue.Count != 0)
         {
             mStartPos = transform.position;
@@ -104,40 +113,19 @@ public class BlockContainer : MonoBehaviour, IReserveData
                 mMoveAniCurve = BlockManager.Instance.BlockArriveAniCurve;
             }
 
-            // 흐르는 상태인지 확인
-            bool bFlowState = false;
-            if (beforeTile != null)
-            {
-                if (targetTile != beforeTile.SendTileList[0])
-                {
-                    bFlowState = true;
-                }
-            }
-
-            if (bFlowState)
-            {
-                // 위로 블록이 없어야함
-                // 아래가 Arrive여야함
-                while (!targetTile.IsPossibleFlowDrop)
-                {
-                    yield return null;
-                }
-            }
-            else
-            {
-                // 내리기 가능한 상태인지 확인
-                while (targetTile.BlockContainerOrNull != null)
-                {
-                    yield return null;
-                }
-            }
-
-            if (beforeTile != null)
-            {
-                beforeTile.BlockContainerOrNull = null;
-            }
-            targetTile.BlockContainerOrNull = this;
             var targetPos = targetTile.transform.position;
+
+            //// 현재 블록 컨테이너의 목표의 타일의 아래가 도착상태일때
+            //if (DestTile != null)
+            //{
+            //    if (DestTile.SendTileList[0] != null)
+            //    {
+            //        while (DestTile.SendTileList[0].IsArrive == false)
+            //        {
+            //            yield return null;
+            //        }
+            //    }
+            //}
 
             // 이동
             mTime = 0f;
@@ -147,35 +135,31 @@ public class BlockContainer : MonoBehaviour, IReserveData
                 transform.position = Vector3.LerpUnclamped(mStartPos, targetPos, mMoveAniCurve.Evaluate(mTime));
                 yield return null;
             }
-            beforeTile = targetTile;
         }
+        targetTile.BlockContainerOrNull = this;
 
         targetTile.IsArrive = true;
         transform.position = targetTile.transform.position;
 
         mMoveRouteCoroutine = null;
+
         ObserverCenter.Instance.SendNotification(Message.DropEndCheck);
     }
 
     // 밀려 나기 연출
     public void StartPushEffectCoroutine(Vector2 dir, float pushPower, Tile startTile)
     {
-        //if (mMoveRouteCoroutine != null)
-        //{
-        //    if (mPushCoroutine != null) { StopCoroutine(mPushCoroutine); }
-        //    return; 
-        //}
         if (mPushCoroutine != null)
         {
             StopCoroutine(mPushCoroutine);
             mPushCoroutine = null;
         }
-        
+
         mStartPos = startTile.transform.position;
         mPushPos.x = mStartPos.x + dir.x;
         mPushPos.y = mStartPos.y - dir.y;
 
-        if(mPushAniCurve == null)
+        if (mPushAniCurve == null)
         {
             mPushAniCurve = BlockManager.Instance.BlockPushAniCurve;
         }
@@ -227,6 +211,15 @@ public class BlockContainer : MonoBehaviour, IReserveData
         {
             mBlockList[index].HitBlock(tile, this, bExplosionHit);
         }
+
+        // Reserve를 여기다 걸어 놓으면?
+        loopCount = mReserveBlockList.Count;
+        for (int index = 0; index < loopCount; ++index)
+        {
+            AddBlockToBlockList(mReserveBlockList[index]);
+        }
+        mReserveBlockList.Clear();
+
         if (mBlockList.Count == 0)
         {
             tile.BlockContainerOrNull = null;
@@ -234,7 +227,6 @@ public class BlockContainer : MonoBehaviour, IReserveData
         }
     }
 
-    // SplashHitBlockContainer > 이미 Hit거나 SpalshHit면 반려 한다.
     public void SplashHitBlockContainer(Tile tile)
     {
         int loopCount = mBlockList.Count - 1;
@@ -242,6 +234,15 @@ public class BlockContainer : MonoBehaviour, IReserveData
         {
             mBlockList[index].SplashHitBlock(tile, this);
         }
+
+        // Reserve를 여기다 걸어 놓으면?
+        loopCount = mReserveBlockList.Count;
+        for (int index = 0; index < loopCount; ++index)
+        {
+            AddBlockToBlockList(mReserveBlockList[index]);
+        }
+        mReserveBlockList.Clear();
+
         if (mBlockList.Count == 0)
         {
             tile.BlockContainerOrNull = null;
@@ -249,6 +250,11 @@ public class BlockContainer : MonoBehaviour, IReserveData
         }
     }
 
+    public void AddBlockToReserveList(Block block)
+    {
+        block.transform.SetParent(transform);
+        mReserveBlockList.Add(block);
+    }
     public void AddBlockToBlockList(Block block)
     {
         block.transform.SetParent(transform);
@@ -264,7 +270,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
     }
     public void RemoveAllBlock()
     {
-        if (mPushCoroutine != null) 
+        if (mPushCoroutine != null)
         {
             StopCoroutine(mPushCoroutine);
             mPushCoroutine = null;

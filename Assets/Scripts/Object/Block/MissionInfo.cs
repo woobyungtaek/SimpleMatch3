@@ -28,6 +28,7 @@ public struct MissionData_Element
     public string MissionName;
     public int MissionColor;
     public int MissionCount;
+    public int MissionHP;
 }
 
 [System.Serializable]
@@ -64,6 +65,13 @@ public class MissionDataPreset
         set
         {
             mCurrentMissionDataElement.MissionCount = value;
+        }
+    }
+    public int Block_HP
+    {
+        set
+        {
+            mCurrentMissionDataElement.MissionHP = value;
             MissionList.Add(mCurrentMissionDataElement);
         }
     }
@@ -138,7 +146,7 @@ public class MissionData : Pool<MissionData>
 
     public void AddMissionInfoForce(int index, MissionInfo missionInfo)
     {
-        if(MissionInfoList.Count <= index)
+        if (MissionInfoList.Count <= index)
         {
             MissionInfoList.Add(missionInfo);
             return;
@@ -155,7 +163,7 @@ public class MissionInfo : Pool<MissionInfo>
     private static string SpriteFieldName = "spriteString";
 
     public Type MissionType { get => mMissionType; }
-    public String MissionSpriteName { get => mSpriteName; }
+    public string MissionSpriteName { get => mSpriteName; }
     public int MissionColor { get => mMissionColor; set => mMissionColor = value; }
     public int MissionCount
     {
@@ -166,32 +174,44 @@ public class MissionInfo : Pool<MissionInfo>
             if (mMissionCount < 0) { mMissionCount = 0; }
         }
     }
+    public int MissionHP
+    {
+        get => mMissionHP;
+    }
 
     private Type mMissionType;
     private int mMissionColor;
     private int mMissionCount;
+    private int mMissionHP;
 
     private string mSpriteName;
 
-    public void InitMissionInfo(Type missionType, int color, int count)
+    public void InitMissionInfo(Type missionType, int color, int count, int hp)
     {
         mMissionType = missionType;
         mMissionColor = color;
         mMissionCount = count;
+        mMissionHP = hp;
 
         // SpriteName을 가져오는 부분 부터 너무 분산되어있다.
         // IMissionTarget을 만들고 타겟이 될 수 있는 Class에 붙여서 강제로 입력가능하게 하자
+        // 어떤 애들은 그냥 이미지, 어떤애들은 체력기반 이미지, 어떤애들은 컬러기반 이다.
+        // IMissionTarget으로 타입에 맞는 이미지를 가져와야한다.
+
 
         mSpriteName = (string)missionType.GetField(SpriteFieldName).GetValue(null);
+
+        // 아래처럼 이미지 갱신이 어떤 기반으로 되어야하는지 인터페이스로 표시
+        // if (createType.GetInterface("IForceCreateOnBoard") != null)
         mSpriteName = string.Format(mSpriteName, mMissionColor);
     }
-    public void InitMissionInfo(string missionName, int color, int count)
+    public void InitMissionInfo(string missionName, int color, int count, int hp)
     {
-        InitMissionInfo(Type.GetType(missionName), color, count);
+        InitMissionInfo(Type.GetType(missionName), color, count, hp);
     }
     public void InitMissionInfo(MissionData_Element element)
     {
-        InitMissionInfo(Type.GetType(element.MissionName), element.MissionColor, element.MissionCount);
+        InitMissionInfo(Type.GetType(element.MissionName), element.MissionColor, element.MissionCount, element.MissionHP);
     }
 
     public override void Dispose() { }

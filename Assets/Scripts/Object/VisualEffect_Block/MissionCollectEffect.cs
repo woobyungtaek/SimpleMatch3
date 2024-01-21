@@ -8,7 +8,7 @@ public class MissionCollectEffect : MonoBehaviour
     public static WaitForSeconds MaxDuration = new WaitForSeconds(MaxSec);
     
     private static float MaxSec= 1.25f;
-    private static float twoPI = 360 * Mathf.Deg2Rad;
+    //private static float twoPI = 360 * Mathf.Deg2Rad;
     private static WaitForSeconds mYieldEffectDuration;// = new WaitForSeconds(Duration);
 
     public WaitForSeconds YieldEffectDuration { get => mYieldEffectDuration; }
@@ -24,7 +24,7 @@ public class MissionCollectEffect : MonoBehaviour
     private Vector3     point2Pos = Vector3.zero;
     private float       mTime = 0f;
     private float mDuration = 1f;
-    private Matrix4x4   mCGMatrix = new Matrix4x4();
+    //private Matrix4x4   mCGMatrix = new Matrix4x4();
 
     [SerializeField]
     private AnimationCurve mAniCurve = new AnimationCurve();

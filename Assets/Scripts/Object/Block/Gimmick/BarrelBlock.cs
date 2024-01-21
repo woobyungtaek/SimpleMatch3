@@ -11,6 +11,7 @@ public class BarrelBlock : Block, IReserveBlockMaker
         mBlockNumber = -1; // blockNumber;
         mBlockHP = blockHP;
         ExcuteCalculateHomiingOrder(null);
+        mBlockSprite.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(SpriteString);
     }
 
     public override void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion)
@@ -20,7 +21,9 @@ public class BarrelBlock : Block, IReserveBlockMaker
         {
             CheckMissionBlock();
             base.RemoveBlockToBlockContianer(blockContainer);
+            return;
         }
+        mBlockSprite.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(SpriteString);
     }
     public override void SplashHitBlock(Tile tile, BlockContainer blockContainer)
     {

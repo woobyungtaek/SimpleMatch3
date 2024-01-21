@@ -39,6 +39,8 @@ public interface IReserveData
 {
     bool IsFixed { get; }
 
+    Tile DestTile { get; set; }
+
     Queue<Tile> RouteTileQueue { get; }
 }
 
@@ -47,6 +49,8 @@ public class ReserveData : IReserveData, IReUseObject
     private Queue<Tile> mRouteTileQueue = new Queue<Tile>();
 
     public Queue<Tile> RouteTileQueue { get => mRouteTileQueue; }
+
+    public Tile DestTile { get; set; }
 
     public bool IsFixed { get => false; }
 

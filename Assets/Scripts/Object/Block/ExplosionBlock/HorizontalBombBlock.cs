@@ -5,7 +5,7 @@ using UnityEngine;
 public class HorizontalBombBlock : BombBlock
 {
     public static string spriteString = "HorizontalBombBlock_{0}";
-    public override string SpriteString { get => spriteString; }
+    public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
     public override void ExplosionBombBlock()
     {
@@ -25,8 +25,4 @@ public class HorizontalBombBlock : BombBlock
         BombBlockBasicHit(false);
     }
 
-    protected override string GetSpriteNameByBlockNumber()
-    {
-        return string.Format(SpriteString, BlockNumber);
-    }
 }

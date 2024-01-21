@@ -8,6 +8,15 @@ public class NormalTile : Tile
 
     private List<TileGimmick> mTileGimmickList = new List<TileGimmick>();
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            BlockContainerOrNull?.StartMovePositionByRoute();
+        }
+    }
+
     public int HomingOrder
     {
         get
@@ -24,6 +33,41 @@ public class NormalTile : Tile
                 result = mTileGimmickList[index].HomingOrder;
             }
             return result;
+        }
+    }
+
+
+    public override bool IsCanSend
+    {
+        get
+        {
+            if (ReserveData == null) { return false; }
+            if (ReserveData.IsFixed) { return false; }
+            if (mSendTileList.Count == 0) { return false; }
+
+            Tile underTile = mSendTileList[0];
+            if (underTile == null) { return false; }
+            if (underTile.ReserveData == null) { return true; }
+            return false;
+        }
+    }
+    public override Tile IsCanSend_Flow
+    {
+        get
+        {
+            if (ReserveData == null) { return null; }
+            if (ReserveData.IsFixed) { return null; }
+            if (mSendTileList.Count == 0) { return null; }
+
+            for (int idx = 1; idx < mSendTileList.Count; ++idx)
+            {
+                if (mSendTileList[idx] == null) { continue; }
+                if (mSendTileList[idx].ReserveData != null) { continue; }
+                if (!mSendTileList[idx].IsCanFlow_Up) { continue; }
+                if (!mSendTileList[idx].IsCanFlow_Down) { continue; }
+                return mSendTileList[idx];
+            }
+            return null;
         }
     }
 
@@ -62,14 +106,29 @@ public class NormalTile : Tile
 
             Tile underTile = mSendTileList[0];
             if (underTile == null) { return true; }
-            if (underTile.ReserveData == null) { return false; }
-            if (underTile.ReserveData.IsFixed)
-            {
-                return true;
-            }
+            //if (underTile.ReserveData == null) { return false; } // 비어있는데 위 아래로 
+            //if (underTile.ReserveData.IsFixed) { return true; }
+            if (underTile.ReserveData != null) { if (underTile.ReserveData.IsFixed) { return true; } }
 
             // 아래 타일로는 판단이 불가능하므로 그 아래를 체크한다.
             return underTile.IsCanFlow_Down;
+        }
+    }
+
+    public override bool IsFullUnder
+    {
+        get
+        {
+            if (ReserveData == null) { return false; }
+            if (ReserveData.IsFixed) { return true; }
+
+            foreach(var tile in mSendTileList)
+            {
+                if(tile == null) { continue; }
+                if (!tile.IsFullUnder) { return false; }
+            }
+
+            return true;
         }
     }
 
@@ -160,6 +219,11 @@ public class NormalTile : Tile
         {
             return ReserveData != null;
         }
+    }
+
+    public override EDropableState DropableState
+    {
+        set => mDropAbleState = value;
     }
 
     // PushEffect
@@ -303,7 +367,7 @@ public class NormalTile : Tile
             mPushPower = pushPower * 0.75f;
         }
 
-        mPushEffectOrder = order;        
+        mPushEffectOrder = order;
         pushPower -= mPushPower * 0.5f;
 
         foreach (var tile in mAroundTileList)
@@ -327,89 +391,112 @@ public class NormalTile : Tile
         base.Dispose();
     }
 
-    public override void CheckDrop()
+    public override void SendReserveData(Tile sendTile)
     {
-        //데이터가 있다면 행동하지 않는다.
-        if (ReserveData != null)
-        {
-            return;
-        }
-        if (RecieveTileList[0] == null) { return; }
+        ReserveData = sendTile.ReserveData;
+        sendTile.ReserveData = null;
 
-        // 바로 위 타일로부터 받아올 수 있는지 확인한다.
-        // 생성자 타일이거나 또는 데이터가 있거나
-        if (RecieveTileList[0].IsCreateTile)
+        ReserveData.Enqueue(this);
+    }
+
+    public override bool StraightMove()
+    {
+        if (ReserveData == null) { return false; }
+        if (ReserveData.IsFixed) { return false; }
+        if (mSendTileList.Count == 0) { return false; }
+
+        Tile underTile = mSendTileList[0];
+        if (underTile == null) { return false; }
+        if (underTile.ReserveData != null) { return false; }
+
+        underTile.SendReserveData(this);
+        return true;
+    }
+
+    public override bool FlowingMove()
+    {
+        if (ReserveData == null) { return false; }
+        if (ReserveData.IsFixed) { return false; }        
+        if (mSendTileList.Count == 0) { return false; }
+
+        Tile underTile = mSendTileList[0];
+        if (underTile == null) { return false; }
+        if (underTile.ReserveData == null) { return false; }
+
+        Tile targetTile = null;
+        for(int index = 1; index < mSendTileList.Count; ++index)
         {
-            RecieveTileList[0].RequestReserveData(this); // 가져오기 실행
-            return;
+            if(mSendTileList[index] == null) { continue; }
+            if(mSendTileList[index].ReserveData != null) { continue; }
+            targetTile = mSendTileList[index];
         }
-        if (RecieveTileList[0].ReserveData != null)
+
+        if(targetTile == null) { return false; }
+        if (!targetTile.IsCanFlow_Up) { return false; }
+
+        if (!underTile.IsFullUnder) { return false; }
+
+        targetTile.SendReserveData(this);
+
+        return true;
+    }
+
+    public override bool CheckDropableState()
+    {
+        switch (DropableState)
         {
-            if (!RecieveTileList[0].ReserveData.IsFixed)
+            case EDropableState.Possible: return true;
+            case EDropableState.Impossible: return false;
+        }
+
+        if (BlockContainerOrNull != null)
+        {
+            if (BlockContainerOrNull.IsFixed)
             {
-                RecieveTileList[0].RequestReserveData(this); // 가져오기 실행
-                return;
+                DropableState = EDropableState.Impossible;
+                return false;
             }
         }
 
-        // 위로 확인해서 떨어질 블록이 있는지 확인한다.
-        // 흐르면 안된다. false => return;
-        if (!IsCanFlow_Up) { return; }
-
-        // 아래로 확인해서 빈블록이 있는지 확인한다.
-        if (!IsCanFlow_Down) { return; }
-
-        // 아래 확인시 부터 필요한 결과 값 Dict
-        mFlowStateDict.Clear();
-        // 내 아래쪽으로는 모두 추가
-        AddFlowStateDict(true);
-
-        // 아래 타일이 안움직인다는 확인이 필요하다.
-        bool bResult = true;
-        if (SendTileList[0] != null)
+        for (int index = 0; index < mRecieveTileList.Count; ++index)
         {
-            SendTileList[0].IsCanFlow_Empty(ref bResult);
-        }
-        if (!bResult) { return; }
+            if (mRecieveTileList[index] == null) { continue; }
+            bool bDropable = mRecieveTileList[index].CheckDropableState();
 
-        // 좌우로 확인해서 받아올수있는 블록이 있는지 확인한다.
-        // 예를 먼저하면 좀 줄 일 수 있을 듯
-        Tile flowTargetTile = null;
-        for (int idx = 1; idx < RecieveTileList.Count; ++idx)
-        {
-            var tile = RecieveTileList[idx];
-            if (tile == null) { continue; }
-            if (tile.ReserveData == null) { continue; }
-            if (tile.ReserveData.IsFixed) { continue; }
-            if (!tile.IsCanFlow_Down) { continue; }
-            flowTargetTile = tile;
+            if (!bDropable) { continue; }
+            DropableState = EDropableState.Possible;
+            return true;
         }
-        if (flowTargetTile == null) { return; }
 
-        flowTargetTile.RequestReserveData(this); // 가져오기 실행
+        DropableState = EDropableState.Impossible;
+        return false;
     }
 
-    // 가져오기
-    public override void RequestReserveData(Tile requestTile)
+    public override bool CheckDropReadyState()
     {
-        IsNotReady = true;
+        if(ReserveData != null)
+        {
+            if (ReserveData.IsFixed) { return true; }
+            return false;
+        }
 
-        // 경로에 추가
-        ReserveData.Enqueue(this);
+        for (int index = 0; index < mRecieveTileList.Count; ++index)
+        {
+            if(mRecieveTileList[index] == null) { continue; }
+            bool bReady = mRecieveTileList[index].CheckDropReadyState();
+            if (bReady) { continue; }
+            return false;
+        }
 
-        // requestTile  > 데이터를 달라고 요청한 쪽
-        requestTile.ReserveData = ReserveData;
-        ReserveData = null;
-
-        // 넘긴쪽은 다시 체크
-        CheckDrop();
+        return true;
     }
+
     public override void StartDrop()
     {
         if (BlockContainerOrNull == null) { return; }
         if (BlockContainerOrNull.RouteTileQueue.Count == 0) { return; }
-
-        BlockContainerOrNull.StartMovePositionByRoute(this);
+        BlockContainerOrNull.StartMovePositionByRoute();
+        BlockContainerOrNull = null;
     }
 
 

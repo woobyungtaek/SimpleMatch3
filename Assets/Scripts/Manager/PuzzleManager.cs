@@ -75,6 +75,10 @@ public class PuzzleManager : SceneSingleton<PuzzleManager>
         {
             TileMapManager.Instance.ShuffleAllBlockContianer();
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            //TileMapManager.Instance.DropBlockNew();
+        }
     }
 #endif
 

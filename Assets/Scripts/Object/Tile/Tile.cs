@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EDropableState
+{
+    NeedCheck,
+    Possible,
+    Impossible
+}
+
 public class Tile : MonoBehaviour, System.IDisposable
 {
     protected static Dictionary<Vector2, bool> mFlowStateDict = new Dictionary<Vector2, bool>(new Vector2Comparer());
 
-    public static bool IsNotReady;
+    //public static bool IsNotReady;
     public static bool IsMoveStart;
 
     [Header("Private")]
@@ -21,10 +28,11 @@ public class Tile : MonoBehaviour, System.IDisposable
     [Header("Protected")]
     [SerializeField] protected bool mbFlowCheckTile;
     [SerializeField] protected IReserveData mReserveData;
+    [SerializeField] protected EDropableState mDropAbleState;
 
     [Header("BlockContainer")]
     public BlockContainer BlockContainerOrNull;
-    private BlockContainer mStartBlockContainer;
+    protected BlockContainer mStartBlockContainer;
 
     [Header("Send And Recieve")]
     [SerializeField] protected List<Tile> mSendTileList = new List<Tile>();
@@ -60,8 +68,13 @@ public class Tile : MonoBehaviour, System.IDisposable
         }
     }
 
+    public virtual bool IsCanSend { get => false; }
+    public virtual Tile IsCanSend_Flow { get => null; }
+
     public virtual bool IsCanFlow_Up { get => false; }
     public virtual bool IsCanFlow_Down { get => true; }
+
+    public virtual bool IsFullUnder { get => true; }
 
     public virtual bool IsCanFlow_UpAtEmpty { get => false; }
     public virtual void IsCanFlow_Empty(ref bool result)
@@ -71,6 +84,11 @@ public class Tile : MonoBehaviour, System.IDisposable
 
     public virtual bool IsCanFlow_UpEmpty { get => true; }
 
+    public virtual EDropableState DropableState
+    {
+        get => mDropAbleState;
+        set => mDropAbleState = EDropableState.Impossible;
+    }
 
     public virtual bool IsChecked { get => true; set { } }
     public virtual bool IsReady { get => true; }
@@ -258,9 +276,29 @@ public class Tile : MonoBehaviour, System.IDisposable
         mStartBlockContainer = BlockContainerOrNull;
     }
 
+    #region DropBlockFinal
 
-    public virtual void CheckDrop() { }
-    public virtual void RequestReserveData(Tile requestTile) { }
+    // 생성 타일인가? ReserveData가 있는가? yes
+    // ReserveData가 고정이 아닌가? yes
+    // 아래 타일이 비어있는가? yes
+    // 아래로 1칸 옮기기 (true) 반환, 그 외 (false)
+    public virtual bool StraightMove() { return false; }
+
+    // 생성 타일인가? ReserveData가 있는가?
+    // 좌,우 하단의 타일에 ReserveData가 없는가?
+    // 좌, 우 하단의 타일이 흘러내림 가능 타일인가? 
+    // 아래이 타일이 고정이 된 상태인가?
+    // 대상 타일로 1칸 옮기기 (true) 반환, 그 외 (false)
+    public virtual bool FlowingMove() { return false; }
+
+    #endregion
+
+
+    public virtual bool CheckDropableState() { return false; }
+    public virtual bool CheckDropReadyState() { return true; }
+
+    public virtual void SendReserveData(Tile sendTile) { }
+
     protected IEnumerator CreateBlockCoroutine()
     {
         if (mCreateReserveDataQueue.Count != 0)
@@ -282,6 +320,15 @@ public class Tile : MonoBehaviour, System.IDisposable
                 yield return null;
             }
 
+            //var destUnderTile = data.DestTile.SendTileList[0];
+            //if (destUnderTile != null)
+            //{
+            //    while (destUnderTile.IsArrive == false)
+            //    {
+            //        yield return null;
+            //    }
+            //}
+
             // 행동
             CreateBlockByCreateTileData();          // 생성기 위치에 블록컨테이너 생성
 
@@ -299,19 +346,18 @@ public class Tile : MonoBehaviour, System.IDisposable
         // 생성이 끝나면 코루틴 해제
         mCreateCoroutine = null;
     }
-
     public void AddDestTile()
     {
         if (ReserveData != null && ReserveData.RouteTileQueue.Count > 0)
         {
             IsMoveStart = true;
             IsArrive = false;
-            ReserveData.RouteTileQueue.Dequeue(); // 시작지점 빼기
-            ReserveData.Enqueue(this);            // 도착지점 넣기
-            if (ReserveData is BlockContainer)
-            {
-                (ReserveData as BlockContainer).DestTile = this;
-            }
+            //ReserveData.RouteTileQueue.Dequeue(); // 시작지점 빼기
+            //ReserveData.Enqueue(this);            // 도착지점 넣기
+            ReserveData.DestTile = this;
+
+            //var bc = ReserveData as BlockContainer;
+            //if (bc != null) { bc.DestTile = this; }
         }
 
         BlockContainerOrNull = mStartBlockContainer;

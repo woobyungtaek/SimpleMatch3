@@ -5,7 +5,7 @@ using UnityEngine;
 public class HomingBombBlock : BombBlock
 {
     public static string spriteString = "HomingExplosionBlock_{0}";
-    public override string SpriteString { get => spriteString; }
+    public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
     public override void ExplosionBombBlock()
     {
@@ -29,10 +29,5 @@ public class HomingBombBlock : BombBlock
 
         BombBlockBasicHit(true);
         AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
-    }
-
-    protected override string GetSpriteNameByBlockNumber()
-    {
-        return string.Format(SpriteString, BlockNumber);
     }
 }

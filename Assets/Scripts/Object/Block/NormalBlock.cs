@@ -5,7 +5,7 @@ using UnityEngine;
 public class NormalBlock : Block
 {
     public static string spriteString = "NormalBlock_{0}";
-    public override string SpriteString { get => spriteString; }
+    public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
     public override void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion)
     {
@@ -15,10 +15,5 @@ public class NormalBlock : Block
             CheckMissionBlock();
             base.RemoveBlockToBlockContianer(blockContainer);
         }
-    }
-
-    protected override string GetSpriteNameByBlockNumber()
-    {
-        return string.Format(SpriteString, BlockNumber);
     }
 }

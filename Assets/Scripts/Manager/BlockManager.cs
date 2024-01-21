@@ -54,6 +54,17 @@ public class BlockManager : SceneSingleton<BlockManager>
         CreateBlockPrefabDictsByFieldInfoInternal();
     }
     
+
+    public void CreateBlockInBlockContainerReserve(BlockContainer blockContainer , Type blockType, int blockNumber, int blockHP, Transform parentOrNull = null)
+    {
+        Block createBlock;
+
+        createBlock = GetBlockByBlockType(blockType);
+        createBlock.SetBlockData(blockNumber, blockHP);
+
+        blockContainer.AddBlockToReserveList(createBlock);
+        blockContainer.ClearQueue();
+    }
     public void CreateBlockByBlockDataInTile(Tile tile, Type blockType, int blockNumber, int blockHP, Transform parentOrNull = null)
     {
         Block createBlock;

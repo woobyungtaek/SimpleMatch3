@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EmptyTile : Tile
 {
+
     public override bool IsCanFlow_Up { get => true; }
     public override bool IsCanFlow_UpAtEmpty { get => true; }
 
@@ -17,17 +18,10 @@ public class EmptyTile : Tile
         BlockMakerOrNull = null;
     }
 
-    public override void RequestReserveData(Tile requestTile)
+    public override bool CheckDropableState()
     {
-        if (IsCreateTile == false) { return; }
-
-        IsNotReady = true;
-
-        var data = ObjectPool.GetInst<ReserveData>();
-        data.ClearQueue();
-        data.Enqueue(this);
-        requestTile.ReserveData = data;
-        mCreateReserveDataQueue.Enqueue(data);
+        if (IsCreateTile) { return true; }
+        return false;
     }
 
     public override void StartDrop()

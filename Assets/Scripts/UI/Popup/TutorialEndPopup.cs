@@ -36,6 +36,7 @@ public class TutorialEndPopup : Popup
             OnCancelButtonClicked();
             return;
         }
+
         MapDataInfoNotiArg data = new MapDataInfoNotiArg();
         data.ConceptName = TUTO_FOLDER_NAME;
         data.MapName = string.Format(TUTO_MAP_FILE_FORMAT, mNextIndex);

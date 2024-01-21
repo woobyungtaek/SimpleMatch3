@@ -83,8 +83,6 @@ public class TutorialManager : SceneSingleton<TutorialManager>
         mNextButton.gameObject.SetActive(false);
         mHighlight.gameObject.SetActive(false);
 
-        MissionManager.Instance.SetTutoMissionList(data.missionList);
-        //ItemManager.Instance.AddSkillCount(typeof(HammerSkill), data.HammerCount);
         ItemManager.Instance.AddSkillCount(typeof(RandomBoxSkill), data.RandBoxCount);
 
         PuzzleManager.Instance.RemoveGameEndObseverByTutoManager();

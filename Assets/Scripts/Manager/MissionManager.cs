@@ -170,10 +170,10 @@ public class MissionManager : SceneSingleton<MissionManager>
 
     private MissionDataPreset GetMissionDataPreset(EMissionLevel level)
     {
-        int count = mChapterData.DiffList[(int)level].list.Count;
+        int count = mChapterData.ChapterDiffData[level].Count;
         int randIdx = Random.Range(0, count);
 
-        int missionIndex = mChapterData.DiffList[(int)level].list[randIdx];
+        int missionIndex = mChapterData.ChapterDiffData[level][randIdx];
 
         return mAllMissionList[missionIndex];
     }
@@ -336,15 +336,6 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
     }
 
-    public void SetTutoMissionList(List<MissionData_Element> tutoMissionList)
-    {
-        if (tutoMissionList == null) { return; }
-        if (tutoMissionList.Count <= 0) { return; }
-
-        var cost = 0;
-        //CreateMissionInfoListByDataList(tutoMissionList, out cost);
-    }
-
     public void SetNextStageInfo()
     {
         StageCount += 1;
@@ -495,6 +486,11 @@ public class MissionManager : SceneSingleton<MissionManager>
             var createType = mCurrentMissionData.MissionInfoList[index].MissionType;
             int createCount = mCurrentMissionData.MissionInfoList[index].MissionCount;
             int createColor = mCurrentMissionData.MissionInfoList[index].MissionColor;
+            int createHP = mCurrentMissionData.MissionInfoList[index].MissionHP;
+            if (createHP < 1)
+            {
+                createHP = 1;
+            }
             if (createType.GetInterface("IForceCreateOnBoard") != null)
             {
                 Debug.Log("강제 생성");
@@ -505,7 +501,7 @@ public class MissionManager : SceneSingleton<MissionManager>
 
                 Debug.Log($"생성 개수 (타일기믹) : {gapCount}");
 
-                TileMapManager.Instance.CreateMissionTargetOnTile(createType, gapCount, createColor, 1);
+                TileMapManager.Instance.CreateMissionTargetOnTile(createType, gapCount, createColor, createHP);
             }
             else if (createType.GetInterface("IReserveBlockMaker") != null)
             {
@@ -524,7 +520,7 @@ public class MissionManager : SceneSingleton<MissionManager>
                     createColor = Random.Range(0, BlockMaker.MaxColor);
                 }
                 reserveData.BlockColor = createColor;
-                reserveData.BlockHP = 1;
+                reserveData.BlockHP = createHP;
                 BlockMaker.SetRandomDelayCreateCount();
                 for (int cnt = 0; cnt < gapCount; ++cnt)
                 {
@@ -626,7 +622,7 @@ public class MissionManager : SceneSingleton<MissionManager>
     }
 
     // 강제로 추가
-    public void SetMissionTargetByForce(string type, int slot, int color, int amount)
+    public void SetMissionTargetByForce(string type, int slot, int color, int amount, int hp)
     {
         if (mCurrentMissionData == null)
         {
@@ -635,7 +631,7 @@ public class MissionManager : SceneSingleton<MissionManager>
         }
 
         var missionInfo = MissionInfo.Instantiate();
-        missionInfo.InitMissionInfo(System.Type.GetType(type), color, amount);
+        missionInfo.InitMissionInfo(System.Type.GetType(type), color, amount, hp);
         mCurrentMissionData.AddMissionInfoForce(slot, missionInfo);
 
         RefreshMissionCellUI();

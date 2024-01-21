@@ -45,8 +45,4 @@ public class ColorBombBlock : BombBlock
 
         BombBlockBasicHit(true);
     }
-    protected override string GetSpriteNameByBlockNumber()
-    {
-        return SpriteString;
-    }
 }
