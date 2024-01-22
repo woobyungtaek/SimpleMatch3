@@ -35,7 +35,6 @@ public class EdgeTile : Tile
         var data = ObjectPool.GetInst<ReserveData>();
         data.ClearQueue();
         data.DestTile = null;
-        //data.Enqueue(this);
         ReserveData = data;
         mCreateReserveDataQueue.Enqueue(data);
 
