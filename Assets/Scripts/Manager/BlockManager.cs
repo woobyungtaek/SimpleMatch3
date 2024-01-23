@@ -72,6 +72,7 @@ public class BlockManager : SceneSingleton<BlockManager>
         {
             tile.BlockContainerOrNull = GetEmptyBlockContainer(parentOrNull);
         }
+        tile.BlockContainerOrNull.RemoveAllBlock();
         tile.BlockContainerOrNull.transform.position = tile.transform.position;
 
         createBlock = GetBlockByBlockType(blockType);
