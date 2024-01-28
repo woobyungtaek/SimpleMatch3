@@ -104,6 +104,7 @@ public class GameObjectPool : MonoBehaviour
         T result = instDict[typeof(T)] as T;
 
         if (result == null) { Debug.AssertFormat(false, "해당 컴포넌트가 없습니다."); return null; }
+        result.gameObject.SetActive(true);
         return result;
     }
 

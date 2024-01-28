@@ -7,9 +7,9 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 {
     public int SelectedChapterNum
     {
-        get 
+        get
         {
-            return mSelectedChapterNum; 
+            return mSelectedChapterNum;
         }
         set
         {
@@ -52,7 +52,7 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
         if (PlayerPrefs.HasKey("LastPlayChapterNum"))
         {
-            SelectedChapterNum  = PlayerPrefs.GetInt("LastPlayChapterNum");
+            SelectedChapterNum = PlayerPrefs.GetInt("LastPlayChapterNum");
         }
 
         // 플레이어 정보 로드
@@ -73,6 +73,7 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
         if (Input.GetKeyDown(KeyCode.O)) { PlayerData.AddGold(-100); }
         if (Input.GetKeyDown(KeyCode.K)) { PlayerPrefs.DeleteAll(); }
         if (Input.GetKeyDown(KeyCode.G)) { PlayerData.AddExp(20); }
+        if (Input.GetKeyDown(KeyCode.H)) { PlayerData.UnlockChapter(PlayerData.CurrentChapter + 1); }
     }
 
 #endif
