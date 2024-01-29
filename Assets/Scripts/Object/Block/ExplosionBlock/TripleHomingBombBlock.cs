@@ -7,12 +7,8 @@ public class TripleHomingBombBlock : BombBlock
     public static string spriteString = "HomingExplosionBlock_{0}";
     public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
-    public override void ExplosionBombBlock()
-    {
-        StartCoroutine(ExplosionBombBlockCoroutine());
-    }
 
-    private IEnumerator ExplosionBombBlockCoroutine()
+    protected override IEnumerator ExplosionBombBlockCoroutine()
     {
         TileMapManager.Instance.CreateTileListByHomingOrder(explosionTileAreaList, 3);
         int loopCount = explosionTileAreaList.Count;
@@ -24,7 +20,7 @@ public class TripleHomingBombBlock : BombBlock
             instEffect.PlayEffect();
         }
         yield return instEffect.YieldEffectDuration;
-        base.ExplosionBombBlock();
+        BaseExplosionBomobBlock();
 
         BombBlockBasicHit(true);
         AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);

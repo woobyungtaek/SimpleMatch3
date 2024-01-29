@@ -17,6 +17,9 @@ public class Block : MonoBehaviour, System.IDisposable
     }
 
     public virtual bool IsFixed { get => mbFixed; }
+
+    public virtual bool IsVineTarget { get => false; }
+
     public Sprite BlockSprite { get => mBlockSprite.sprite; }
     public virtual string SpriteString { get => null; }
 

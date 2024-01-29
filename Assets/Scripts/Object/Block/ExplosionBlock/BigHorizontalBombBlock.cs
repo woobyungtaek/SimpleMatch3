@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class BigHorizontalBombBlock : BombBlock
 {
-    public override void ExplosionBombBlock()
-    {
-        StartCoroutine(ExplosionBombBlockCoroutine());
-    }
-
-    private IEnumerator ExplosionBombBlockCoroutine()
+    protected override IEnumerator ExplosionBombBlockCoroutine()
     {
         TileMapManager.Instance.CreateTileListByAreaList(explosionTileAreaList, posTile.Coordi, TileArea.bighorizontal);
 
@@ -17,7 +12,7 @@ public class BigHorizontalBombBlock : BombBlock
         instEffect.SetEffectDataByData(posTile.transform.position, Vector3.zero);
         instEffect.PlayEffect();
         yield return instEffect.YieldEffectDuration;
-        base.ExplosionBombBlock();
+        BaseExplosionBomobBlock();
 
         BombBlockBasicHit(true, 3);
     }

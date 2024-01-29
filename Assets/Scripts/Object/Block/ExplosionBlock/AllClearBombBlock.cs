@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class AllClearBombBlock : BombBlock
 {
-    public override void ExplosionBombBlock()
-    {
-        StartCoroutine(ExplosionBombBlockCoroutine());
-    }
-
-    private IEnumerator ExplosionBombBlockCoroutine()
+    protected override IEnumerator ExplosionBombBlockCoroutine()
     {
         TileMapManager.Instance.CreateTileListByAllClearArea(explosionTileAreaList);
 
         //yield return new WaitForSeconds(5f);
         yield return null;
 
-        base.ExplosionBombBlock();
+        BaseExplosionBomobBlock();
         BombBlockBasicHit(false);
         yield return null;
     }

@@ -7,12 +7,8 @@ public class CrossBombBlock : BombBlock
     public static string spriteString = "CrossExplosionBlock_{0}";
     public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
-    public override void ExplosionBombBlock()
-    {
-        StartCoroutine(ExplosionBombBlockCoroutine());
-    }
 
-    private IEnumerator ExplosionBombBlockCoroutine()
+    protected override IEnumerator ExplosionBombBlockCoroutine()
     {
         TileMapManager.Instance.CreateTileListByAreaList(explosionTileAreaList, posTile.Coordi, TileArea.cross);
 
@@ -20,7 +16,7 @@ public class CrossBombBlock : BombBlock
         instEffect.SetEffectDataByData(posTile.transform.position, Vector3.zero);
         instEffect.PlayEffect();
         yield return instEffect.YieldEffectDuration;
-        base.ExplosionBombBlock();
+        BaseExplosionBomobBlock();
 
         BombBlockBasicHit(true, 3);
     }

@@ -8,4 +8,9 @@ public class ChangeBombBlock : BombBlock
     public Type ChangeType { get => mChangeType; set => mChangeType = value; }
 
     private Type mChangeType = null;
+
+    public override void ExplosionBombBlock()
+    {
+        BaseExplosionBomobBlock();
+    }
 }

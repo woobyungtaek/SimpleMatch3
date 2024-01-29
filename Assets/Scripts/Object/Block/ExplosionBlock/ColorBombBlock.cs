@@ -22,12 +22,7 @@ public class ColorBombBlock : BombBlock
         base.HitBlock(tile, blockContainer, bExplosion);
     }
 
-    public override void ExplosionBombBlock()
-    {
-        StartCoroutine(ExplosionBombBlockCoroutine());
-    }
-
-    private IEnumerator ExplosionBombBlockCoroutine()
+    protected override IEnumerator ExplosionBombBlockCoroutine()
     {
         AudioManager.Instance.PlayByType(EAudioPlayType.EColorBombLine);
         TileMapManager.Instance.CreateTileListBySameNumber(explosionTileAreaList, BlockNumber);
@@ -41,7 +36,7 @@ public class ColorBombBlock : BombBlock
             instEffect.PlayEffect();
         }
         yield return instEffect.YieldEffectDuration;
-        base.ExplosionBombBlock();
+        BaseExplosionBomobBlock();
 
         BombBlockBasicHit(true);
     }

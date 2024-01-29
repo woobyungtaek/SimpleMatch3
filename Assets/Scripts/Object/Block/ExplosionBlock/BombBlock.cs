@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BombBlock : Block
 {
+    public override bool IsVineTarget { get => true; }
+
     public BlockEffect ExplosionEffect { get => explosionEffectPrefab; }
 
     [SerializeField] protected Tile posTile;
@@ -13,10 +15,26 @@ public class BombBlock : Block
 
     protected BlockEffect instEffect;
 
+    private Coroutine mExplosionCoroutine;
+
     public virtual void ExplosionBombBlock()
+    {
+        if(mExplosionCoroutine != null)
+        {
+            Coroutine_Helper.StopCoroutine(mExplosionCoroutine);
+        }
+        mExplosionCoroutine = Coroutine_Helper.StartCoroutine(ExplosionBombBlockCoroutine());
+    }
+
+    protected void BaseExplosionBomobBlock()
     {
         RemoveBlockToBlockContianer(posTile.BlockContainerOrNull);
         posTile.CheckBlockContainer();
+    }
+
+    protected virtual IEnumerator ExplosionBombBlockCoroutine()
+    {
+        yield return null;
     }
 
     public override void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion)

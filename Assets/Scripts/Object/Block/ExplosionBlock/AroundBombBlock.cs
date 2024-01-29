@@ -7,12 +7,7 @@ public class AroundBombBlock : BombBlock
     public static string spriteString = "AroundBombBlock_{0}";
     public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
-    public override void ExplosionBombBlock()
-    {
-        StartCoroutine(ExplosionBombBlockCoroutine());
-    }
-
-    private IEnumerator ExplosionBombBlockCoroutine()
+    protected override IEnumerator ExplosionBombBlockCoroutine()
     {
         TileMapManager.Instance.CreateTileListByAreaList(explosionTileAreaList, posTile.Coordi, TileArea.around);
 
@@ -20,7 +15,7 @@ public class AroundBombBlock : BombBlock
         instEffect.SetEffectDataByData(posTile.transform.position, Vector3.one * 3);
         instEffect.PlayEffect();
         yield return instEffect.YieldEffectDuration;
-        base.ExplosionBombBlock();
+        BaseExplosionBomobBlock();
         BombBlockBasicHit(true, 3);
     }
 }

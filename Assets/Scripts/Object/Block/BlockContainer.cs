@@ -15,6 +15,19 @@ public class BlockContainer : MonoBehaviour, IReserveData
             return false;
         }
     }
+
+    public bool IsVineTarget
+    {
+        get
+        {
+            int loopCount = mBlockList.Count;
+            for (int index = 0; index < loopCount; index++)
+            {
+                if (!mBlockList[index].IsVineTarget) { return false; }
+            }
+            return true;
+        }
+    }
     public bool IsOnlyNormalBlock
     {
         get

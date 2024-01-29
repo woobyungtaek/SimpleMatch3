@@ -117,6 +117,9 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     private List<Tile> remainChainList = new List<Tile>();
     private List<Tile> hitTileList = new List<Tile>();
     private List<Tile> mSquareTileList = new List<Tile>();
+
+    private List<Tile> mVineTargetTile = new List<Tile>();
+
     //타일 리스트 : 매치 체크리스트
     private List<ReuseTileList> mChainListList = new List<ReuseTileList>();
     private List<ReuseTileList> mAllVerticalListList = new List<ReuseTileList>();
@@ -764,6 +767,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
 
+
     private IEnumerator GimickCheckCoroutine()
     {
         EGameState eNextState = EGameState.ReturnSwap;
@@ -773,7 +777,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         {
             if (VineBlock.IsVineHited == false)
             {
-                List<Tile> targetTileList = new List<Tile>();
+                mVineTargetTile.Clear();
 
                 // Vine블록 찾아서
                 // 랜덤 블록 하나 찾아서
@@ -793,17 +797,18 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                         // 인접 타일이 Normal이고 BC가 있으며 Main이 Vine이 아니어야한다.
                         if (vTile.BlockContainerOrNull == null) { continue; }
                         if (vTile.BlockContainerOrNull.MainBlock is VineBlock) { continue; }
-                        if (targetTileList.Contains(vTile)) { continue; }
+                        if (!vTile.BlockContainerOrNull.IsVineTarget) { continue; }
+                        if (mVineTargetTile.Contains(vTile)) { continue; }
 
-                        targetTileList.Add(vTile);
+                        mVineTargetTile.Add(vTile);
                     }
                 }
 
-                if (targetTileList.Count > 0)
+                if (mVineTargetTile.Count > 0)
                 {
-                    int randIdx = Random.Range(0, targetTileList.Count);
-                    targetTileList[randIdx].RemoveBlockContainer();
-                    BlockManager.Instance.CreateBlockByBlockDataInTile(targetTileList[randIdx], typeof(VineBlock), -1, 1);
+                    int randIdx = Random.Range(0, mVineTargetTile.Count);
+                    mVineTargetTile[randIdx].RemoveBlockContainer();
+                    BlockManager.Instance.CreateBlockByBlockDataInTile(mVineTargetTile[randIdx], typeof(VineBlock), -1, 1);
                 }
                 yield return VineBlock.mVineDelayTime;
             }
@@ -1248,9 +1253,15 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         }
 
         result.Clear();
-        for (int cnt = 0; cnt < count; ++cnt)
+        for (int cnt = 0; cnt < reuseTileList.tileList.Count; ++cnt)
         {
+            // Vine Block 대상 제거
+            if (reuseTileList.tileList[cnt].BlockContainerOrNull == null) { continue; }
+            if (reuseTileList.tileList[cnt].BlockContainerOrNull.MainBlock is VineBlock) { continue; }
+            if (!reuseTileList.tileList[cnt].BlockContainerOrNull.IsVineTarget) { continue; }
+
             result.Add(reuseTileList.tileList[cnt]);
+            if (result.Count >= count) { break; }
         }
 
         ReuseTileList.Destroy(reuseTileList);

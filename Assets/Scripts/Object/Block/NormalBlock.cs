@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NormalBlock : Block
 {
+    public override bool IsVineTarget { get => true; }
+
     public static string spriteString = "NormalBlock_{0}";
     public override string SpriteString { get => string.Format(spriteString, BlockNumber); }
 
