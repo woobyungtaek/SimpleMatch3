@@ -122,9 +122,9 @@ public class NormalTile : Tile
             if (ReserveData == null) { return false; }
             if (ReserveData.IsFixed) { return true; }
 
-            foreach(var tile in mSendTileList)
+            foreach (var tile in mSendTileList)
             {
-                if(tile == null) { continue; }
+                if (tile == null) { continue; }
                 if (!tile.IsFullUnder) { return false; }
             }
 
@@ -251,7 +251,7 @@ public class NormalTile : Tile
             if (!(mAroundTileList[index] is NormalTile)) { continue; }
             if (mAroundTileList[index].BlockContainerOrNull == null) { continue; }
             if (mAroundTileList[index].BlockContainerOrNull.BlockContainerNumber != blockNum) { continue; }
-            (mAroundTileList[index] as NormalTile).CheckChainTileReculsive(blockNum, checkHashSet, chainList);
+            (mAroundTileList[index] as NormalTile)?.CheckChainTileReculsive(blockNum, checkHashSet, chainList);
         }
     }
     public Tile GetSameNumberTileOrNullByDir(int dir)
@@ -416,7 +416,7 @@ public class NormalTile : Tile
     public override bool FlowingMove()
     {
         if (ReserveData == null) { return false; }
-        if (ReserveData.IsFixed) { return false; }        
+        if (ReserveData.IsFixed) { return false; }
         if (mSendTileList.Count == 0) { return false; }
 
         Tile underTile = mSendTileList[0];
@@ -424,14 +424,14 @@ public class NormalTile : Tile
         if (underTile.ReserveData == null) { return false; }
 
         Tile targetTile = null;
-        for(int index = 1; index < mSendTileList.Count; ++index)
+        for (int index = 1; index < mSendTileList.Count; ++index)
         {
-            if(mSendTileList[index] == null) { continue; }
-            if(mSendTileList[index].ReserveData != null) { continue; }
+            if (mSendTileList[index] == null) { continue; }
+            if (mSendTileList[index].ReserveData != null) { continue; }
             targetTile = mSendTileList[index];
         }
 
-        if(targetTile == null) { return false; }
+        if (targetTile == null) { return false; }
         if (!targetTile.IsCanFlow_Up) { return false; }
 
         if (!underTile.IsFullUnder) { return false; }
@@ -474,7 +474,7 @@ public class NormalTile : Tile
 
     public override bool CheckDropReadyState()
     {
-        if(ReserveData != null)
+        if (ReserveData != null)
         {
             if (ReserveData.IsFixed) { return true; }
             return false;
@@ -482,7 +482,7 @@ public class NormalTile : Tile
 
         for (int index = 0; index < mRecieveTileList.Count; ++index)
         {
-            if(mRecieveTileList[index] == null) { continue; }
+            if (mRecieveTileList[index] == null) { continue; }
             bool bReady = mRecieveTileList[index].CheckDropReadyState();
             if (bReady) { continue; }
             return false;

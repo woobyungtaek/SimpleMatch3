@@ -400,8 +400,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
     }
     private void ExecuteMatchCheckByNoti(Notification noti)
     {
-        MatchCheck();
-        //StartCoroutine(MatchCheckCoroutine());
+        //MatchCheck();
+        StartCoroutine(MatchCheckCoroutine());
     }
     private void ExcuteMatchByNoti(Notification noti)
     {
@@ -767,6 +767,12 @@ public class TileMapManager : SceneSingleton<TileMapManager>
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);
     }
 
+
+    private IEnumerator MatchCheckCoroutine()
+    {
+        yield return null;
+        MatchCheck();
+    }
 
     private IEnumerator GimickCheckCoroutine()
     {

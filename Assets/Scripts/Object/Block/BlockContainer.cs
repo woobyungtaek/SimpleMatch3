@@ -42,7 +42,14 @@ public class BlockContainer : MonoBehaviour, IReserveData
     }
 
     public int HomingOrder { get => mMainBlock.HomingOrder; }
-    public int BlockContainerNumber { get => mMainBlock.BlockNumber; }
+    public int BlockContainerNumber
+    {
+        get
+        {
+            if(mMainBlock == null) { return -1; }
+            return mMainBlock.BlockNumber;
+        }
+    }
     public int BlockCount { get => mBlockList.Count; }
     public Sprite BlockSprite { get => mMainBlock.BlockSprite; }
     public Block MainBlock { get => mMainBlock; }

@@ -37,6 +37,8 @@ public class LobbySceneManager : SceneSingleton<LobbySceneManager>
 
     private void Awake()
     {
+        Application.targetFrameRate = 60;
+
 #if UNITY_ANDROID || UNITY_IOS
 
         if (!IAPManager.IsExist)
