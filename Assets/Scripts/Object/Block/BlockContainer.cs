@@ -35,7 +35,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
             int loopCount = mBlockList.Count;
             for (int index = 0; index < loopCount; index++)
             {
-                if (mBlockList[index] is BombBlock) { return false; }
+                if (!(mBlockList[index] is NormalBlock)) { return false; }
             }
             return true;
         }
