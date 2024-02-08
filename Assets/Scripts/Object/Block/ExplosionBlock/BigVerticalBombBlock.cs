@@ -13,8 +13,8 @@ public class BigVerticalBombBlock : BombBlock
         instEffect.PlayEffect();
 
         yield return explosionEffectPrefab.YieldEffectDuration;
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
 
-        BombBlockBasicHit(true, 3);
+        BombBlockBasicHit(true, false, 3);
     }
 }

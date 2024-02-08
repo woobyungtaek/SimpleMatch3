@@ -11,6 +11,6 @@ public class ChangeBombBlock : BombBlock
 
     public override void ExplosionBombBlock()
     {
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
     }
 }

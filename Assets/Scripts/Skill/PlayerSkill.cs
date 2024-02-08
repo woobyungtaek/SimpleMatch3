@@ -81,7 +81,7 @@ public class HammerSkill : PlayerSkill
     {
         IncreaseItemUseCount();
 
-        tile.HitTile(true);
+        tile.HitTile(true, false);
         mButtonObj.SkillUse();
         ObserverCenter.Instance.SendNotification(Message.SkillDimmedOff);
         PuzzleManager.Instance.ChangeCurrentGameStateWithNoti(EGameState.Match);

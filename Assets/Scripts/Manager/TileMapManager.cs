@@ -571,15 +571,15 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             if (selectBlock is ColorBombBlock && targetBlock is NormalBlock)
             {
                 selectBlock.BlockNumber = targetBlock.BlockNumber;
-                PuzzleInputManager.TargetTileOrNull.HitTile(false);
-                PuzzleInputManager.SelectTileOrNull.HitTile(false);
+                PuzzleInputManager.TargetTileOrNull.HitTile(false, true);
+                PuzzleInputManager.SelectTileOrNull.HitTile(false, true);
                 mbBombMerge = true;
             }
             else if (selectBlock is NormalBlock && targetBlock is ColorBombBlock)
             {
                 targetBlock.BlockNumber = selectBlock.BlockNumber;
-                PuzzleInputManager.SelectTileOrNull.HitTile(false);
-                PuzzleInputManager.TargetTileOrNull.HitTile(false);
+                PuzzleInputManager.SelectTileOrNull.HitTile(false, true);
+                PuzzleInputManager.TargetTileOrNull.HitTile(false, true);
                 mbBombMerge = true;
             }
             else if (selectBlock is BombBlock && targetBlock is BombBlock)
@@ -630,8 +630,8 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                     }
 
                     AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
-                    PuzzleInputManager.SelectTileOrNull.HitTile(false);
-                    PuzzleInputManager.TargetTileOrNull.HitTile(false);
+                    PuzzleInputManager.SelectTileOrNull.HitTile(false, true);
+                    PuzzleInputManager.TargetTileOrNull.HitTile(false, true);
 
                     mbBombMerge = true;
                 }
@@ -900,7 +900,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
                         mergeEffect.SetEffectDataByData(startPos, targetPos, blockSprite);
                         mergeEffect.PlayEffect();
                     }
-                    hitTileList[matchTileIndex].HitTile(false);
+                    hitTileList[matchTileIndex].HitTile(false, true);
                 }
 
                 for (int matchTileIndex = 0; matchTileIndex < secLoopCount; matchTileIndex++)
@@ -923,6 +923,7 @@ public class TileMapManager : SceneSingleton<TileMapManager>
             {
                 if (mMatchInfoList[index].MergePosTileOrNull != null)
                 {
+                    mMatchInfoList[index].MergePosTileOrNull.IsMerged = true;
                     BlockManager.Instance.CreateBlockByBlockDataInTile
                         (mMatchInfoList[index].MergePosTileOrNull, mMatchInfoList[index].MergeBlockTypeOrNull, mMatchInfoList[index].MatchNumber, 1, TileParentTransform);
                 }

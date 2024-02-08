@@ -9,7 +9,7 @@ public class ColorChangeBombBlock : ChangeBombBlock
         StartCoroutine(ExplosionBombBlockCoroutine());
     }
 
-    private IEnumerator ExplosionBombBlockCoroutine()
+    private new IEnumerator ExplosionBombBlockCoroutine()
     {
         AudioManager.Instance.PlayByType(EAudioPlayType.EColorBombLine);
         TileMapManager.Instance.CreateTileListBySameNumber(explosionTileAreaList, BlockNumber);
@@ -28,10 +28,11 @@ public class ColorChangeBombBlock : ChangeBombBlock
             if (explosionTileAreaList[index].BlockContainerOrNull == null) { continue; }
             if (!(explosionTileAreaList[index].BlockContainerOrNull.MainBlock is NormalBlock)) { continue; }
 
+            explosionTileAreaList[index].BlockContainerOrNull.MainBlock.CheckMissionBlock();
             BlockManager.Instance.CreateBlockByBlockDataInTile(explosionTileAreaList[index], ChangeType, BlockNumber, 1);
         }
 
         base.ExplosionBombBlock();
-        BombBlockBasicHit(false);
+        BombBlockBasicHit(false, true);
     }
 }

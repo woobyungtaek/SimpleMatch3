@@ -26,6 +26,8 @@ public class VineBlock : Block, IForceCreateOnBoard
     {
         IsVineHited = true;
 
+        if (BlockHP <= 0) { return; }
+
         BlockHP -= 1;
         if (BlockHP <= 0)
         {

@@ -289,9 +289,10 @@ public class NormalTile : Tile
         mSendTileList[0].AddFlowStateDict(checkResult);
     }
 
-    public override void HitTile(bool bExplosionHit)
+    public override void HitTile(bool bExplosionHit, bool bOnSplashHit)
     {
-        if (IsHit == true) { return; }
+        //if (IsHit == true) { return; }
+        if (IsMerged == true) { return; }
         if (BlockContainerOrNull == null) { return; }
         IsHit = true;
 
@@ -310,7 +311,7 @@ public class NormalTile : Tile
         mPushEffectOrder = 0;
 
         // 블록 히트, 스플래쉬 히트
-        if (!bExplosionHit)
+        if (bOnSplashHit)
         {
             foreach (var tile in mAroundTileList)
             {
@@ -324,7 +325,8 @@ public class NormalTile : Tile
 
     public override void HitTile_Splash()
     {
-        if (IsHit == true) { return; }
+        //if (IsHit == true) { return; }
+        if (IsMerged == true) { return; }
         if (IsSplashHit == true) { return; }
         IsSplashHit = true;
 

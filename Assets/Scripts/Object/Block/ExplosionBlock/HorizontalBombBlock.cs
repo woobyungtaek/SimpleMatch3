@@ -16,9 +16,9 @@ public class HorizontalBombBlock : BombBlock
         instEffect.SetEffectDataByData(posTile.transform.position, Vector3.zero);
         instEffect.PlayEffect();
         yield return instEffect.YieldEffectDuration;
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
 
-        BombBlockBasicHit(false);
+        BombBlockBasicHit(false, false);
     }
 
 }

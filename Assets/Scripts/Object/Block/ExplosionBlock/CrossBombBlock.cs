@@ -16,9 +16,9 @@ public class CrossBombBlock : BombBlock
         instEffect.SetEffectDataByData(posTile.transform.position, Vector3.zero);
         instEffect.PlayEffect();
         yield return instEffect.YieldEffectDuration;
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
 
-        BombBlockBasicHit(true, 3);
+        BombBlockBasicHit(true, false, 3);
     }
 
 }

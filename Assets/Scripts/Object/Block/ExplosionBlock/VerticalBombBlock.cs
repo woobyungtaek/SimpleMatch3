@@ -17,8 +17,8 @@ public class VerticalBombBlock : BombBlock
         instEffect.PlayEffect();
 
         yield return instEffect.YieldEffectDuration;
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
 
-        BombBlockBasicHit(false);
+        BombBlockBasicHit(false, false);
     }
 }

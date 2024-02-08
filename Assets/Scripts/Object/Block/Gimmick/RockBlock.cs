@@ -16,6 +16,8 @@ public class RockBlock : Block, IForceCreateOnBoard
 
     public override void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion)
     {
+        if (BlockHP <= 0) { return; }
+
         BlockHP -= 1;
         if (BlockHP <= 0)
         {

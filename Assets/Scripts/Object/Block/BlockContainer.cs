@@ -229,6 +229,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
         int loopCount = mBlockList.Count - 1;
         for (int index = loopCount; index >= 0; index--)
         {
+            if(mBlockList[index] == null) { continue; }
             mBlockList[index].HitBlock(tile, this, bExplosionHit);
         }
 

@@ -20,9 +20,9 @@ public class HomingBombBlock : BombBlock
             instEffect.PlayEffect();
         }
         yield return instEffect.YieldEffectDuration;
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
 
-        BombBlockBasicHit(true);
+        BombBlockBasicHit(true, false);
         AudioManager.Instance.PlayByType(EAudioPlayType.EMatchEffect);
     }
 }

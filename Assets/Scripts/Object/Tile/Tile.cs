@@ -23,6 +23,7 @@ public class Tile : MonoBehaviour, System.IDisposable
     [SerializeField] private bool mbReservationTile;
     [SerializeField] private bool mbHit;
     [SerializeField] private bool mbHit_Spalsh;
+    [SerializeField] private bool mbMerged;
     [SerializeField] private bool mbArrive;
 
     [Header("Protected")]
@@ -96,6 +97,7 @@ public class Tile : MonoBehaviour, System.IDisposable
     public bool IsArrive { get => mbArrive; set => mbArrive = value; }
     public bool IsHit { get => mbHit; set => mbHit = value; }
     public bool IsSplashHit { get => mbHit_Spalsh; set => mbHit_Spalsh = value; }
+    public bool IsMerged { get => mbMerged; set => mbMerged = value; }
 
     public IReserveData ReserveData
     {
@@ -233,6 +235,7 @@ public class Tile : MonoBehaviour, System.IDisposable
     {
         IsHit = false;
         IsSplashHit = false;
+        IsMerged = false;
     }
 
     public void CheckBlockContainer()
@@ -253,7 +256,7 @@ public class Tile : MonoBehaviour, System.IDisposable
     }
 
     public virtual void AddFlowStateDict(bool checkResult) { }
-    public virtual void HitTile(bool bExplosionHit) { }
+    public virtual void HitTile(bool bExplosionHit, bool bOnSplashHit) { }
     public virtual void HitTile_Splash() { }
     public virtual void StopPushEffect() { }
     public virtual void StartPushEffect(int pushDegree = 2) { }

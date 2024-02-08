@@ -11,8 +11,8 @@ public class AllClearBombBlock : BombBlock
         //yield return new WaitForSeconds(5f);
         yield return null;
 
-        BaseExplosionBomobBlock();
-        BombBlockBasicHit(false);
+        BaseExplosionBombBlock();
+        BombBlockBasicHit(false, false);
         yield return null;
     }
 }

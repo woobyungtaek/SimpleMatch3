@@ -12,7 +12,7 @@ public class HomingChangeBombBlock : ChangeBombBlock
         StartCoroutine(ExplosionBombBlockCoroutine());
     }
 
-    private IEnumerator ExplosionBombBlockCoroutine()
+    private new IEnumerator ExplosionBombBlockCoroutine()
     {
         TileMapManager.Instance.CreateTileListByHomingOrder(explosionTileAreaList, 1);
 
@@ -29,9 +29,11 @@ public class HomingChangeBombBlock : ChangeBombBlock
         for (int index = 0; index < loopCount; index++)
         {
             if (explosionTileAreaList[index].BlockContainerOrNull == null) { continue; }
+
+            explosionTileAreaList[index].BlockContainerOrNull.MainBlock.CheckMissionBlock();
             Block instBlock = BlockManager.Instance.GetCreateBlockByBlockDataInTile(explosionTileAreaList[index], ChangeType, -100, 1);
         }
 
-        BombBlockBasicHit(false);
+        BombBlockBasicHit(false, true);
     }
 }

@@ -36,8 +36,8 @@ public class ColorBombBlock : BombBlock
             instEffect.PlayEffect();
         }
         yield return instEffect.YieldEffectDuration;
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
 
-        BombBlockBasicHit(true);
+        BombBlockBasicHit(true, true);
     }
 }

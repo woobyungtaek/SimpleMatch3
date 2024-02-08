@@ -12,8 +12,8 @@ public class BigAroundBombBlock : BombBlock
         instEffect.SetEffectDataByData(posTile.transform.position, Vector3.one * 5);
         instEffect.PlayEffect();
         yield return instEffect.YieldEffectDuration;
-        BaseExplosionBomobBlock();
+        BaseExplosionBombBlock();
 
-        BombBlockBasicHit(true, 3);
+        BombBlockBasicHit(true,false,  3);
     }
 }

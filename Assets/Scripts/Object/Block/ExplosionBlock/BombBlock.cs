@@ -26,7 +26,7 @@ public class BombBlock : Block
         mExplosionCoroutine = Coroutine_Helper.StartCoroutine(ExplosionBombBlockCoroutine());
     }
 
-    protected void BaseExplosionBomobBlock()
+    protected void BaseExplosionBombBlock()
     {
         RemoveBlockToBlockContianer(posTile.BlockContainerOrNull);
         posTile.CheckBlockContainer();
@@ -39,6 +39,8 @@ public class BombBlock : Block
 
     public override void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion)
     {
+        if (BlockHP <= 0) { return; }
+
         BlockHP -= 1;
         if (BlockHP <= 0)
         {
@@ -48,12 +50,12 @@ public class BombBlock : Block
         }
     }
 
-    protected void BombBlockBasicHit(bool bPushEffectPlay, int pushDegree = 2)
+    protected void BombBlockBasicHit(bool bPushEffectPlay, bool bOnSplashHit, int pushDegree = 2)
     {
         int loopCount = explosionTileAreaList.Count;
         for (int index = 0; index < loopCount; index++)
         {
-            explosionTileAreaList[index].HitTile(true);
+            explosionTileAreaList[index].HitTile(true, bOnSplashHit);
         }
 
         if (bPushEffectPlay)
