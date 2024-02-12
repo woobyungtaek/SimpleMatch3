@@ -41,12 +41,19 @@ public class BlockContainer : MonoBehaviour, IReserveData
         }
     }
 
-    public int HomingOrder { get => mMainBlock.HomingOrder; }
-    public int BlockContainerNumber
+    public int HomingOrder
     {
         get
         {
             if(mMainBlock == null) { return -1; }
+            return mMainBlock.HomingOrder;
+        }
+    }
+    public int BlockContainerNumber
+    {
+        get
+        {
+            if (mMainBlock == null) { return -1; }
             return mMainBlock.BlockNumber;
         }
     }
@@ -229,7 +236,7 @@ public class BlockContainer : MonoBehaviour, IReserveData
         int loopCount = mBlockList.Count - 1;
         for (int index = loopCount; index >= 0; index--)
         {
-            if(mBlockList[index] == null) { continue; }
+            if (mBlockList[index] == null) { continue; }
             mBlockList[index].HitBlock(tile, this, bExplosionHit);
         }
 

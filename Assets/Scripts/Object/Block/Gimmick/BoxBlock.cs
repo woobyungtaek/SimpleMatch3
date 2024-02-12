@@ -26,7 +26,7 @@ public class BoxBlock : Block, IForceCreateOnBoard
             base.RemoveBlockToBlockContianer(blockContainer);
 
             // blockContainer에 새 랜덤 블럭 추가해야함
-            BlockManager.Instance.CreateBlockInBlockContainerReserve(blockContainer, typeof(NormalBlock), Random.Range(4,5), 1);
+            BlockManager.Instance.CreateBlockInBlockContainerReserve(blockContainer, typeof(NormalBlock), Random.Range(0, 5), 1);
             return;
         }
         mBlockSprite.sprite = SpriteManager.Instance.GetPuzzleSpriteByName(SpriteString);

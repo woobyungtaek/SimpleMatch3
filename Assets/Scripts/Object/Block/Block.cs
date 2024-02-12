@@ -53,7 +53,7 @@ public class Block : MonoBehaviour, System.IDisposable
     }
     public virtual void HitBlock(Tile tile, BlockContainer blockContainer, bool bExplosion) { }
     public virtual void SplashHitBlock(Tile tile, BlockContainer blockContainer) { }
-    public void CheckMissionBlock()
+    public bool CheckMissionBlock()
     {
         bool bResult = MissionManager.Instance.CheckMissionTargetByInfo(transform.position, GetType(), BlockNumber, BlockSprite);
         if (!bResult)
@@ -61,6 +61,8 @@ public class Block : MonoBehaviour, System.IDisposable
             // 미션 블럭이 아니면 게이지로 전환 되어야 한다.
             ObserverCenter.Instance.SendNotification(Message.MainSkillIncrease);
         }
+
+        return bResult;
     }
 
     protected void ExcuteCalculateHomiingOrder(Notification noti)
@@ -78,7 +80,6 @@ public class Block : MonoBehaviour, System.IDisposable
     protected void RemoveBlockToBlockContianer(BlockContainer blockContainer)
     {
         blockContainer.RemoveBlockByBlock(this);
-        //GameObjectPool.ReturnObject(gameObject);
     }
 
     public void Dispose() { }

@@ -294,6 +294,12 @@ public class NormalTile : Tile
         //if (IsHit == true) { return; }
         if (IsMerged == true) { return; }
         if (BlockContainerOrNull == null) { return; }
+        if (BlockContainerOrNull.MainBlock == null)
+        {
+            GameObjectPool.ReturnObject(BlockContainerOrNull.gameObject);
+            BlockContainerOrNull = null;
+            return; 
+        }
         IsHit = true;
 
         // 기믹 : block은 hit 안하는 기믹이 있을 수 있다.
@@ -331,6 +337,12 @@ public class NormalTile : Tile
         IsSplashHit = true;
 
         if (BlockContainerOrNull == null) { return; }
+        if (BlockContainerOrNull.MainBlock == null)
+        {
+            GameObjectPool.ReturnObject(BlockContainerOrNull.gameObject);
+            BlockContainerOrNull = null;
+            return;
+        }
         BlockContainerOrNull.SplashHitBlockContainer(this);
     }
 
